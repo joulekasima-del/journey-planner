@@ -1,3 +1,3 @@
 # Documentation
 
-This directory will contain future Journey Planner product specifications, architecture documents, research, testing workflows, build tracking, and release notes.
+See `00_INDEX.md` for the current list of specifications, their status, and their governing decisions in `bootstrap/08_DECISION_LOG.md`.
