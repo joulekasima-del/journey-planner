@@ -338,6 +338,70 @@ Superseded By: None
 
 ---
 
+## JP-007 — Experience Reference in Itinerary Item
+
+Category: Architecture
+
+Status: Locked
+
+Date: 2026-08-06
+
+Decision:
+
+An Itinerary Item references exactly one Experience.
+
+The Experience holds the reusable, verified information about the place or activity (name, type, description). The Itinerary Item holds only what is specific to that traveller's plan (which day, what order).
+
+The same Experience can be referenced by any number of Itinerary Items, across any number of Journeys.
+
+Reason:
+
+Reflects how local tourism actually works. A homestay, workshop, or natural site is collected and verified once, then reused by every traveller who includes it in their own plan — the same way a community trail sign lists numbered stops that any visitor can independently choose to visit.
+
+Impact:
+
+JP-004 is not superseded. The Journey → Journey Day → Itinerary Item → Booking chain stays exactly as locked. This completes it by adding the missing reference from Itinerary Item to Experience, a term already defined in the Glossary but not previously connected to the structure.
+
+Related Documents:
+
+- 02_PRODUCT_CONTRACT.md
+- 10_PROJECT_GLOSSARY.md
+
+Superseded By: None
+
+---
+
+## JP-008 — AI-Assisted Planning Support (Version 1 Scope Clarification)
+
+Category: Product
+
+Status: Locked
+
+Date: 2026-08-06
+
+Decision:
+
+Version 1 includes AI assistance that suggests and helps compare Experiences, and answers questions, while the Explorer manually builds their own Journey.
+
+Version 1 does not include automatic full-itinerary generation ("AI trip generation"), which remains explicitly excluded.
+
+Reason:
+
+The traveller's own planning stays central to the product — Journey before Booking, Discovery before Commitment. AI assistance supports that process rather than replacing it. This makes the existing included/excluded boundary precise rather than leaving "AI trip generation" ambiguous.
+
+Impact:
+
+02_PRODUCT_CONTRACT.md Version 1 Scope gains "AI-assisted Experience suggestions during planning" under Included. "AI trip generation" remains under Excluded, now defined explicitly as full automatic itinerary creation.
+
+Related Documents:
+
+- 02_PRODUCT_CONTRACT.md
+- 07_PROJECT_ROADMAP.md
+
+Superseded By: None
+
+---
+
 # Adding New Decisions
 
 New entries should only be added after an explicit locked approval.

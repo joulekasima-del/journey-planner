@@ -180,11 +180,25 @@ Optional implementation thoughts.
 
 # Current Backlog
 
-No active backlog items.
+## JP-B001 — Host Subscription: Tour Guide Marketplace
 
-This document intentionally begins empty.
+Category: Business / Future Expansion
 
-Future ideas should be added as they arise.
+Title: Tour guides subscribe to offer and sell guide services
+
+Priority: Medium
+
+Status: Proposed
+
+Suggested Phase: Phase VI — Host Portal
+
+Description:
+
+Local tour guides subscribe to the platform to offer and sell their guide services directly to Explorers as part of journey planning. Builds on the Host role already defined in this Product Contract and the Roadmap's Phase VI — Host Portal.
+
+Notes:
+
+Will require extending the commerce/booking side beyond today's simple Booking node when this phase is actually reached. That extension is a decision for that point, not now.
 
 ---
 

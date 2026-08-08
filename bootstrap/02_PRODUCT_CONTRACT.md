@@ -166,9 +166,17 @@ Journey Day
 
 Itinerary Item
 
+↓ references
+
+Experience
+
+Itinerary Item
+
 ↓
 
 Booking
+
+An Itinerary Item references exactly one Experience. The Experience holds the reusable, verified information about the place or activity. The same Experience can be referenced by any number of Itinerary Items, across any number of Journeys. (Locked as JP-007.)
 
 Booking is always attached to an itinerary item.
 
@@ -239,6 +247,7 @@ Included
 - Multi-day planning
 - Experience discovery
 - Experience availability
+- AI-assisted Experience suggestions during planning (Locked as JP-008; the Explorer still builds the Journey manually — this is suggestion and comparison support, not automatic itinerary generation)
 - Booking
 - Journey editing
 - Maps
@@ -254,7 +263,7 @@ Excluded
 - Reviews
 - Rewards
 - Gamification
-- AI trip generation
+- AI trip generation (automatic full-itinerary creation without the Explorer building it manually — distinct from the AI-assisted suggestions above, Locked as JP-008)
 - Public APIs
 - Offline mode
 - Marketplace expansion
