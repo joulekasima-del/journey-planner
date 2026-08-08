@@ -56,6 +56,20 @@ These remain in `bootstrap/` per repository convention and are not duplicated in
 
 ---
 
+# Governance
+
+| Document | Status | Path |
+|---|---|---|
+| Architecture Freeze Manifest v1 | Active | `docs/governance/ARCHITECTURE_FREEZE_MANIFEST_V1.md` |
+| Codex Project Constitution | Active | `docs/governance/CODEX_PROJECT_CONSTITUTION.md` |
+| Repository Synchronization Contract v1 | Active | `docs/governance/REPOSITORY_SYNCHRONIZATION_CONTRACT_V1.md` |
+| Programme Workflow | Active | `docs/governance/PROGRAMME_WORKFLOW.md` |
+| Repository Governance | Active | `docs/governance/REPOSITORY_GOVERNANCE.md` |
+| Change Governance | Active | `docs/governance/CHANGE_GOVERNANCE.md` |
+| Architecture Index | Active | `docs/governance/ARCHITECTURE_INDEX.md` |
+
+---
+
 # Booking
 
 | Document | Status | JP Decisions | Path |
@@ -83,3 +97,4 @@ The following decisions are referenced above but not yet recorded in `bootstrap/
 |---|---|---|---|
 | 1.0 | 2026-08-06 | Initial index created as part of Specification Consolidation v1 scaffolding | Claude AI |
 | 1.1 | 2026-08-06 | Clarified that Experience Data Standard §2.2 status reflects outstanding atomic JP decisions, not a partially-locked decision | Claude AI |
+| 1.2 | 2026-08-08 | Added governance framework documents to the repository index | Codex |
