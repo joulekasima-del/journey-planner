@@ -47,6 +47,21 @@ These remain in `bootstrap/` per repository convention and are not duplicated in
 
 ---
 
+# Core Platform Architecture
+
+| Document | Status | Governing Decisions | Path |
+|---|---|---|---|
+| Platform Context Map | Active | JP-001, JP-004, JP-005, JP-006 | `docs/architecture/core-platform/PLATFORM_CONTEXT_MAP.md` |
+| Domain Model | Active | JP-001, JP-004, JP-005 | `docs/architecture/core-platform/DOMAIN_MODEL.md` |
+| Platform Capability Map | Active | JP-001, JP-005 | `docs/architecture/core-platform/PLATFORM_CAPABILITY_MAP.md` |
+| Platform Behaviour Map | Active | JP-001, JP-004, JP-005 | `docs/architecture/core-platform/PLATFORM_BEHAVIOUR_MAP.md` |
+| Platform Constitution | Active | JP-001, JP-002, JP-003, JP-004, JP-005, JP-006 | `docs/architecture/core-platform/PLATFORM_CONSTITUTION.md` |
+| Core Platform Architecture Layer Model | Active | JP-001, JP-004, JP-005, JP-006 | `docs/architecture/core-platform/CORE_PLATFORM_ARCHITECTURE_LAYER_MODEL.md` |
+| Architecture Relationships | Active | JP-001, JP-004, JP-005 | `docs/architecture/core-platform/ARCHITECTURE_RELATIONSHIPS.md` |
+| Cross-Reference Index | Active | JP-001, JP-002, JP-003, JP-004, JP-005, JP-006 | `docs/architecture/core-platform/CROSS_REFERENCE_INDEX.md` |
+
+---
+
 # Standards
 
 | Document | Status | JP Decisions | Path |
@@ -98,3 +113,4 @@ The following decisions are referenced above but not yet recorded in `bootstrap/
 | 1.0 | 2026-08-06 | Initial index created as part of Specification Consolidation v1 scaffolding | Claude AI |
 | 1.1 | 2026-08-06 | Clarified that Experience Data Standard §2.2 status reflects outstanding atomic JP decisions, not a partially-locked decision | Claude AI |
 | 1.2 | 2026-08-08 | Added governance framework documents to the repository index | Codex |
+| 1.3 | 2026-08-08 | Added Batch 2 Core Platform Architecture artifacts | Codex |

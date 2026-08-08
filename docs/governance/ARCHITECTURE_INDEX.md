@@ -24,7 +24,23 @@ It does not create new architecture.
 | Decision Log | Active | `bootstrap/08_DECISION_LOG.md` |
 | Specification Index | Active | `docs/00_INDEX.md` |
 | Architecture Specifications | Indexed / pending per document | `docs/architecture/` |
+| Core Platform Architecture | Active | `docs/architecture/core-platform/` |
 | Governance Framework | Active | `docs/governance/` |
+
+---
+
+# Core Platform Architecture
+
+| Artifact | Status | Path |
+|---|---|---|
+| Platform Context Map | Active | `docs/architecture/core-platform/PLATFORM_CONTEXT_MAP.md` |
+| Domain Model | Active | `docs/architecture/core-platform/DOMAIN_MODEL.md` |
+| Platform Capability Map | Active | `docs/architecture/core-platform/PLATFORM_CAPABILITY_MAP.md` |
+| Platform Behaviour Map | Active | `docs/architecture/core-platform/PLATFORM_BEHAVIOUR_MAP.md` |
+| Platform Constitution | Active | `docs/architecture/core-platform/PLATFORM_CONSTITUTION.md` |
+| Core Platform Architecture Layer Model | Active | `docs/architecture/core-platform/CORE_PLATFORM_ARCHITECTURE_LAYER_MODEL.md` |
+| Architecture Relationships | Active | `docs/architecture/core-platform/ARCHITECTURE_RELATIONSHIPS.md` |
+| Cross-Reference Index | Active | `docs/architecture/core-platform/CROSS_REFERENCE_INDEX.md` |
 
 ---
 
@@ -62,3 +78,4 @@ Existing open items remain tracked by `docs/STATUS.md` and `docs/00_INDEX.md`.
 | Version | Date | Change | Author |
 |---|---|---|---|
 | 1.0 | 2026-08-08 | Initial architecture index installed | Codex |
+| 1.1 | 2026-08-08 | Added Batch 2 Core Platform Architecture artifacts | Codex |
