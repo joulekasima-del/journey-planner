@@ -248,6 +248,9 @@
     photosYesBtn.onclick = () => setPhotos(true);
 
     document.getElementById('f-maps-link').addEventListener('input', (ev) => {
+      const latEl = document.getElementById('f-lat');
+      const lngEl = document.getElementById('f-lng');
+      if (latEl.value.trim() !== '' || lngEl.value.trim() !== '') return;
       const val = ev.target.value;
       const patterns = [
         /@(-?\d+\.\d+),(-?\d+\.\d+)/,
@@ -257,8 +260,8 @@
       for (const p of patterns) {
         const m = val.match(p);
         if (m) {
-          document.getElementById('f-lat').value = m[1];
-          document.getElementById('f-lng').value = m[2];
+          latEl.value = m[1];
+          lngEl.value = m[2];
           break;
         }
       }
@@ -311,7 +314,11 @@
     const donationSelect = document.getElementById('f-donation');
     const donationWrap = document.getElementById('f-donation-detail-wrap');
     function syncDonationDetail() {
-      donationWrap.style.display = donationSelect.value === 'Not observed / none' ? 'none' : 'block';
+      const hidden = donationSelect.value === 'Not observed / none';
+      donationWrap.style.display = hidden ? 'none' : 'block';
+      if (hidden) {
+        document.getElementById('f-donation-detail').value = '';
+      }
     }
     syncDonationDetail();
     donationSelect.onchange = syncDonationDetail;
@@ -398,7 +405,7 @@
     if (relatedSelect) {
       const currentVal = relatedSelect.value;
       relatedSelect.innerHTML = '<option value="">\u2014 None \u2014</option>' +
-        entries.map(e => `<option value="${esc(e.name)}">${esc(e.name)}</option>`).join('');
+        entries.map(e => `<option value="${esc(e.id)}">${esc(e.name)}</option>`).join('');
       relatedSelect.value = currentVal;
     }
 
@@ -415,6 +422,7 @@
       return;
     }
 
+    const nameById = Object.fromEntries(entries.map(e => [e.id, e.name]));
     listEl.innerHTML = entries.map(e => `
       <div class="sc-entry">
         <div class="sc-entry-top">
@@ -425,7 +433,7 @@
           <div class="sc-badge ${e.status === 'verified' ? 'verified' : 'draft'}">${e.status === 'verified' ? 'Verified' : 'Draft'}</div>
         </div>
         ${(e.moo || e.area) ? `<div class="sc-entry-loc">${esc([e.moo, e.area].filter(Boolean).join(', '))}${e.lat && e.lng ? ` &middot; ${esc(e.lat)}, ${esc(e.lng)}` : ''}</div>` : ''}
-        ${e.related ? `<div class="sc-entry-loc">Part of: ${esc(e.related)}</div>` : ''}
+        ${e.related ? `<div class="sc-entry-loc">Part of: ${esc(nameById[e.related] || e.related)}</div>` : ''}
         ${e.landscape ? `<div class="sc-entry-desc"><em>Landscape:</em> ${esc(e.landscape)}</div>` : ''}
         ${e.description ? `<div class="sc-entry-desc">${esc(e.description)}</div>` : ''}
         ${e.culture && e.culture.length ? `<div class="sc-entry-desc"><em>Cultural:</em> ${esc(e.culture.join(', '))}</div>` : ''}
