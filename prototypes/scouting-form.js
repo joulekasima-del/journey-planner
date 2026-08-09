@@ -8,6 +8,35 @@
   const ACCESS_OPTIONS = ["Walk-in", "Book ahead", "Seasonal \u2014 check before visiting", "By arrangement with host"];
   const DONATION_OPTIONS = ["Not observed / none", "Donation box on-site", "QR code on-site", "Ask host directly", "Bank transfer \u2014 details on-site", "Other (see notes)"];
 
+  const STORAGE_PREFIX = 'jp-scouting:';
+  const storage = {
+    async set(key, value) {
+      try {
+        localStorage.setItem(STORAGE_PREFIX + key, value);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    },
+    async get(key) {
+      return { value: localStorage.getItem(STORAGE_PREFIX + key) };
+    },
+    async list(prefix) {
+      const keys = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.startsWith(STORAGE_PREFIX + prefix)) {
+          keys.push(k.slice(STORAGE_PREFIX.length));
+        }
+      }
+      return { keys };
+    },
+    async delete(key) {
+      localStorage.removeItem(STORAGE_PREFIX + key);
+      return true;
+    }
+  };
+
   const CULTURE_OPTIONS = ["Historic tradition", "Religious or spiritual significance", "Family or generational knowledge", "Local festival or event", "Agricultural heritage", "Craft or artisan tradition", "Other"];
 
   const CATEGORY_QUESTIONS = {
@@ -361,7 +390,7 @@
       submitBtn.disabled = true;
       submitBtn.textContent = 'Saving...';
       try {
-        const result = await window.storage.set(entry.id, JSON.stringify(entry), false);
+        const result = await storage.set(entry.id, JSON.stringify(entry));
         if (!result) throw new Error('no result');
         msg.textContent = 'Saved.';
         msg.className = 'sc-msg';
@@ -385,11 +414,11 @@
     const labelEl = document.getElementById('sc-list-label');
     let entries = [];
     try {
-      const keysResult = await window.storage.list('exp_', false);
+      const keysResult = await storage.list('exp_');
       const keys = (keysResult && keysResult.keys) || [];
       for (const k of keys) {
         try {
-          const r = await window.storage.get(k, false);
+          const r = await storage.get(k);
           if (r && r.value) entries.push(JSON.parse(r.value));
         } catch (e) { /* skip unreadable entry */ }
       }
@@ -457,11 +486,11 @@
     listEl.querySelectorAll('[data-verify]').forEach(btn => {
       btn.onclick = async () => {
         const id = btn.getAttribute('data-verify');
-        const r = await window.storage.get(id, false);
+        const r = await storage.get(id);
         if (r && r.value) {
           const entry = JSON.parse(r.value);
           entry.status = 'verified';
-          await window.storage.set(id, JSON.stringify(entry), false);
+          await storage.set(id, JSON.stringify(entry));
           loadEntries();
         }
       };
@@ -469,7 +498,7 @@
     listEl.querySelectorAll('[data-delete]').forEach(btn => {
       btn.onclick = async () => {
         const id = btn.getAttribute('data-delete');
-        await window.storage.delete(id, false);
+        await storage.delete(id);
         loadEntries();
       };
     });
