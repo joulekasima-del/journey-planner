@@ -202,6 +202,45 @@ Will require extending the commerce/booking side beyond today's simple Booking n
 
 ---
 
+## Reference — Phase IV Booking Domain Candidate Ideas
+
+Category: Reference material, not a decision
+
+Status: Unlocked — preserved for when Phase IV (Booking System) Discovery actually begins
+
+Description: ~28 booking/commerce design ideas recovered from prior Discovery work (availability models, seat holds, booking lifecycle, idempotent creation, guest checkout, price snapshots, and similar). None of this is locked or decided. Listed here so it isn't lost, and so Phase IV Discovery starts from real prior thinking rather than a blank page — but every item still needs its own real decision when that phase actually starts, not inherited automatically.
+
+- Original product flow: Discover → Plan → Check availability → Confirm journey → Book → Travel.
+- Four availability models: availability behaviour is Timed Slot, Stay, Optional Reservation, or Informational Only.
+- Seasonal Experience is not a fifth type: an optional start/end validity window attachable to any availability model, not a separate model.
+- Booking is type-agnostic: availability-type behaviour belongs in availability modelling, not in Booking itself.
+- Host as a first-class entity from the beginning, even while self-service stays future scope.
+- V1 Timed Slot: Timed Slot included in V1.
+- V1 Informational Only: Informational Only included in V1.
+- Stay booking behaviour deferred from V1.
+- Optional Reservation deferred from V1.
+- Host portal / self-service deferred from V1.
+- Post-confirmation / mid-journey extension deferred.
+- Recurrence rules initially deferred (later idea below reopens this — needs one real decision, not both).
+- Seasonal-window enforcement in UI deferred from V1, while still storing the underlying data.
+- Availability slots use real timestamp-with-time-zone start values, with end where needed, multiple slots per day.
+- Booking lifecycle: pending → confirmed → completed, with cancellation branches.
+- Seat/capacity accounting enforced at the database level.
+- Role enum: booking implementation used roles admin, scout, and later host.
+- Authorization-sensitive requests re-check role/authority rather than trusting stale client state.
+- Mutating operations verify ownership/authority.
+- Unavailable inventory slots are blocked rather than destructively deleted where history matters.
+- Payment/event webhook drives confirmed booking state rather than client-side assumption.
+- Checkout-started seat holds expire after roughly 15 minutes if abandoned.
+- Pending booking creation holds actual capacity rather than waiting until final confirmation.
+- Guest checkout supported without forced account creation.
+- Booking records preserve the commercial price snapshot applicable at commitment time.
+- Human booking references use a short, generated, human-readable pattern.
+- Booking creation and confirmation operations are idempotent.
+- Recurrence generation: simple day-of-week/time recurrence (conflicts with the earlier deferral idea above — needs one real decision, not both).
+
+---
+
 # Research Queue
 
 Research items are questions rather than features.
