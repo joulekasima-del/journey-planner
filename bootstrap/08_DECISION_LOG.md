@@ -402,6 +402,39 @@ Superseded By: None
 
 ---
 
+## JP-013 — Journey Planner Diverges from Shared Creative Framework
+
+Category: Creative / Product
+
+Status: Locked
+
+Date: 2026-08-10
+
+Decision:
+
+Journey Planner no longer adopts the shared Nature Base Creative Framework (pixel art, Master Palette, Companion character). This supersedes JP-003 for Journey Planner specifically.
+
+The shared framework itself remains valid and continues to be actively used by Nature Base Workspace and any other future studio product — this decision only removes Journey Planner from its adopters, it does not retire the framework. The framework has been copied (not moved) to its own reusable repository, `studio-creative-framework`, leaving Nature Base Workspace's original copy untouched.
+
+Journey Planner's actual art direction is not yet decided. It will be defined in a dedicated design session, grounded in the founder's stated direction: hand-drawn, illustrated map-style visuals, evoking a living, explorable map rather than pixel art — warm and alive without looking AI-generated.
+
+Reason:
+
+The pixel-art framework was inherited from a different product (Nature Base Workspace) via JP-003's original adoption, not decided for Journey Planner on its own merits. On review, it doesn't match the founder's actual stated creative vision for this specific platform.
+
+Impact:
+
+`bootstrap/04_CREATIVE_FRAMEWORK.md` stays intact and unedited — it correctly describes a reusable studio standard, not Journey Planner's art direction specifically. A new Journey Planner-specific creative document is still needed, pending the design session referenced above.
+
+Related Documents:
+
+- bootstrap/04_CREATIVE_FRAMEWORK.md
+- studio-creative-framework (external repository)
+
+Superseded By: None
+
+---
+
 # Adding New Decisions
 
 New entries should only be added after an explicit locked approval.
