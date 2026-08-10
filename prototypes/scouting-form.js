@@ -14,9 +14,29 @@
   const ACCESS_OPTIONS = ["Walk-in", "Book ahead", "Seasonal \u2014 check before visiting", "By arrangement with host"];
   const DONATION_OPTIONS = ["Not observed / none", "Donation box on-site", "QR code on-site", "Ask host directly", "Bank transfer \u2014 details on-site", "Other (see notes)"];
 
-  const CULTURE_OPTIONS = ["Historic tradition", "Religious or spiritual significance", "Family or generational knowledge", "Local festival or event", "Agricultural heritage", "Craft or artisan tradition", "Other"];
+  const CULTURE_OPTIONS = [
+    "Historic tradition", "Religious or spiritual significance", "Family or generational knowledge",
+    "Local festival or event", "Agricultural heritage", "Craft or artisan tradition",
+    "Culinary heritage", "Traditional ecological / farming knowledge", "Music or performing arts",
+    "Traditional medicine / herbal knowledge", "Endangered or dying tradition", "Community or cooperative-run",
+    "Other"
+  ];
 
-  const HOST_NOTICE = "A quick note before you continue: what you record here (name, contact info, what this place offers) will be used to help travelers find and plan visits. Nothing here is public yet \u2014 this is being collected as we build the platform properly.";
+  const TAG_OPTIONS = [
+    "Family-friendly", "English-friendly", "Rainy-season OK", "Morning-only", "Afternoon-only",
+    "Evening-only", "Hands-on", "Sit-and-watch", "Wheelchair-accessible", "Photography-friendly",
+    "Quiet / peaceful", "Popular / busy", "Off-the-beaten-path", "Budget-friendly", "Needs advance notice"
+  ];
+
+  const LANGUAGE_OPTIONS = ["Thai", "English", "Mandarin Chinese", "Japanese", "Korean", "German", "French", "Other"];
+
+  const BEST_VISIT_OPTIONS = [
+    "Early morning (quieter, cooler)", "Late afternoon / golden hour", "Weekdays (less crowded)",
+    "Rainy season (lush, fewer visitors)", "Cool season (Nov-Feb)", "Avoid hot season if possible",
+    "During a local festival or event", "Anytime - no strong preference"
+  ];
+
+  const HOST_NOTICE = "Remember to tell the host what's being recorded and why.";
 
   const CATEGORY_QUESTIONS = {
     "Homestay": [
@@ -95,6 +115,8 @@
       tags: row.tags || '',
       categoryAttributes: attrs,
       culture: row.culture || [],
+      languages: row.languages || [],
+      bestVisit: row.best_visit || [],
       hostName: (row.host && row.host.name) || '',
       hostContact: (row.host && row.host.contact) || '',
       donation: row.donation || '',
@@ -103,6 +125,7 @@
       notes: row.notes || '',
       photosCollected: !!row.photos_collected,
       date: row.date_scouted || '',
+      timeScouted: row.time_scouted || '',
       status: row.status
     };
   }
@@ -145,11 +168,14 @@
       access: entry.access || null,
       tags: entry.tags || null,
       culture: entry.culture || [],
+      languages: entry.languages || [],
+      best_visit: entry.bestVisit || [],
       donation: entry.donation || null,
       donation_detail: entry.donationDetail || null,
       notes: entry.notes || null,
       photos_collected: !!entry.photosCollected,
       date_scouted: entry.date || null,
+      time_scouted: entry.timeScouted || null,
       status: entry.status || 'draft',
       created_by: userId || null
     }).select('id').single();
@@ -234,7 +260,7 @@
     passwordEl.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') attemptLogin(); });
   }
 
-  // ---------- Main app (unchanged fields/behavior, now Supabase-backed) ----------
+  // ---------- Main app (Supabase-backed) ----------
 
   function render(session) {
     root.innerHTML = `
@@ -270,10 +296,6 @@
                 ${EXPERIENCE_TYPES.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join('')}
               </select>
             </div>
-          </div>
-          <div class="sc-field">
-            <label>Description <span class="sc-hint">what it is, why it matters</span></label>
-            <textarea class="sc-textarea" id="f-desc" placeholder="Short, plain description a traveller would actually read"></textarea>
           </div>
 
           <p class="sc-group-label">Location</p>
@@ -328,8 +350,12 @@
             </div>
           </div>
           <div class="sc-field">
-            <label>Tags <span class="sc-hint">comma separated, e.g. family-friendly, rainy-season</span></label>
-            <input class="sc-input" id="f-tags" placeholder="family-friendly, morning-only, hands-on" />
+            <label>Best visit <span class="sc-hint">select all that apply</span></label>
+            <div class="sc-check-grid" id="f-bestvisit-checks"></div>
+          </div>
+          <div class="sc-field">
+            <label>Tags <span class="sc-hint">select all that apply</span></label>
+            <div class="sc-check-grid" id="f-tags-checks"></div>
           </div>
           <div id="sc-category-block"></div>
 
@@ -337,6 +363,10 @@
           <div class="sc-field">
             <label>Cultural or local significance <span class="sc-hint">select all that apply</span></label>
             <div class="sc-check-grid" id="f-culture-checks"></div>
+          </div>
+          <div class="sc-field" id="f-language-block">
+            <label>Languages the host can use <span class="sc-hint">select all that apply</span></label>
+            <div class="sc-check-grid" id="f-language-checks"></div>
           </div>
           <div class="sc-notice">${esc(HOST_NOTICE)}</div>
           <div class="sc-row2">
@@ -367,17 +397,21 @@
             <label>Scout notes <span class="sc-hint">private \u2014 things to check later</span></label>
             <textarea class="sc-textarea" id="f-notes" placeholder="e.g. Owner speaks basic English, best visited mornings, need photos of the workshop room"></textarea>
           </div>
-          <div class="sc-row2">
-            <div class="sc-field">
-              <label>Photos collected?</label>
-              <div class="sc-toggle-group">
-                <div class="sc-toggle" id="f-photos-no">Not yet</div>
-                <div class="sc-toggle" id="f-photos-yes">Yes</div>
-              </div>
+          <div class="sc-field">
+            <label>Photos collected?</label>
+            <div class="sc-toggle-group">
+              <div class="sc-toggle" id="f-photos-no">Not yet</div>
+              <div class="sc-toggle" id="f-photos-yes">Yes</div>
             </div>
+          </div>
+          <div class="sc-row2">
             <div class="sc-field">
               <label>Date scouted</label>
               <input class="sc-input" id="f-date" type="date" />
+            </div>
+            <div class="sc-field">
+              <label>Time scouted</label>
+              <input class="sc-input" id="f-time" type="time" />
             </div>
           </div>
           <div class="sc-field">
@@ -387,6 +421,15 @@
               <div class="sc-toggle" id="f-status-verified">Verified</div>
             </div>
           </div>
+
+          <p class="sc-group-label">Description</p>
+          <div class="sc-field">
+            <label>Description <span class="sc-hint">starting draft only \u2014 always read and edit before saving</span></label>
+            <button class="sc-mini-btn" type="button" id="f-generate-draft">Generate draft text</button>
+            <p class="sc-hint" style="display:block;margin:6px 0 0;">Not AI \u2014 just assembles what you've already entered above into plain sentences.</p>
+            <textarea class="sc-textarea" id="f-desc" placeholder="Short, plain description a traveller would actually read" style="margin-top:8px;"></textarea>
+          </div>
+
           <button class="sc-submit" id="f-submit">Save Experience</button>
           <div class="sc-msg" id="f-msg"></div>
         </div>
@@ -459,6 +502,50 @@
       };
     });
 
+    let tagPicks = new Set();
+    const tagsGrid = document.getElementById('f-tags-checks');
+    tagsGrid.innerHTML = TAG_OPTIONS.map(o => `<div class="sc-check" data-val="${esc(o)}">${esc(o)}</div>`).join('');
+    tagsGrid.querySelectorAll('.sc-check').forEach(chip => {
+      chip.onclick = () => {
+        const v = chip.getAttribute('data-val');
+        if (tagPicks.has(v)) { tagPicks.delete(v); chip.classList.remove('on'); }
+        else { tagPicks.add(v); chip.classList.add('on'); }
+      };
+    });
+
+    let bestVisitPicks = new Set();
+    const bestVisitGrid = document.getElementById('f-bestvisit-checks');
+    bestVisitGrid.innerHTML = BEST_VISIT_OPTIONS.map(o => `<div class="sc-check" data-val="${esc(o)}">${esc(o)}</div>`).join('');
+    bestVisitGrid.querySelectorAll('.sc-check').forEach(chip => {
+      chip.onclick = () => {
+        const v = chip.getAttribute('data-val');
+        if (bestVisitPicks.has(v)) { bestVisitPicks.delete(v); chip.classList.remove('on'); }
+        else { bestVisitPicks.add(v); chip.classList.add('on'); }
+      };
+    });
+
+    let languagePicks = new Set();
+    const languageBlock = document.getElementById('f-language-block');
+    const languageGrid = document.getElementById('f-language-checks');
+    languageGrid.innerHTML = LANGUAGE_OPTIONS.map(o => `<div class="sc-check" data-val="${esc(o)}">${esc(o)}</div>`).join('');
+    languageGrid.querySelectorAll('.sc-check').forEach(chip => {
+      chip.onclick = () => {
+        const v = chip.getAttribute('data-val');
+        if (languagePicks.has(v)) { languagePicks.delete(v); chip.classList.remove('on'); }
+        else { languagePicks.add(v); chip.classList.add('on'); }
+      };
+    });
+    function syncLanguageVisibility() {
+      const shouldShow = document.getElementById('f-primary').value === 'Person' || document.getElementById('f-type').value === 'Workshop';
+      languageBlock.style.display = shouldShow ? 'block' : 'none';
+      if (!shouldShow && languagePicks.size) {
+        languagePicks.clear();
+        languageGrid.querySelectorAll('.sc-check.on').forEach(chip => chip.classList.remove('on'));
+      }
+    }
+    syncLanguageVisibility();
+    document.getElementById('f-primary').addEventListener('change', syncLanguageVisibility);
+
     let categoryPicks = {};
     const catBlock = document.getElementById('sc-category-block');
     function renderCategoryQuestions() {
@@ -490,7 +577,10 @@
       });
     }
     renderCategoryQuestions();
-    document.getElementById('f-type').addEventListener('change', renderCategoryQuestions);
+    document.getElementById('f-type').addEventListener('change', () => {
+      renderCategoryQuestions();
+      syncLanguageVisibility();
+    });
 
     const donationSelect = document.getElementById('f-donation');
     const donationWrap = document.getElementById('f-donation-detail-wrap');
@@ -503,6 +593,38 @@
     }
     syncDonationDetail();
     donationSelect.onchange = syncDonationDetail;
+
+    document.getElementById('f-generate-draft').onclick = () => {
+      const name = document.getElementById('f-name').value.trim();
+      const category = document.getElementById('f-type').value;
+      const moo = document.getElementById('f-moo').value.trim();
+      const area = document.getElementById('f-area').value.trim();
+      const landscape = document.getElementById('f-landscape').value.trim();
+      const duration = document.getElementById('f-duration').value;
+      const access = document.getElementById('f-access').value;
+
+      const sentences = [];
+      const locationBits = [moo, area].filter(Boolean).join(', ');
+      let s1 = (name || 'This experience') + ` is a ${category}`;
+      if (locationBits) s1 += ` in ${locationBits}`;
+      s1 += '.';
+      sentences.push(s1);
+
+      if (landscape) sentences.push(/[.!?]\s*$/.test(landscape) ? landscape : landscape + '.');
+
+      if (culturePicks.size) sentences.push(`Cultural significance: ${[...culturePicks].join(', ')}.`);
+
+      if (languagePicks.size) sentences.push(`The host can communicate in ${[...languagePicks].join(', ')}.`);
+
+      if (duration) sentences.push(`Typically takes ${duration}.`);
+      if (access) sentences.push(`Access: ${access}.`);
+
+      if (bestVisitPicks.size) sentences.push(`Best visited: ${[...bestVisitPicks].join('; ')}.`);
+
+      if (tagPicks.size) sentences.push(`Tags: ${[...tagPicks].join(', ')}.`);
+
+      document.getElementById('f-desc').value = sentences.join(' ');
+    };
 
     document.getElementById('f-submit').onclick = async () => {
       const name = document.getElementById('f-name').value.trim();
@@ -524,9 +646,11 @@
         related: document.getElementById('f-related').value,
         duration: document.getElementById('f-duration').value,
         access: document.getElementById('f-access').value,
-        tags: document.getElementById('f-tags').value.trim(),
+        tags: [...tagPicks].join(', '),
         categoryAttributes: Object.fromEntries(Object.entries(categoryPicks).map(([k, v]) => [k, [...v]])),
         culture: [...culturePicks],
+        languages: [...languagePicks],
+        bestVisit: [...bestVisitPicks],
         hostName: document.getElementById('f-host-name').value.trim(),
         hostContact: document.getElementById('f-host-contact').value.trim(),
         donation: document.getElementById('f-donation').value,
@@ -535,6 +659,7 @@
         notes: document.getElementById('f-notes').value.trim(),
         photosCollected,
         date: document.getElementById('f-date').value,
+        timeScouted: document.getElementById('f-time').value,
         status
       };
       const submitBtn = document.getElementById('f-submit');
@@ -664,12 +789,14 @@
         ${e.landscape ? `<div class="sc-entry-desc"><em>Landscape:</em> ${esc(e.landscape)}</div>` : ''}
         ${e.description ? `<div class="sc-entry-desc">${esc(e.description)}</div>` : ''}
         ${e.culture && e.culture.length ? `<div class="sc-entry-desc"><em>Cultural:</em> ${esc(e.culture.join(', '))}</div>` : ''}
+        ${e.languages && e.languages.length ? `<div class="sc-entry-desc"><em>Languages:</em> ${esc(e.languages.join(', '))}</div>` : ''}
         ${e.categoryAttributes && Object.values(e.categoryAttributes).some(v => v.length) ? `<div class="sc-entry-desc">${Object.entries(e.categoryAttributes).filter(([k,v]) => v.length).map(([k,v]) => `<em>${esc(k)}:</em> ${esc(v.join(', '))}`).join(' &middot; ')}</div>` : ''}
         ${(e.hostName || e.hostContact) ? `<div class="sc-entry-loc">Host: ${esc([e.hostName, e.hostContact].filter(Boolean).join(' \u00b7 '))}</div>` : ''}
         ${e.donation && e.donation !== 'Not observed / none' ? `<div class="sc-entry-loc">Donation: ${esc(e.donation)}${e.donationDetail ? ` \u2014 ${esc(e.donationDetail)}` : ''}</div>` : ''}
+        ${e.bestVisit && e.bestVisit.length ? `<div class="sc-entry-loc">Best visit: ${esc(e.bestVisit.join(', '))}</div>` : ''}
         ${e.tags ? `<div class="sc-entry-loc">Tags: ${esc(e.tags)}</div>` : ''}
         <div class="sc-entry-meta">
-          <span>${esc(e.date || '')}</span>
+          <span>${esc(e.date || '')}${e.timeScouted ? ' ' + esc(e.timeScouted) : ''}</span>
           <span>${e.photosCollected ? 'Photos: yes' : 'No photos yet'}</span>
           ${e.duration ? `<span>${esc(e.duration)}</span>` : ''}
           ${e.access ? `<span>${esc(e.access)}</span>` : ''}
