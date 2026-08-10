@@ -1,4 +1,10 @@
 (function() {
+  const SUPABASE_URL = 'https://dkmipsgtzmztqivvszwm.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_xIYK_qFkI7ZaCa6k8JP2Rg_R7rqB9f0';
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const LEGACY_STORAGE_PREFIX = 'jp-scouting:';
+
   const EXPERIENCE_TYPES = [
     "Homestay", "Workshop", "Guided Walk", "Restaurant", "Farm",
     "Waterfall / Natural Site", "Temple / Cultural Site", "Garden", "Other"
@@ -8,36 +14,9 @@
   const ACCESS_OPTIONS = ["Walk-in", "Book ahead", "Seasonal \u2014 check before visiting", "By arrangement with host"];
   const DONATION_OPTIONS = ["Not observed / none", "Donation box on-site", "QR code on-site", "Ask host directly", "Bank transfer \u2014 details on-site", "Other (see notes)"];
 
-  const STORAGE_PREFIX = 'jp-scouting:';
-  const storage = {
-    async set(key, value) {
-      try {
-        localStorage.setItem(STORAGE_PREFIX + key, value);
-        return true;
-      } catch (e) {
-        return false;
-      }
-    },
-    async get(key) {
-      return { value: localStorage.getItem(STORAGE_PREFIX + key) };
-    },
-    async list(prefix) {
-      const keys = [];
-      for (let i = 0; i < localStorage.length; i++) {
-        const k = localStorage.key(i);
-        if (k && k.startsWith(STORAGE_PREFIX + prefix)) {
-          keys.push(k.slice(STORAGE_PREFIX.length));
-        }
-      }
-      return { keys };
-    },
-    async delete(key) {
-      localStorage.removeItem(STORAGE_PREFIX + key);
-      return true;
-    }
-  };
-
   const CULTURE_OPTIONS = ["Historic tradition", "Religious or spiritual significance", "Family or generational knowledge", "Local festival or event", "Agricultural heritage", "Craft or artisan tradition", "Other"];
+
+  const HOST_NOTICE = "A quick note before you continue: what you record here (name, contact info, what this place offers) will be used to help travelers find and plan visits. Nothing here is public yet \u2014 this is being collected as we build the platform properly.";
 
   const CATEGORY_QUESTIONS = {
     "Homestay": [
@@ -85,16 +64,179 @@
     return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
 
+  function isOfflineError(e) {
+    if (!e) return false;
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) return true;
+    const msg = (e.message || String(e) || '').toLowerCase();
+    return msg.includes('failed to fetch') || msg.includes('network') || msg.includes('load failed') || e instanceof TypeError;
+  }
+
+  // ---------- Data mapping: Supabase rows <-> the flat entry shape the UI already expects ----------
+
+  function rowToEntry(row) {
+    const attrs = {};
+    (row.experience_attribute || []).forEach(a => {
+      if (!attrs[a.key]) attrs[a.key] = [];
+      attrs[a.key].push(a.value);
+    });
+    return {
+      id: row.id,
+      name: row.name,
+      primaryType: row.primary_type || '',
+      type: row.category || '',
+      moo: (row.place && row.place.moo) || '',
+      area: (row.place && row.place.area) || '',
+      landscape: (row.place && row.place.landscape) || '',
+      lat: (row.place && row.place.lat) || '',
+      lng: (row.place && row.place.lng) || '',
+      related: row.related_to_id || '',
+      duration: row.duration || '',
+      access: row.access || '',
+      tags: row.tags || '',
+      categoryAttributes: attrs,
+      culture: row.culture || [],
+      hostName: (row.host && row.host.name) || '',
+      hostContact: (row.host && row.host.contact) || '',
+      donation: row.donation || '',
+      donationDetail: row.donation_detail || '',
+      description: row.description || '',
+      notes: row.notes || '',
+      photosCollected: !!row.photos_collected,
+      date: row.date_scouted || '',
+      status: row.status
+    };
+  }
+
+  // Inserts place/host/experience/experience_attribute rows for one entry-shaped object.
+  // Used both by the live submit handler and by the one-time localStorage migration.
+  async function saveEntryToSupabase(entry, userId) {
+    let placeId = null;
+    if (entry.moo || entry.area || entry.landscape || entry.lat || entry.lng) {
+      const { data, error } = await sb.from('place').insert({
+        moo: entry.moo || null,
+        area: entry.area || null,
+        landscape: entry.landscape || null,
+        lat: entry.lat || null,
+        lng: entry.lng || null
+      }).select('id').single();
+      if (error) throw error;
+      placeId = data.id;
+    }
+
+    let hostId = null;
+    if (entry.hostName || entry.hostContact) {
+      const { data, error } = await sb.from('host').insert({
+        name: entry.hostName || null,
+        contact: entry.hostContact || null
+      }).select('id').single();
+      if (error) throw error;
+      hostId = data.id;
+    }
+
+    const { data: expRow, error: expErr } = await sb.from('experience').insert({
+      name: entry.name,
+      primary_type: entry.primaryType || null,
+      category: entry.type || null,
+      description: entry.description || null,
+      place_id: placeId,
+      host_id: hostId,
+      related_to_id: entry.related || null,
+      duration: entry.duration || null,
+      access: entry.access || null,
+      tags: entry.tags || null,
+      culture: entry.culture || [],
+      donation: entry.donation || null,
+      donation_detail: entry.donationDetail || null,
+      notes: entry.notes || null,
+      photos_collected: !!entry.photosCollected,
+      date_scouted: entry.date || null,
+      status: entry.status || 'draft',
+      created_by: userId || null
+    }).select('id').single();
+    if (expErr) throw expErr;
+
+    const attrRows = [];
+    Object.entries(entry.categoryAttributes || {}).forEach(([key, values]) => {
+      (values || []).forEach(value => attrRows.push({ experience_id: expRow.id, key, value }));
+    });
+    if (attrRows.length) {
+      const { error: attrErr } = await sb.from('experience_attribute').insert(attrRows);
+      if (attrErr) throw attrErr;
+    }
+
+    return expRow.id;
+  }
+
   const LIST_STATE_MESSAGES = {
     loading: 'Loading...',
     error: 'Could not load saved entries.',
+    offline: 'Offline \u2014 can\u2019t load entries right now. Check your connection and try again.',
     empty: 'Nothing scouted yet. Your first entry will appear here.'
   };
   function renderListState(kind) {
     document.getElementById('sc-list').innerHTML = `<div class="sc-empty">${LIST_STATE_MESSAGES[kind]}</div>`;
   }
 
-  function render() {
+  // ---------- Auth gate ----------
+
+  function renderLogin(message) {
+    root.innerHTML = `
+      <div class="sc-header">
+        <p class="sc-eyebrow">Journey Planner &middot; Phase II, Scout Workspace</p>
+        <h1 class="sc-title">Scouting Form</h1>
+        <p class="sc-sub">Sign in to continue. This tool is for Scouts only.</p>
+      </div>
+      <div class="sc-body">
+        <div class="sc-card">
+          <div class="sc-field">
+            <label>Email</label>
+            <input class="sc-input" id="login-email" type="email" autocomplete="username" />
+          </div>
+          <div class="sc-field">
+            <label>Password</label>
+            <input class="sc-input" id="login-password" type="password" autocomplete="current-password" />
+          </div>
+          <button class="sc-submit" id="login-submit">Sign in</button>
+          <div class="sc-msg${message ? ' error' : ''}" id="login-msg">${message ? esc(message) : ''}</div>
+        </div>
+      </div>
+    `;
+
+    const emailEl = document.getElementById('login-email');
+    const passwordEl = document.getElementById('login-password');
+    const msgEl = document.getElementById('login-msg');
+    const btn = document.getElementById('login-submit');
+
+    async function attemptLogin() {
+      const email = emailEl.value.trim();
+      const password = passwordEl.value;
+      if (!email || !password) {
+        msgEl.textContent = 'Enter both email and password.';
+        msgEl.className = 'sc-msg error';
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = 'Signing in...';
+      msgEl.textContent = '';
+      msgEl.className = 'sc-msg';
+      try {
+        const { error } = await sb.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        // onAuthStateChange listener below takes over from here.
+      } catch (e) {
+        btn.disabled = false;
+        btn.textContent = 'Sign in';
+        msgEl.textContent = isOfflineError(e) ? 'Offline \u2014 can\u2019t sign in right now.' : 'Sign-in failed \u2014 check your email and password.';
+        msgEl.className = 'sc-msg error';
+      }
+    }
+    btn.onclick = attemptLogin;
+    passwordEl.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') attemptLogin(); });
+  }
+
+  // ---------- Main app (unchanged fields/behavior, now Supabase-backed) ----------
+
+  function render(session) {
     root.innerHTML = `
       <div class="sc-header">
         <p class="sc-eyebrow">Journey Planner &middot; Phase II, Scout Workspace</p>
@@ -102,6 +244,11 @@
         <p class="sc-sub">Record an Experience while you're there. This feeds the real Experience database \u2014 nothing here is a placeholder.</p>
       </div>
       <div class="sc-body">
+        <div class="sc-account-bar">
+          <span>Signed in as ${esc(session.user.email)}</span>
+          <button class="sc-mini-btn" id="logout-btn">Log out</button>
+        </div>
+        <div id="sc-migrate-banner"></div>
         <div class="sc-count-strip" id="sc-counts"></div>
 
         <p class="sc-section-label">New Experience</p>
@@ -191,6 +338,7 @@
             <label>Cultural or local significance <span class="sc-hint">select all that apply</span></label>
             <div class="sc-check-grid" id="f-culture-checks"></div>
           </div>
+          <div class="sc-notice">${esc(HOST_NOTICE)}</div>
           <div class="sc-row2">
             <div class="sc-field">
               <label>Host name <span class="sc-hint">optional</span></label>
@@ -246,9 +394,13 @@
         <p class="sc-section-label" id="sc-list-label">Scouted so far</p>
         <div id="sc-list"></div>
 
-        <p class="sc-footnote">Saved on this device, under your account. Fields match what's actually locked so far (JP-007, the real Domain Model) \u2014 no pricing or availability fields yet, since that's a later phase.</p>
+        <p class="sc-footnote">Shared Scout workspace, backed by Supabase. Fields match what's actually locked so far (JP-007, the real Domain Model) \u2014 no pricing or availability fields yet, since that's a later phase.</p>
       </div>
     `;
+
+    document.getElementById('logout-btn').onclick = async () => {
+      await sb.auth.signOut();
+    };
 
     document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
 
@@ -361,7 +513,6 @@
         return;
       }
       const entry = {
-        id: 'exp_' + Date.now(),
         name,
         primaryType: document.getElementById('f-primary').value,
         type: document.getElementById('f-type').value,
@@ -390,14 +541,15 @@
       submitBtn.disabled = true;
       submitBtn.textContent = 'Saving...';
       try {
-        const result = await storage.set(entry.id, JSON.stringify(entry));
-        if (!result) throw new Error('no result');
+        await saveEntryToSupabase(entry, session.user.id);
         msg.textContent = 'Saved.';
         msg.className = 'sc-msg';
-        render();
+        render(session);
         loadEntries();
       } catch (e) {
-        msg.textContent = 'Could not save \u2014 please try again.';
+        msg.textContent = isOfflineError(e)
+          ? 'Offline \u2014 can\u2019t save right now. Your entry was not recorded; try again once you\u2019re back online.'
+          : 'Could not save \u2014 please try again.';
         msg.className = 'sc-msg error';
         submitBtn.disabled = false;
         submitBtn.textContent = 'Save Experience';
@@ -405,8 +557,57 @@
     };
 
     renderListState('loading');
+    renderMigrationBanner();
     loadEntries();
   }
+
+  // ---------- One-time migration from the old localStorage prototype ----------
+
+  function findLegacyLocalEntries() {
+    const found = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith(LEGACY_STORAGE_PREFIX + 'exp_')) {
+        try {
+          const parsed = JSON.parse(localStorage.getItem(k));
+          found.push({ key: k, entry: parsed });
+        } catch (e) { /* skip unreadable legacy entry */ }
+      }
+    }
+    return found;
+  }
+
+  function renderMigrationBanner() {
+    const el = document.getElementById('sc-migrate-banner');
+    if (!el) return;
+    const legacy = findLegacyLocalEntries();
+    if (legacy.length === 0) { el.innerHTML = ''; return; }
+    el.innerHTML = `
+      <div class="sc-notice sc-notice-action">
+        Found ${legacy.length} entr${legacy.length === 1 ? 'y' : 'ies'} saved on this device from before the shared database existed.
+        <button class="sc-mini-btn" id="migrate-btn">Migrate to shared database</button>
+      </div>
+    `;
+    document.getElementById('migrate-btn').onclick = async () => {
+      const btn = document.getElementById('migrate-btn');
+      btn.disabled = true;
+      btn.textContent = 'Migrating...';
+      let ok = 0, failed = 0;
+      for (const { key, entry } of legacy) {
+        try {
+          await saveEntryToSupabase(entry, null);
+          localStorage.removeItem(key);
+          ok++;
+        } catch (e) {
+          failed++;
+        }
+      }
+      el.innerHTML = `<div class="sc-notice">Migrated ${ok} entr${ok === 1 ? 'y' : 'ies'}.${failed ? ` ${failed} could not be migrated \u2014 left on this device, try again later.` : ''}</div>`;
+      loadEntries();
+    };
+  }
+
+  // ---------- Load + render the shared list ----------
 
   async function loadEntries() {
     const listEl = document.getElementById('sc-list');
@@ -414,21 +615,18 @@
     const labelEl = document.getElementById('sc-list-label');
     let entries = [];
     try {
-      const keysResult = await storage.list('exp_');
-      const keys = (keysResult && keysResult.keys) || [];
-      for (const k of keys) {
-        try {
-          const r = await storage.get(k);
-          if (r && r.value) entries.push(JSON.parse(r.value));
-        } catch (e) { /* skip unreadable entry */ }
-      }
+      const { data, error } = await sb
+        .from('experience')
+        .select('*, place(*), host(*), experience_attribute(*)')
+        .order('date_scouted', { ascending: false, nullsFirst: false })
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      entries = (data || []).map(rowToEntry);
     } catch (e) {
-      renderListState('error');
+      renderListState(isOfflineError(e) ? 'offline' : 'error');
       countsEl.innerHTML = '';
       return;
     }
-
-    entries.sort((a, b) => (b.date || '').localeCompare(a.date || '') || b.id.localeCompare(a.id));
 
     const relatedSelect = document.getElementById('f-related');
     if (relatedSelect) {
@@ -486,23 +684,55 @@
     listEl.querySelectorAll('[data-verify]').forEach(btn => {
       btn.onclick = async () => {
         const id = btn.getAttribute('data-verify');
-        const r = await storage.get(id);
-        if (r && r.value) {
-          const entry = JSON.parse(r.value);
-          entry.status = 'verified';
-          await storage.set(id, JSON.stringify(entry));
+        btn.disabled = true;
+        try {
+          const { error } = await sb.from('experience').update({ status: 'verified' }).eq('id', id);
+          if (error) throw error;
           loadEntries();
+        } catch (e) {
+          btn.disabled = false;
         }
       };
     });
     listEl.querySelectorAll('[data-delete]').forEach(btn => {
       btn.onclick = async () => {
         const id = btn.getAttribute('data-delete');
-        await storage.delete(id);
-        loadEntries();
+        btn.disabled = true;
+        try {
+          const { error } = await sb.from('experience').delete().eq('id', id);
+          if (error) throw error;
+          loadEntries();
+        } catch (e) {
+          btn.disabled = false;
+        }
       };
     });
   }
 
-  render();
+  // ---------- Boot: decide login vs. app before rendering or fetching anything ----------
+
+  let currentlyRendered = null; // 'login' | 'app' | null
+
+  async function boot() {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      currentlyRendered = 'app';
+      render(session);
+    } else {
+      currentlyRendered = 'login';
+      renderLogin();
+    }
+  }
+
+  sb.auth.onAuthStateChange((event, session) => {
+    if (session && currentlyRendered !== 'app') {
+      currentlyRendered = 'app';
+      render(session);
+    } else if (!session && currentlyRendered !== 'login') {
+      currentlyRendered = 'login';
+      renderLogin();
+    }
+  });
+
+  boot();
 })();
