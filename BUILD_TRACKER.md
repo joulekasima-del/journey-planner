@@ -43,11 +43,11 @@ One line per task. This is a sequencing tool, not a scored matrix — don't over
 
 ## Urgent + Important
 
-- [ ] Add authentication / access control to the live scouting form — right now anyone with the link can view, add, edit, or delete every entry, with no record of who did it. — **Flag:** real people's personal data is exposed with no protection, live, today.
-- [ ] Move scouted data off browser-only `localStorage` onto something that actually syncs and backs up — field data currently exists only on the single device it was typed on, with no export path, and is unrecoverable if that device is lost, reset, or cleared. — **Flag:** real field work can be permanently and silently lost.
-- [ ] Stop storing entries as plain readable text — anything typed into the form today is retrievable by anyone with a few seconds of access to the device via ordinary browser developer tools. — **Flag:** Thailand PDPA — personal data must be protected, not just collected.
-- [ ] Write and publish a basic PDPA consent / privacy notice before collecting more real host data — nothing in this repository currently addresses privacy, consent, purpose, or retention, anywhere. — **Flag:** Thailand PDPA — no lawful basis currently established for the personal data already being collected.
-- [ ] Tell hosts what's being recorded about them and why, at the point a Scout records it — there is currently no notice to the host at all. — **Flag:** Thailand PDPA / basic fairness — people are being written about without being told.
+- [x] Add authentication / access control to the live scouting form — right now anyone with the link can view, add, edit, or delete every entry, with no record of who did it. — **Flag:** real people's personal data is exposed with no protection, live, today. — **Done** (commit `c8239c1`).
+- [x] Move scouted data off browser-only `localStorage` onto something that actually syncs and backs up — field data currently exists only on the single device it was typed on, with no export path, and is unrecoverable if that device is lost, reset, or cleared. — **Flag:** real field work can be permanently and silently lost. — **Done** (commit `c8239c1`).
+- [x] Stop storing entries as plain readable text — anything typed into the form today is retrievable by anyone with a few seconds of access to the device via ordinary browser developer tools. — **Flag:** Thailand PDPA — personal data must be protected, not just collected. — **Done** (commit `c8239c1`).
+- [ ] Get the PDPA consent / privacy notice reviewed by a legal or technical advisor — an honest interim notice is live on the form today, but it has not been reviewed by anyone with legal or technical authority on Thailand's PDPA and is not a finished compliance document. — **Flag:** Thailand PDPA — the interim notice reduces but does not close the lawful-basis gap until this review happens.
+- [x] Tell hosts what's being recorded about them and why, at the point a Scout records it — there is currently no notice to the host at all. — **Flag:** Thailand PDPA / basic fairness — people are being written about without being told. — **Done** (commit `c8239c1`).
 
 *(Full detail on all five: the Production Readiness Audit, 2026-08-10.)*
 
