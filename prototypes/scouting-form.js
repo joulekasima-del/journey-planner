@@ -19,6 +19,7 @@
     "Local festival or event", "Agricultural heritage", "Craft or artisan tradition",
     "Culinary heritage", "Traditional ecological / farming knowledge", "Music or performing arts",
     "Traditional medicine / herbal knowledge", "Endangered or dying tradition", "Community or cooperative-run",
+    "Fusion of tradition and modern art/design",
     "Other"
   ];
 
@@ -36,13 +37,27 @@
     "During a local festival or event", "Anytime - no strong preference"
   ];
 
+  const LANDSCAPE_SETTING_OPTIONS = [
+    "Valley", "Riverside / streamside", "Mountain slope", "Ridge / highland", "Rice paddy plain",
+    "Forest interior", "Highland plateau", "Lakeside", "Near hot spring", "Village center / urban", "Other"
+  ];
+  const LANDSCAPE_CLIMATE_OPTIONS = [
+    "Noticeably cooler (elevation)", "Misty / high humidity mornings", "Warm lowland climate",
+    "Strong seasonal temperature swing", "Other"
+  ];
+  const LANDSCAPE_WATER_VEGETATION_OPTIONS = [
+    "Near a river or stream", "Near a waterfall", "Irrigation canals nearby", "No significant water feature",
+    "Forested surroundings", "Farmland / orchards nearby", "Open grassland", "Bamboo groves",
+    "Terraced fields", "Other"
+  ];
+
   const HOST_NOTICE = "Remember to tell the host what's being recorded and why.";
 
   const CATEGORY_QUESTIONS = {
     "Homestay": [
       { key: "room_type", label: "Room type", options: ["Private room", "Shared room", "Entire house"] },
       { key: "meals", label: "Meals available", options: ["Breakfast", "Lunch", "Dinner", "Self-catering"] },
-      { key: "style", label: "Style", options: ["Traditional wood house", "Modern", "Farmstead", "Riverside"] }
+      { key: "style", label: "Style", options: ["Traditional wood house", "Modern", "Farmstead", "Riverside", "Fusion (traditional + modern)"] }
     ],
     "Workshop": [
       { key: "skill", label: "Skill taught", options: ["Weaving", "Cooking", "Pottery", "Farming", "Herbal medicine", "Music", "Other"] },
@@ -55,7 +70,7 @@
       { key: "sights", label: "What you'll see", options: ["Wildlife", "Waterfalls", "Local farms", "Village life", "Temples", "Viewpoints"] }
     ],
     "Restaurant": [
-      { key: "cuisine", label: "Cuisine style", options: ["Northern Thai / Lanna", "Central Thai", "Vegetarian-friendly", "Family recipes"] },
+      { key: "cuisine", label: "Cuisine style", options: ["Northern Thai / Lanna", "Central Thai", "Vegetarian-friendly", "Family recipes", "Fusion / modern Thai"] },
       { key: "dietary", label: "Dietary options", options: ["Vegetarian", "Vegan", "Halal", "Gluten-free possible"] },
       { key: "setting", label: "Setting", options: ["Riverside", "Garden", "Family home", "Farm-to-table"] }
     ],
@@ -91,6 +106,44 @@
     return msg.includes('failed to fetch') || msg.includes('network') || msg.includes('load failed') || e instanceof TypeError;
   }
 
+  // ---------- Shared chip-picker + "Other" reveal mechanism, used everywhere a chip group appears ----------
+
+  // Renders a chip grid from `options` into #gridId and returns the grid element.
+  function renderChipGroup(gridId, options) {
+    const grid = document.getElementById(gridId);
+    grid.innerHTML = options.map(o => `<div class="sc-check" data-val="${esc(o)}">${esc(o)}</div>`).join('');
+    return grid;
+  }
+
+  // Wires click-to-toggle behavior on a chip grid against a Set. Calls onToggle after every click.
+  function wireChipToggle(grid, picks, onToggle) {
+    grid.querySelectorAll('.sc-check').forEach(chip => {
+      chip.onclick = () => {
+        const v = chip.getAttribute('data-val');
+        if (picks.has(v)) { picks.delete(v); chip.classList.remove('on'); }
+        else { picks.add(v); chip.classList.add('on'); }
+        if (onToggle) onToggle();
+      };
+    });
+  }
+
+  // Binds a free-text "Other, please specify" input to one Set (or an array of Sets, for a
+  // detail field shared across multiple chip groups). Shows the input only when "Other" is
+  // picked anywhere in the given Set(s); hides and clears it otherwise. Returns a sync()
+  // function to call after any toggle on the bound Set(s) -- safe to call unconditionally,
+  // including for chip groups that have no "Other" option and no detail element at all.
+  function bindOtherDetail(picksOrArray, detailEl) {
+    if (!detailEl) return () => {};
+    const sets = Array.isArray(picksOrArray) ? picksOrArray : [picksOrArray];
+    function sync() {
+      const showing = sets.some(p => p.has('Other'));
+      detailEl.style.display = showing ? 'block' : 'none';
+      if (!showing) detailEl.value = '';
+    }
+    sync();
+    return sync;
+  }
+
   // ---------- Data mapping: Supabase rows <-> the flat entry shape the UI already expects ----------
 
   function rowToEntry(row) {
@@ -107,6 +160,9 @@
       moo: (row.place && row.place.moo) || '',
       area: (row.place && row.place.area) || '',
       landscape: (row.place && row.place.landscape) || '',
+      landscapeSetting: (row.place && row.place.landscape_setting) || [],
+      landscapeClimate: (row.place && row.place.landscape_climate) || [],
+      landscapeWaterVegetation: (row.place && row.place.landscape_water_vegetation) || [],
       lat: (row.place && row.place.lat) || '',
       lng: (row.place && row.place.lng) || '',
       related: row.related_to_id || '',
@@ -115,7 +171,9 @@
       tags: row.tags || '',
       categoryAttributes: attrs,
       culture: row.culture || [],
+      cultureOtherDetail: row.culture_other_detail || '',
       languages: row.languages || [],
+      languagesOtherDetail: row.languages_other_detail || '',
       bestVisit: row.best_visit || [],
       hostName: (row.host && row.host.name) || '',
       hostContact: (row.host && row.host.contact) || '',
@@ -134,11 +192,17 @@
   // Used both by the live submit handler and by the one-time localStorage migration.
   async function saveEntryToSupabase(entry, userId) {
     let placeId = null;
-    if (entry.moo || entry.area || entry.landscape || entry.lat || entry.lng) {
+    const hasLandscapePicks = (entry.landscapeSetting && entry.landscapeSetting.length) ||
+      (entry.landscapeClimate && entry.landscapeClimate.length) ||
+      (entry.landscapeWaterVegetation && entry.landscapeWaterVegetation.length);
+    if (entry.moo || entry.area || entry.landscape || entry.lat || entry.lng || hasLandscapePicks) {
       const { data, error } = await sb.from('place').insert({
         moo: entry.moo || null,
         area: entry.area || null,
         landscape: entry.landscape || null,
+        landscape_setting: entry.landscapeSetting || [],
+        landscape_climate: entry.landscapeClimate || [],
+        landscape_water_vegetation: entry.landscapeWaterVegetation || [],
         lat: entry.lat || null,
         lng: entry.lng || null
       }).select('id').single();
@@ -168,7 +232,9 @@
       access: entry.access || null,
       tags: entry.tags || null,
       culture: entry.culture || [],
+      culture_other_detail: entry.cultureOtherDetail || null,
       languages: entry.languages || [],
+      languages_other_detail: entry.languagesOtherDetail || null,
       best_visit: entry.bestVisit || [],
       donation: entry.donation || null,
       donation_detail: entry.donationDetail || null,
@@ -184,6 +250,9 @@
     const attrRows = [];
     Object.entries(entry.categoryAttributes || {}).forEach(([key, values]) => {
       (values || []).forEach(value => attrRows.push({ experience_id: expRow.id, key, value }));
+    });
+    Object.entries(entry.categoryOtherDetails || {}).forEach(([qkey, detail]) => {
+      if (detail) attrRows.push({ experience_id: expRow.id, key: `${qkey}_other_detail`, value: detail });
     });
     if (attrRows.length) {
       const { error: attrErr } = await sb.from('experience_attribute').insert(attrRows);
@@ -310,8 +379,17 @@
             </div>
           </div>
           <div class="sc-field">
-            <label>Landscape & geographic story <span class="sc-hint">what it looks like, and why it looks that way</span></label>
-            <textarea class="sc-textarea" id="f-landscape" placeholder="e.g. Sits in a narrow valley along the stream; elevation keeps it cooler, which is why the orchards here grow differently than lower down near the city"></textarea>
+            <label>Setting <span class="sc-hint">select all that apply</span></label>
+            <div class="sc-check-grid" id="f-landscape-setting-checks"></div>
+          </div>
+          <div class="sc-field">
+            <label>Elevation & climate feel <span class="sc-hint">select all that apply</span></label>
+            <div class="sc-check-grid" id="f-landscape-climate-checks"></div>
+          </div>
+          <div class="sc-field">
+            <label>Water & vegetation <span class="sc-hint">select all that apply</span></label>
+            <div class="sc-check-grid" id="f-landscape-water-checks"></div>
+            <input class="sc-input sc-other-detail" id="f-landscape-other-detail" placeholder="Describe the &quot;Other&quot; pick(s) above" style="display:none;margin-top:8px;" />
           </div>
           <div class="sc-field">
             <label>Google Maps link <span class="sc-hint">paste the share link \u2014 we'll try to pull the coordinates</span></label>
@@ -363,10 +441,12 @@
           <div class="sc-field">
             <label>Cultural or local significance <span class="sc-hint">select all that apply</span></label>
             <div class="sc-check-grid" id="f-culture-checks"></div>
+            <input class="sc-input sc-other-detail" id="f-culture-other-detail" placeholder="Please specify" style="display:none;margin-top:8px;" />
           </div>
           <div class="sc-field" id="f-language-block">
             <label>Languages the host can use <span class="sc-hint">select all that apply</span></label>
             <div class="sc-check-grid" id="f-language-checks"></div>
+            <input class="sc-input sc-other-detail" id="f-language-other-detail" placeholder="Please specify" style="display:none;margin-top:8px;" />
           </div>
           <div class="sc-notice">${esc(HOST_NOTICE)}</div>
           <div class="sc-row2">
@@ -492,55 +572,45 @@
     });
 
     let culturePicks = new Set();
-    const cultureGrid = document.getElementById('f-culture-checks');
-    cultureGrid.innerHTML = CULTURE_OPTIONS.map(o => `<div class="sc-check" data-val="${esc(o)}">${esc(o)}</div>`).join('');
-    cultureGrid.querySelectorAll('.sc-check').forEach(chip => {
-      chip.onclick = () => {
-        const v = chip.getAttribute('data-val');
-        if (culturePicks.has(v)) { culturePicks.delete(v); chip.classList.remove('on'); }
-        else { culturePicks.add(v); chip.classList.add('on'); }
-      };
-    });
+    const cultureGrid = renderChipGroup('f-culture-checks', CULTURE_OPTIONS);
+    const syncCultureOther = bindOtherDetail(culturePicks, document.getElementById('f-culture-other-detail'));
+    wireChipToggle(cultureGrid, culturePicks, syncCultureOther);
 
     let tagPicks = new Set();
-    const tagsGrid = document.getElementById('f-tags-checks');
-    tagsGrid.innerHTML = TAG_OPTIONS.map(o => `<div class="sc-check" data-val="${esc(o)}">${esc(o)}</div>`).join('');
-    tagsGrid.querySelectorAll('.sc-check').forEach(chip => {
-      chip.onclick = () => {
-        const v = chip.getAttribute('data-val');
-        if (tagPicks.has(v)) { tagPicks.delete(v); chip.classList.remove('on'); }
-        else { tagPicks.add(v); chip.classList.add('on'); }
-      };
-    });
+    const tagsGrid = renderChipGroup('f-tags-checks', TAG_OPTIONS);
+    wireChipToggle(tagsGrid, tagPicks);
 
     let bestVisitPicks = new Set();
-    const bestVisitGrid = document.getElementById('f-bestvisit-checks');
-    bestVisitGrid.innerHTML = BEST_VISIT_OPTIONS.map(o => `<div class="sc-check" data-val="${esc(o)}">${esc(o)}</div>`).join('');
-    bestVisitGrid.querySelectorAll('.sc-check').forEach(chip => {
-      chip.onclick = () => {
-        const v = chip.getAttribute('data-val');
-        if (bestVisitPicks.has(v)) { bestVisitPicks.delete(v); chip.classList.remove('on'); }
-        else { bestVisitPicks.add(v); chip.classList.add('on'); }
-      };
-    });
+    const bestVisitGrid = renderChipGroup('f-bestvisit-checks', BEST_VISIT_OPTIONS);
+    wireChipToggle(bestVisitGrid, bestVisitPicks);
+
+    let landscapeSettingPicks = new Set();
+    let landscapeClimatePicks = new Set();
+    let landscapeWaterPicks = new Set();
+    const landscapeOtherDetailEl = document.getElementById('f-landscape-other-detail');
+    const syncLandscapeOther = bindOtherDetail(
+      [landscapeSettingPicks, landscapeClimatePicks, landscapeWaterPicks],
+      landscapeOtherDetailEl
+    );
+    const landscapeSettingGrid = renderChipGroup('f-landscape-setting-checks', LANDSCAPE_SETTING_OPTIONS);
+    wireChipToggle(landscapeSettingGrid, landscapeSettingPicks, syncLandscapeOther);
+    const landscapeClimateGrid = renderChipGroup('f-landscape-climate-checks', LANDSCAPE_CLIMATE_OPTIONS);
+    wireChipToggle(landscapeClimateGrid, landscapeClimatePicks, syncLandscapeOther);
+    const landscapeWaterGrid = renderChipGroup('f-landscape-water-checks', LANDSCAPE_WATER_VEGETATION_OPTIONS);
+    wireChipToggle(landscapeWaterGrid, landscapeWaterPicks, syncLandscapeOther);
 
     let languagePicks = new Set();
     const languageBlock = document.getElementById('f-language-block');
-    const languageGrid = document.getElementById('f-language-checks');
-    languageGrid.innerHTML = LANGUAGE_OPTIONS.map(o => `<div class="sc-check" data-val="${esc(o)}">${esc(o)}</div>`).join('');
-    languageGrid.querySelectorAll('.sc-check').forEach(chip => {
-      chip.onclick = () => {
-        const v = chip.getAttribute('data-val');
-        if (languagePicks.has(v)) { languagePicks.delete(v); chip.classList.remove('on'); }
-        else { languagePicks.add(v); chip.classList.add('on'); }
-      };
-    });
+    const languageGrid = renderChipGroup('f-language-checks', LANGUAGE_OPTIONS);
+    const syncLanguageOther = bindOtherDetail(languagePicks, document.getElementById('f-language-other-detail'));
+    wireChipToggle(languageGrid, languagePicks, syncLanguageOther);
     function syncLanguageVisibility() {
       const shouldShow = document.getElementById('f-primary').value === 'Person' || document.getElementById('f-type').value === 'Workshop';
       languageBlock.style.display = shouldShow ? 'block' : 'none';
       if (!shouldShow && languagePicks.size) {
         languagePicks.clear();
         languageGrid.querySelectorAll('.sc-check.on').forEach(chip => chip.classList.remove('on'));
+        syncLanguageOther();
       }
     }
     syncLanguageVisibility();
@@ -562,18 +632,16 @@
           <div class="sc-check-grid" data-qkey="${esc(q.key)}">
             ${q.options.map(o => `<div class="sc-check" data-val="${esc(o)}">${esc(o)}</div>`).join('')}
           </div>
+          ${q.options.includes('Other') ? `<input class="sc-input sc-other-detail" data-other-detail-for="${esc(q.key)}" placeholder="Please specify" style="display:none;margin-top:8px;" />` : ''}
         </div>
       `).join('');
       questions.forEach(q => { categoryPicks[q.key] = new Set(); });
       catBlock.querySelectorAll('.sc-check-grid').forEach(grid => {
         const qkey = grid.getAttribute('data-qkey');
-        grid.querySelectorAll('.sc-check').forEach(chip => {
-          chip.onclick = () => {
-            const v = chip.getAttribute('data-val');
-            if (categoryPicks[qkey].has(v)) { categoryPicks[qkey].delete(v); chip.classList.remove('on'); }
-            else { categoryPicks[qkey].add(v); chip.classList.add('on'); }
-          };
-        });
+        const picks = categoryPicks[qkey];
+        const detailEl = catBlock.querySelector(`[data-other-detail-for="${qkey}"]`);
+        const syncOther = bindOtherDetail(picks, detailEl);
+        wireChipToggle(grid, picks, syncOther);
       });
     }
     renderCategoryQuestions();
@@ -599,7 +667,6 @@
       const category = document.getElementById('f-type').value;
       const moo = document.getElementById('f-moo').value.trim();
       const area = document.getElementById('f-area').value.trim();
-      const landscape = document.getElementById('f-landscape').value.trim();
       const duration = document.getElementById('f-duration').value;
       const access = document.getElementById('f-access').value;
 
@@ -610,7 +677,10 @@
       s1 += '.';
       sentences.push(s1);
 
-      if (landscape) sentences.push(/[.!?]\s*$/.test(landscape) ? landscape : landscape + '.');
+      const landscapeBits = [...landscapeSettingPicks, ...landscapeClimatePicks, ...landscapeWaterPicks].filter(v => v !== 'Other');
+      if (landscapeBits.length) sentences.push(`Landscape: ${landscapeBits.join(', ')}.`);
+      const landscapeOtherVal = landscapeOtherDetailEl.value.trim();
+      if (landscapeOtherVal) sentences.push(/[.!?]\s*$/.test(landscapeOtherVal) ? landscapeOtherVal : landscapeOtherVal + '.');
 
       if (culturePicks.size) sentences.push(`Cultural significance: ${[...culturePicks].join(', ')}.`);
 
@@ -634,13 +704,22 @@
         msg.className = 'sc-msg error';
         return;
       }
+      const categoryOtherDetails = {};
+      catBlock.querySelectorAll('[data-other-detail-for]').forEach(inp => {
+        const qkey = inp.getAttribute('data-other-detail-for');
+        const val = inp.value.trim();
+        if (val) categoryOtherDetails[qkey] = val;
+      });
       const entry = {
         name,
         primaryType: document.getElementById('f-primary').value,
         type: document.getElementById('f-type').value,
         moo: document.getElementById('f-moo').value.trim(),
         area: document.getElementById('f-area').value.trim(),
-        landscape: document.getElementById('f-landscape').value.trim(),
+        landscape: landscapeOtherDetailEl.value.trim(),
+        landscapeSetting: [...landscapeSettingPicks],
+        landscapeClimate: [...landscapeClimatePicks],
+        landscapeWaterVegetation: [...landscapeWaterPicks],
         lat: document.getElementById('f-lat').value.trim(),
         lng: document.getElementById('f-lng').value.trim(),
         related: document.getElementById('f-related').value,
@@ -648,8 +727,11 @@
         access: document.getElementById('f-access').value,
         tags: [...tagPicks].join(', '),
         categoryAttributes: Object.fromEntries(Object.entries(categoryPicks).map(([k, v]) => [k, [...v]])),
+        categoryOtherDetails,
         culture: [...culturePicks],
+        cultureOtherDetail: document.getElementById('f-culture-other-detail').value.trim(),
         languages: [...languagePicks],
+        languagesOtherDetail: document.getElementById('f-language-other-detail').value.trim(),
         bestVisit: [...bestVisitPicks],
         hostName: document.getElementById('f-host-name').value.trim(),
         hostContact: document.getElementById('f-host-contact').value.trim(),
@@ -786,10 +868,13 @@
         </div>
         ${(e.moo || e.area) ? `<div class="sc-entry-loc">${esc([e.moo, e.area].filter(Boolean).join(', '))}${e.lat && e.lng ? ` &middot; ${esc(e.lat)}, ${esc(e.lng)}` : ''}</div>` : ''}
         ${e.related ? `<div class="sc-entry-loc">Part of: ${esc(nameById[e.related] || e.related)}</div>` : ''}
-        ${e.landscape ? `<div class="sc-entry-desc"><em>Landscape:</em> ${esc(e.landscape)}</div>` : ''}
+        ${e.landscapeSetting && e.landscapeSetting.length ? `<div class="sc-entry-desc"><em>Setting:</em> ${esc(e.landscapeSetting.join(', '))}</div>` : ''}
+        ${e.landscapeClimate && e.landscapeClimate.length ? `<div class="sc-entry-desc"><em>Elevation &amp; climate:</em> ${esc(e.landscapeClimate.join(', '))}</div>` : ''}
+        ${e.landscapeWaterVegetation && e.landscapeWaterVegetation.length ? `<div class="sc-entry-desc"><em>Water &amp; vegetation:</em> ${esc(e.landscapeWaterVegetation.join(', '))}</div>` : ''}
+        ${e.landscape ? `<div class="sc-entry-desc"><em>Landscape (other detail):</em> ${esc(e.landscape)}</div>` : ''}
         ${e.description ? `<div class="sc-entry-desc">${esc(e.description)}</div>` : ''}
-        ${e.culture && e.culture.length ? `<div class="sc-entry-desc"><em>Cultural:</em> ${esc(e.culture.join(', '))}</div>` : ''}
-        ${e.languages && e.languages.length ? `<div class="sc-entry-desc"><em>Languages:</em> ${esc(e.languages.join(', '))}</div>` : ''}
+        ${e.culture && e.culture.length ? `<div class="sc-entry-desc"><em>Cultural:</em> ${esc(e.culture.join(', '))}${e.cultureOtherDetail ? ` (${esc(e.cultureOtherDetail)})` : ''}</div>` : ''}
+        ${e.languages && e.languages.length ? `<div class="sc-entry-desc"><em>Languages:</em> ${esc(e.languages.join(', '))}${e.languagesOtherDetail ? ` (${esc(e.languagesOtherDetail)})` : ''}</div>` : ''}
         ${e.categoryAttributes && Object.values(e.categoryAttributes).some(v => v.length) ? `<div class="sc-entry-desc">${Object.entries(e.categoryAttributes).filter(([k,v]) => v.length).map(([k,v]) => `<em>${esc(k)}:</em> ${esc(v.join(', '))}`).join(' &middot; ')}</div>` : ''}
         ${(e.hostName || e.hostContact) ? `<div class="sc-entry-loc">Host: ${esc([e.hostName, e.hostContact].filter(Boolean).join(' \u00b7 '))}</div>` : ''}
         ${e.donation && e.donation !== 'Not observed / none' ? `<div class="sc-entry-loc">Donation: ${esc(e.donation)}${e.donationDetail ? ` \u2014 ${esc(e.donationDetail)}` : ''}</div>` : ''}
