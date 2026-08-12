@@ -435,6 +435,122 @@ Superseded By: None
 
 ---
 
+## JP-014 — Payment Infrastructure: Xendit xenPlatform
+
+Category: Business / Technical
+
+Status: Locked
+
+Date: 2026-08-12
+
+Decision:
+
+Journey Planner uses Xendit's xenPlatform product for payment collection and fund splitting: a Master Account (the platform) with Sub-Accounts (one per host), automatic Split Fee deducting commission per transaction, remainder disbursed to the host's bank account. Journey Planner never holds funds directly and does not need its own E-Payment License — the licensed infrastructure is Xendit's.
+
+Reason:
+
+Resolves the earlier researched legal blocker (a sole proprietor cannot obtain an E-Payment License directly) without requiring incorporation first. Xendit's documented xenPlatform use cases (Payment Service Provider, SaaS Platform) match this business model directly.
+
+Impact:
+
+Supersedes the earlier V1 descoping of commission collection (from the payment-legal research session). Booking commission collection is back in scope, routed through Xendit rather than direct collection.
+
+Open, not resolved by this decision: who is liable in a chargeback/dispute (host or platform) — Xendit's own activation flow requires an answer before xenPlatform can be turned on. This needs a founder decision before implementation, not assumed.
+
+Related Documents:
+
+- Booking System Structure Report, August 2026
+
+Superseded By: None
+
+---
+
+## JP-015 — Business Model v1: Commission Rate & Two Commercial Engines
+
+Category: Business
+
+Status: Locked
+
+Date: 2026-08-12
+
+Decision:
+
+15% flat commission on Group A (Booking Commission Engine: Workshops at launch, RSVP and Accommodation later), collected via Xendit Split Fee. Group B (Ticket Agent Model, for festivals/large third-party events) is a structurally separate, non-custodial affiliate/resale model — Journey Planner never holds the ticket revenue, so it doesn't depend on Xendit's licensed infrastructure. Group B's commission rate is explicitly deferred to Phase 2, not decided now.
+
+Reason:
+
+Two different fund-custody situations require two different structures, not one engine forced to cover both.
+
+Impact:
+
+The conservation/community fund carve-out discussed earlier in this project (a percentage taken from the 15% commission) is NOT resolved by this decision — the booking report does not address it, and no percentage is locked. This remains genuinely open.
+
+Related Documents:
+
+- Booking System Structure Report, August 2026
+- bootstrap/09_BACKLOG.md (Phase IV reference material)
+
+Superseded By: None
+
+---
+
+## JP-016 — Business Entity: Sole Proprietorship
+
+Category: Business / Legal
+
+Status: Locked
+
+Date: 2026-08-12
+
+Decision:
+
+Journey Planner operates as a Sole Proprietorship under the founder's own name (Thai citizen), not a registered company, for V1 launch.
+
+Reason:
+
+Confirmed eligible without restriction given citizenship; Xendit xenPlatform activation is self-service and not entity-gated at this stage, removing the earlier open question about whether incorporation was a prerequisite.
+
+Impact:
+
+Withholding tax (3%) does not apply yet (only triggers for juristic-person payers) but the Admin dashboard must log structured per-booking financial records (date, host, gross amount, commission, net, Xendit disbursement reference) from day one, so the transition to Limited Company later doesn't require reconstructing historical records. VAT registration is required once revenue exceeds 1,800,000 THB/year, regardless of entity type — track this actively, not just at incorporation. Accommodation booking (Group A) stays paused pending incorporation and regulatory clarity under Thailand's Digital Platform Royal Decree.
+
+Related Documents:
+
+- Booking System Structure Report, August 2026
+
+Superseded By: None
+
+---
+
+## JP-017 — Booking Data Model Correction: Experience Layer Required
+
+Category: Architecture
+
+Status: Locked
+
+Date: 2026-08-12
+
+Decision:
+
+The booking system's data flow is `Journey → Journey Day → Itinerary Item → Experience → (optionally) → Booking → Availability Slot` — not `Itinerary Item → Booking` directly. This corrects the Booking System Structure Report's own diagram, which omitted the Experience layer.
+
+Reason:
+
+JP-007 already locked that an Itinerary Item references exactly one Experience. A Booking attaches to an Availability Slot, which belongs to an Experience — Booking does not attach to Itinerary Item directly. The report's simplified diagram would have silently broken this if built as literally drawn.
+
+Impact:
+
+Any implementation work on the booking system (Phase IV) must route through Experience, not skip it. V1 availability models (Timed Slot, Informational Only) and the V2-designed models (Stay, Optional Reservation) all attach to an Experience's Availability Slots.
+
+Related Documents:
+
+- Booking System Structure Report, August 2026
+- bootstrap/08_DECISION_LOG.md (JP-004, JP-007)
+
+Superseded By: None
+
+---
+
 # Adding New Decisions
 
 New entries should only be added after an explicit locked approval.
