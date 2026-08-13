@@ -303,7 +303,7 @@ Related Documents:
 - 02_PRODUCT_CONTRACT.md
 - 07_PROJECT_ROADMAP.md
 
-Superseded By: None
+Superseded By: JP-018 (Administrator clause only — Explorer, Scout, and Host clauses remain Locked and unaffected)
 
 ---
 
@@ -546,6 +546,36 @@ Related Documents:
 
 - Booking System Structure Report, August 2026
 - bootstrap/08_DECISION_LOG.md (JP-004, JP-007)
+
+Superseded By: None
+
+---
+
+## JP-018 — Administrator Tooling Brought Into Version 1 Scope
+
+Category: Product
+
+Status: Locked
+
+Date: 2026-08-13
+
+Decision:
+
+Administrator tooling is brought into Version 1 scope, ahead of launch. This supersedes JP-005 for the Administrator clause only — the Explorer, Scout, and Host clauses of JP-005 remain Locked and unaffected. Version 1 Administrator scope covers payout management (Xendit disbursement oversight), Experience/listing verification, dispute and refund handling, and review moderation.
+
+Reason:
+
+Running real money through Xendit's Split Fee model at launch requires operational control from day one — deferring Administrator tooling would mean either no operational oversight at launch or building it under time pressure once money is already moving. Host self-service is not required at Version 1's host volume: Scout-mediated onboarding already collects payout KYC directly during the scouting visit (Booking System Structure Report, §4A), so Administrator tooling absorbs that operational need instead of hosts needing their own login.
+
+Impact:
+
+Admin Panel becomes an active, non-deferred build item in `BUILD_TRACKER.md`, gated on the chargeback/dispute liability decision and Xendit xenPlatform activation. Host Portal remains excluded from Version 1, unchanged, per JP-005.
+
+Related Documents:
+
+- 02_PRODUCT_CONTRACT.md
+- 08_DECISION_LOG.md (JP-005, JP-014)
+- BUILD_TRACKER.md
 
 Superseded By: None
 
