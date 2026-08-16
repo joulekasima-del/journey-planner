@@ -669,6 +669,77 @@ Superseded By: None
 
 ---
 
+## JP-022 — Explorer-Facing Art Direction: Tropical Living Field Guide
+
+Category: Creative
+
+Status: Locked
+
+Date: 2026-08-16
+
+Decision:
+
+Journey Planner's Explorer-facing visual identity is the "Tropical Living Field Guide" direction: a calm, shaded-garden atmosphere combined with a Marauder's-Map-style revealing quality (relationships and detail unfold progressively, not literal parchment or fantasy decoration), restrained illustration, and geographic truth over decorative 2.5D. This fulfills the dedicated design session JP-013 deferred to — JP-013 itself remains valid and unchanged (Journey Planner still diverges from the shared pixel-art framework); this entry completes what JP-013 left open.
+
+A working palette is confirmed as the starting point, pending accessibility validation before it becomes a final token system:
+
+- Primary (Canopy Green) `#2F6F4E`
+- Deep base (Forest Shade) `#123C32`
+- Main light surface (Mist White) `#F3F7F1`
+- Water accent (Pond Teal) `#6FAFA6`
+- Warm accent (Clay Terracotta) `#B87955`
+- Earth neutral (Weathered Wood) `#6B4A34`
+- Quiet neutral (Path Stone) `#A6A092`
+- Attention/offline (Sunlit Ochre) `#C89B3C`
+
+Reason:
+
+Matches the founder's original brief (hand-drawn, alive, Marauder's-Map-inspired, geographically real, explicitly not pixel art) directly. Confirmed by the founder against the verified design-bundle candidate material, not adopted from the bundle's own self-declared authority.
+
+Impact:
+
+Becomes the baseline for JP Visual Lab exploration and, once accessibility contrast is validated, JP Product Foundation color tokens. Does not itself finalize typography, motion, or exact component styling — those remain open per the still-open items list. Semantic/interface color must stay separate from this illustrated-world palette per the already-verified separation principle (color reinforces meaning, never carries it alone).
+
+Related Documents:
+
+- 08_DECISION_LOG.md (JP-013)
+- journey-planner-explorer-interface-layers-map.md (original tracker, §22–23)
+- Design Bundle Verification report (workspace/03_Design_Bundles/)
+
+Superseded By: None
+
+---
+
+## JP-023 — Weather/Time-Awareness Display: Dual-Layer Pattern
+
+Category: Creative / Product
+
+Status: Locked
+
+Date: 2026-08-16
+
+Decision:
+
+Weather- and time-sensitive information (temperature, timing, conditions) displays as two paired layers, not a binary choice between efficiency and warmth: the precise functional data stays fully intact and accurate (never hidden, softened, or replaced by vague mood language), paired with one short, warm contextual phrase generated alongside it. Example: not "32°C" alone, but "32°C, sticky by midday — good for an early waterfall visit, rest after lunch."
+
+Reason:
+
+Resolves an idea left open since the project's founding brief: balancing Western efficiency expectations against Thai hospitality warmth. Reframed as not actually a binary choice — clarity and warmth aren't opposites, so the resolution adds context rather than trading away precision. Reuses the same shape as the already-verified Action Card pattern (a status line plus a "why it matters" line) rather than inventing new interface mechanism, consistent with the project's standing "cut scope before adding process" principle. Two alternatives were considered and rejected for now: a time-of-day tone shift (real added complexity for V1) and a user-controlled Efficient/Warm toggle (requires maintaining two full copy systems).
+
+Impact:
+
+Applies wherever weather or time-sensitive status appears — Journey Day headers, route/travel estimates, offline-state messaging. Does not require new components beyond what the Action Card pattern already establishes; this is a content/copy pattern, not new UI infrastructure. Exact copywriting and the specific contextual-phrase generation approach (rule-based vs. AI-assisted) remain open, to be resolved during Station View prototype work.
+
+Related Documents:
+
+- 08_DECISION_LOG.md (JP-022)
+- growth-design-adaptation-report.md (Action Card pattern)
+- Design Bundle Verification report (workspace/03_Design_Bundles/)
+
+Superseded By: None
+
+---
+
 # Adding New Decisions
 
 New entries should only be added after an explicit locked approval.
