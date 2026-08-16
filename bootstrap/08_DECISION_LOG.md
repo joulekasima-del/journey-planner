@@ -740,6 +740,37 @@ Superseded By: None
 
 ---
 
+## JP-024 — Platform Strategy: Mobile-First Web, Intentional Desktop, Native Apps Later
+
+Category: Product / Architecture
+
+Status: Locked
+
+Date: 2026-08-16
+
+Decision:
+
+Journey Planner builds mobile-first: mobile is the primary design and build starting point, not a later adaptation of a desktop layout. When an Explorer opens the platform in a desktop browser, it must present as a properly, intentionally designed desktop experience — not a stretched or scaled-up version of the mobile layout. Native iOS and Android applications are a distinct, later phase, not part of current scope.
+
+Reason:
+
+Founder direction, given directly during the art-direction session. Refines what was previously only a general "mobile-first" quality (§24 of the original design tracker's usability rules, which literally lists "Mobile-first" as a required quality) into an explicit build-sequencing and platform commitment: mobile-first does not mean desktop-as-afterthought.
+
+Note on a related but separate idea: the ChatGPT design bundle proposes a three-surface interaction model (Station View + inspector + Details View, with desktop showing map/inspector side by side and mobile stacking or using a bottom sheet) that would be directionally consistent with this decision. That model is candidate material only — per this project's own verification of that bundle (`00_VERIFICATION_READ_FIRST.md`), it was labeled LOCKED in the bundle's own register without ever going through this project's real Discover→Lock process. This decision does not adopt, depend on, or treat that model as settled; it is mentioned only as context that would need separate founder confirmation if it's adopted later.
+
+Impact:
+
+Claude Design work must plan both the mobile and desktop compositions early, even while building mobile first structurally — desktop should never be treated as a retrofit pass. The design system (JP Product Foundation) should track responsive breakpoints and layout intent for both, consistent with Claude Design's own actual capability to export components with defined breakpoints and interaction states. Native app translation is out of scope for now; nothing here requires over-engineering current web components for a future native phase that hasn't started, consistent with the project's standing "cut scope before adding process" principle — component structure should stay clean and portable where that's free, not pursued at the cost of current scope.
+
+Related Documents:
+
+- 08_DECISION_LOG.md (JP-022, JP-023)
+- journey-planner-explorer-interface-layers-map.md (§24, mobile-first usability rule)
+
+Superseded By: None
+
+---
+
 # Adding New Decisions
 
 New entries should only be added after an explicit locked approval.
