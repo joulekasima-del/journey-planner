@@ -581,6 +581,94 @@ Superseded By: None
 
 ---
 
+## JP-019 — Data Retention & Deletion Policy
+
+Category: Legal / Product
+
+Status: Locked
+
+Date: 2026-08-14
+
+Decision:
+
+Host and Explorer personal data is auto-anonymized or deleted after 12 months of account or listing inactivity. Deletion requests from either role are honored within 90 days, including backups, in a manner that prevents recovery.
+
+Reason:
+
+The 90-day figure matches Thailand's PDPC Notification on Criteria for Personal Data Deletion, Destruction, and De-identification (effective November 11, 2024) — this is the statutory ceiling, not a self-imposed target. The 12-month inactivity trigger is a founder-set operational default to keep stored data proportionate to actual use, consistent with PDPA's data minimization principle.
+
+Impact:
+
+This retention policy is the basis for the retention/deletion clauses in the host-facing and Explorer-facing PDPA consent notices. Any future change to either number needs to update both the notices and this entry — mark this entry as superseded, do not edit it in place.
+
+Related Documents:
+
+- Consent Notices (host + Explorer, EN/TH)
+- PDPA Review Tracker
+
+Superseded By: None
+
+---
+
+## JP-020 — In-House Consent Capture Mechanism
+
+Category: Legal / Engineering
+
+Status: Locked
+
+Date: 2026-08-14
+
+Decision:
+
+Consent from hosts and Explorers is captured in-house: an unchecked checkbox requiring explicit affirmative action, paired with an in-app drawn-signature box usable only from the person's authenticated session, a stored hash of the exact notice version signed, and timestamp/IP/device metadata. No third-party e-signature vendor is used at this stage.
+
+Reason:
+
+Third-party options (DocuSign, Zoho Sign) were evaluated and ruled out on data-residency grounds — neither offers a data center region covering Thailand or Singapore, which matters under PDPA regardless of their separate signature-legality coverage in Thailand. Thailand's own ETDA-licensed Certificate Authority route (via providers such as TDID) remains available but was not required: the in-house mechanism satisfies ETA Section 9 (general electronic signature — legally valid, admissible) without dispute. ETA Section 26's higher "Reliable Electronic Signature" tier is contested in Thai legal commentary as to whether it can be met without third-party certification — this decision does not claim Section 26 compliance, only Section 9.
+
+Impact:
+
+No third-party signing vendor is integrated at this stage. This decision locks the mechanism, not its implementation status — the actual UI (checkbox, signature canvas, hashing, metadata logging) is separate build work. If a dispute ever tests the Section 26 question, or scale later justifies it, DocuSign (Australia region) or Zoho Sign (India region) remain a documented upgrade path.
+
+Related Documents:
+
+- Consent Notices (host + Explorer, EN/TH)
+- PDPA Review Tracker
+
+Superseded By: None
+
+---
+
+## JP-021 — Type B Host Bank-Data Handling via MANAGED Sub-Accounts
+
+Category: Business / Technical
+
+Status: Locked
+
+Date: 2026-08-14
+
+Decision:
+
+Hosts using the platform's booking system (Type B) are onboarded to Xendit as MANAGED sub-accounts. Xendit sends the host an invitation email; the host completes KYC and bank details directly on their own Xendit dashboard. Journey Planner's systems never receive or store host bank account details.
+
+Reason:
+
+This is the specific Xendit configuration that makes the data separation described in JP-014 actually true in practice. The alternative, OWNED sub-accounts, are invisible to the partner and fully controlled by the platform — choosing that type would have silently routed bank data back through Journey Planner's own systems without changing anything about the architecture on paper.
+
+Impact:
+
+The host-facing consent notice's claim that bank data is "not collected or stored by us" is accurate specifically because of this configuration choice. If any host's sub-account type is ever changed to OWNED, that clause becomes false and the notice needs updating first. Directly dependent on JP-014 (Xendit as payment infrastructure).
+
+Related Documents:
+
+- Consent Notices (host + Explorer, EN/TH)
+- Booking System Structure Report
+- 08_DECISION_LOG.md (JP-014)
+
+Superseded By: None
+
+---
+
 # Adding New Decisions
 
 New entries should only be added after an explicit locked approval.
