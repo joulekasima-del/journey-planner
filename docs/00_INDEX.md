@@ -42,8 +42,8 @@ These remain in `bootstrap/` per repository convention and are not duplicated in
 
 | Document | Status | JP Decisions | Path |
 |---|---|---|---|
-| Journey Architecture v2 | Pending — awaiting ChatGPT draft | JP-007 (supersedes JP-004) | `docs/architecture/journey-architecture.md` |
-| Platform Knowledge Architecture v1 | Pending — awaiting ChatGPT draft | JP-008 | `docs/architecture/platform-knowledge-architecture.md` |
+| Journey Architecture v2 | Needs review — the JP-007/JP-004 references below were stale (JP-007 and JP-008 are locked in `bootstrap/08_DECISION_LOG.md` for unrelated decisions). Likely superseded by JP-017 (Booking routes through Experience, not directly from Itinerary Item) — needs founder confirmation before further work, not to be resumed by assumption. | TBD — see JP-017 | `docs/architecture/journey-architecture.md` |
+| Platform Knowledge Architecture v1 | Deprecated — this line of work traces to the "Batch 2" architecture draft, independently confirmed incorrect and never approved (see `sorted-decisions-review.md`). Do not resume without a fresh Discovery pass. | None | `docs/architecture/platform-knowledge-architecture.md` |
 
 ---
 
@@ -66,8 +66,8 @@ These remain in `bootstrap/` per repository convention and are not duplicated in
 
 | Document | Status | JP Decisions | Path |
 |---|---|---|---|
-| Experience Data Standard | Pending — awaiting ChatGPT draft (§1 and §2.1 fully backed by locked JP decisions; §2.2 has locked decisions still outstanding) | JP-009, JP-010, JP-011 | `docs/standards/experience-data-standard.md` |
-| Language Standard | Pending — awaiting ChatGPT draft | JP-012 | `docs/standards/language-standard.md` |
+| Experience Data Standard | Pending — restored to active tracking 2026-08-16 (see `BUILD_TRACKER.md`). JP-009/010/011 were never actually locked in `bootstrap/08_DECISION_LOG.md` — correcting the earlier claim that they were. | TBD at Lock time, not pre-assigned | `docs/standards/experience-data-standard.md` |
+| Language Standard | Pending — restored to active tracking 2026-08-16 (see `BUILD_TRACKER.md`). JP-012 was never actually locked — correcting the earlier claim that it was. | TBD at Lock time, not pre-assigned | `docs/standards/language-standard.md` |
 
 ---
 
@@ -89,20 +89,19 @@ These remain in `bootstrap/` per repository convention and are not duplicated in
 
 | Document | Status | JP Decisions | Path |
 |---|---|---|---|
-| Booking System Specification | Pending — content source not yet confirmed | TBD | `docs/booking/booking-system-spec.md` |
+| Booking System Specification | Superseded — real booking-system work proceeded independently via the Booking System Structure Report and JP-014 through JP-021. This placeholder is stale. | JP-014–JP-021 | `docs/booking/booking-system-spec.md` |
 
 ---
 
-# Pending Decision Log Entries
+# Pending / Tracked Work — Not Yet Locked
 
-The following decisions are referenced above but not yet recorded in `bootstrap/08_DECISION_LOG.md`. This index will link to them once ChatGPT enters them as Locked.
+Numbering below is illustrative only. Real Decision Log entries (`bootstrap/08_DECISION_LOG.md`) currently run through JP-021; anything below receives the next real available number at the time it's actually locked, never a pre-reserved one. Codex (OpenAI) previously maintained this section and is retired from this project — Claude Cowork now covers indexing/documentation work of this kind.
 
-- JP-007 — Journey Architecture v2 (supersedes JP-004)
-- JP-008 — Platform Knowledge Architecture v1 adoption
-- JP-009 — Experience Data Standard, Section 1 (Identity)
-- JP-010 — Experience Data Standard, Section 2.1 (Geographic Reality)
-- JP-011 — Experience Data Standard, Section 2.2 (Physical Reality) — in progress
-- JP-012 — Language Standard
+- Experience Data Standard — Identity, Geographic Reality, Physical Reality sections. Restored to active tracking 2026-08-16.
+- Language Standard. Restored to active tracking 2026-08-16.
+- Journey Architecture v2 — needs review; likely superseded by JP-017, not resumed by default.
+- Platform Knowledge Architecture v1 — deprecated, tied to the discarded "Batch 2" architecture draft.
+- Booking System Specification — superseded by JP-014 through JP-021 and the Booking System Structure Report.
 
 ---
 
@@ -114,3 +113,4 @@ The following decisions are referenced above but not yet recorded in `bootstrap/
 | 1.1 | 2026-08-06 | Clarified that Experience Data Standard §2.2 status reflects outstanding atomic JP decisions, not a partially-locked decision | Claude AI |
 | 1.2 | 2026-08-08 | Added governance framework documents to the repository index | Codex |
 | 1.3 | 2026-08-08 | Added Batch 2 Core Platform Architecture artifacts | Codex |
+| 1.4 | 2026-08-16 | Corrected stale JP-007/JP-008 references that collided with real locked Decision Log entries; marked Platform Knowledge Architecture v1 and Booking System Specification as Deprecated/Superseded; restored Experience Data Standard and Language Standard to active tracking with no pre-assigned JP numbers; noted Codex is retired from this project, replaced by Claude Cowork for indexing/documentation work | Claude AI (correction requested and confirmed by founder, verified against live repo) |
