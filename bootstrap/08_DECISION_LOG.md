@@ -771,6 +771,35 @@ Superseded By: None
 
 ---
 
+## JP-025 — Interface Typography: Noto Sans Thai
+
+Category: Creative / Accessibility
+
+Status: Locked
+
+Date: 2026-08-16
+
+Decision:
+
+Noto Sans Thai is the typeface for all operational/functional interface text — UI labels, body copy, and display/title-sized text alike (tokens `--font-ui`, `--font-body`, `--font-display` all resolve to it). Decorative map-world lettering is a separate, isolated concern (token `--font-map-decorative`, currently Lora) and must never be used for operational information, consistent with the typography principle already established for this project.
+
+Reason:
+
+Chosen from three real candidates evaluated for supporting both Thai and Latin script cleanly (Noto Sans Thai, IBM Plex Sans Thai, Sarabun) — necessary since the product has confirmed bilingual English/Thai content (the PDPA consent notices are the first real example). During implementation, large screen-title text was found already quietly rendering in Lora — a decorative font — with no prior decision behind it. Corrected as part of this change: titles now resolve to `--font-display` (Noto Sans Thai) like all other operational text, and Lora was properly isolated to `--font-map-decorative` for genuine map-illustration use only.
+
+Impact:
+
+Wired into live components (not just proposed) — confirmed working in the Card component context and the design-system overview deck, both updated to reference the token system rather than hardcoded font names. Does not itself finalize the full type scale (sizes/weights per hierarchy level) or motion — those remain separate, still-open work.
+
+Related Documents:
+
+- 08_DECISION_LOG.md (JP-022)
+- Consent Notices (host + Explorer, EN/TH) — the real bilingual content driving this requirement
+
+Superseded By: None
+
+---
+
 # Adding New Decisions
 
 New entries should only be added after an explicit locked approval.
