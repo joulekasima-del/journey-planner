@@ -800,6 +800,41 @@ Superseded By: None
 
 ---
 
+## JP-026 — Design System Finalization: Card Material, Icon System, Semantic Color Tokens
+
+Category: Creative / Accessibility
+
+Status: Locked
+
+Date: 2026-08-17
+
+Decision:
+
+Three related design-system elements are locked, each built and wired into live components in Claude Design's JP Product Foundation system, verified through the tool's own state report plus founder review of actual values (not just role names):
+
+**Card material.** The liquid-glass treatment (including its later four-tint variant system) is fully reverted. Card uses a flat Canopy Green (`#2F6F4E`, per JP-022) fill with a soft contact shadow — no blur, no backdrop-filter, no glass sheen, no grain texture. Two variants: `solid` (default) and `featured`. The liquid-glass and tint approaches were both explored and explicitly rejected as inconsistent with JP-022's restrained, non-decorative visual identity.
+
+**Icon system.** A 10-icon set (verified, synced, syncing, connected, offline, route, ready, attention, selected, current) on a 24×24 grid, 1.75px stroke, rounded caps/joins, 2px corner radius, flat single-color line — no literal/photographic detail, no decorative flourish. Every icon renders paired with its text label (`aria-hidden` on the icon; the label carries the accessible name) — never icon-only. Meets 3:1 minimum non-text contrast and a ≥44px hit target when interactive. Two real legibility risks were found and corrected during review: Ready/Attention initially shared one flag silhouette distinguished only by fill (solid vs. outline), and Synced/Syncing initially shared one cloud glyph distinguished only by mirrored chevrons — both patterns fail at small size or a quick glance. Both pairs now use genuinely distinct silhouettes (Ready: flag+checkmark; Attention: warning triangle+exclamation; Syncing: distinct circular-refresh glyph).
+
+**Semantic color tokens.** Six roles, confirmed visually distinct from each other and from the JP-022 illustrated-world palette (verified side by side, not just asserted): Verified (`#1E4FC2` text on `#E2EAFB`), Attention (`#8A4B0B` on `#F6E9DA`), Critical (base `#C93C30` for UI elements, `#A32B22` on `#F8E2DF` for text pairs meeting 4.5:1), In Progress (`#5B2FAE` on `#EDE6FA`), Neutral (`#454E58` on `#E7E9EC`), and Focus (semantic Focus Blue, used for `--focus-ring`). Two orphaned tokens from an earlier, pre-semantic-system exploration (`--rust-proposed`, `--bg-rust`) were found to have no component consumer and are removed rather than adopted.
+
+Reason:
+
+This is the JP Product Foundation's design-token layer reaching an actually-decided state, closing the gap between "approved in a Claude Design chat" and "durably recorded" that had been accumulating across this design session — the same gap already closed once for typography (JP-025) and now closed for the remaining three elements built alongside it. The Card material correction specifically enforces JP-022's own locked principle (restrained illustration, not decorative or tech-forward treatment) against a drift that had crept into implementation. The icon corrections enforce the project's standing rule that meaning must never ride on color or fill alone.
+
+Impact:
+
+`tokens/colors.css`, `components/core/Card.jsx`, and the new `Icon` component (`Icon.jsx`/`.d.ts`/`.prompt.md`) are the source of truth going forward for these three elements. `--rust-proposed` and `--bg-rust` should be deleted from `tokens/colors.css`, not left as unreferenced dead code. The icon set covers only the 6 originally-requested categories, not a full inventory (no error/critical-specific icon distinct from Attention, no map/place icons, nothing for form validation) — remains open, tracked separately, not implied complete by this entry. Several housekeeping items remain outside this entry's scope and should not be assumed resolved by it: stale "-proposed" naming on already-approved files/cards, a stale caveats section in the design system's own readme, and a stale font reference in the design-system-overview-deck template.
+
+Related Documents:
+
+- 08_DECISION_LOG.md (JP-022, JP-025)
+- Design Bundle Verification report (workspace/03_Design_Bundles/)
+
+Superseded By: None
+
+---
+
 # Adding New Decisions
 
 New entries should only be added after an explicit locked approval.
