@@ -10,8 +10,7 @@ The live list of what's being worked on, in dependency order. It doesn't replace
 
 ## Now — decisions
 
-- [ ] **Confirm Stripe Thailand details** (JP-034). Ask Stripe Thailand sales: which connected account types (Standard / Express) a Thai platform can use; that application fees on direct charges work for THB and PromptPay; whether the application fee can be refunded with a booking refund; that PromptPay payments can be refunded, and how long refunds take (JP-035). Needs the company (JP-033) to open the account. **Blocks:** Payments spec.
-- [ ] **Chargeback liability.** Under Stripe direct charges (JP-034) the Host bears it by default; Stripe also keeps its processing fee on refunds (JP-035). Decide whether the platform ever covers either loss, and when. **Blocks:** Admin, host agreement, Sales Plan.
+- [ ] **Confirm Xendit Thailand details** (JP-036). Ask Xendit: OWNED sub-accounts in Thailand and the identity checks required per Host; splitting one payment across several sub-accounts, and the maximum per payment; holding funds in a sub-account until the platform releases them to the Host's bank; fees per payment method; the chargeback setting required at xenPlatform activation; refund timing, including PromptPay. **Blocks:** Payments spec.
 - [ ] **Lock JP-028** (primary segment), currently a draft in `workspace/01_Handoffs/`. **Blocks:** Questionnaire spec defaults.
 - [ ] **Reviews in V1 or not?** The old contract excluded them, but JP-018 includes review moderation. **Blocks:** Admin spec.
 - [ ] **Conservation-fund percentage** (carve-out from the 15%, JP-015). **Flag:** Trust: no fund claim in marketing without a locked number. **Blocks:** Marketing Plan.
@@ -28,11 +27,13 @@ The live list of what's being worked on, in dependency order. It doesn't replace
 
 - [ ] **Register the Thai limited company** before the first real booking (JP-033). Confirm withholding-tax and VAT duties with an accountant.
 - [ ] **Legal research before launch:**
-  - Does selling day trips need a Department of Tourism tour-business licence?
+  - Does a booking agent selling day trips need its own Department of Tourism tour-business licence, or only the Hosts who run them (JP-036)?
+  - Accountant: VAT on commission only, and withholding-tax duties, under the agent model (JP-036).
   - Must accommodation hosts be registered (hotel/homestay) before listing?
   - What does the Digital Platform Services Royal Decree require of the platform?
   - Do Thai consumer-protection rules limit the cancellation presets (JP-035)?
   - **Flag:** legal.
+- [ ] **Have the rewritten Host notice reviewed** before the first Host is onboarded for payouts: Journey Planner now holds Host bank details (JP-036). Bank details need encrypted storage readable only by the Administrator. **Flag:** privacy.
 - [ ] **Supply the PDPA notice inputs:** company name, official LINE ID, contact email, native Thai legal translation review. Then build the consent-capture UI (JP-020) on the scouting form, and later on the Host Calendar and Explorer sign-up.
 
 ## Now — design housekeeping (Claude Design)
@@ -46,12 +47,12 @@ The live list of what's being worked on, in dependency order. It doesn't replace
 
 ## Next
 
-- [ ] **Spec 5: Payments & Payouts.** Waits on the Stripe Thailand confirmations and chargeback liability.
+- [ ] **Spec 5: Payments & Payouts.** Waits on the Xendit Thailand confirmations.
 - [ ] **Spec 6: Host Calendar.** Waits on Spec 4.
 - [ ] **Spec 7: Admin Panel.** Waits on Spec 5 and the reviews decision.
 - [ ] **Build the Explorer Planner.** Waits on Specs 1–3.
 - [ ] **Build Booking, Payments, Host Calendar and Admin.** Each waits on its spec.
-- [ ] **Sales Plan:** host acquisition, the marketplace cold-start problem. Waits on chargeback liability, because payout terms must be honest when pitching hosts.
+- [ ] **Sales Plan:** host acquisition, the marketplace cold-start problem. Payout terms are now settled (JP-036: 85%, weekly, after the Experience); can start once Spec 5 confirms the details.
 - [ ] **Marketing Plan:** demand side, deliberately after the Sales Plan so travellers don't meet an empty shelf. Waits on the conservation-fund decision for any fund claim.
 
 ## Later
@@ -68,7 +69,6 @@ These aren't scheduled. Come back to each one when its trigger happens.
 
 - **Supabase cross-border classification and ETA Section 26.** Trigger: the founder's government contact replies. The notices currently assume Singapore hosting counts as cross-border (the safer default).
 - **LINE as a data processor.** Trigger: LINE-based host notifications ship. That needs its own consent line, not a silent notice edit.
-- **Host bank-data guarantee.** Today the notice can truthfully say bank data never touches our systems, because hosts onboard on Stripe's own hosted pages (JP-034). Trigger: any move to a platform-collected onboarding flow, or a change of provider. Update the notice **before** the change ships.
 - **DocuSign / Zoho Sign upgrade path.** Trigger: a real signature dispute, or enough scale to justify moving off the in-house mechanism (JP-020).
 - **Map screen-reader equivalence testing (WCAG 1.1.1).** The highest accessibility risk: the non-visual alternative must convey route and spatial relationships, not a flat list. Trigger: the Station View prototype has real content. It blocks production, not prototyping.
 
@@ -79,6 +79,7 @@ These aren't scheduled. Come back to each one when its trigger happens.
 | Date | Change |
 |---|---|
 | 2026-08-10 → 2026-08-18 | See `archive/BUILD_TRACKER-2026-08-18.md`. |
+| 2026-11-25 | JP-036 locked (Xendit, booking agent, OWNED sub-accounts). Stripe confirmations replaced by Xendit confirmations; chargeback item removed (settled); Host notice review added; bank-data trigger removed (now a Now item); legal research and Sales Plan updated. |
 | 2026-11-25 | JP-035 locked (refund policy). Spec 4 moved to Now; refund item removed; Stripe confirmations, chargeback item and legal research extended. |
 | 2026-11-25 | JP-034 locked (Stripe). Provider decision replaced by Stripe Thailand confirmations; chargeback, refund, Spec 5 and bank-data trigger updated. |
 | 2026-11-25 | Rewritten for JP-029 to JP-033 and the docs reorganization. Removed finished items (now in the archived copy). Removed the stale "lock JP-019–021" item, since they are locked. Added the payment-provider, refund, JP-028 and reviews decisions; company registration and legal research; the 8 V1 specs; design-system readme drift. Experience Data Standard and Language Standard moved into the spec list. Booking, Host Calendar and Admin are now V1 work. |

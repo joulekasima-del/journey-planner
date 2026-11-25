@@ -66,10 +66,10 @@ When a Scout records your Experience or listing during a site visit, we
 collect: your name and contact details, information about the place or
 activity you're offering, and photographs or descriptions you provide.
 
-If you begin receiving bookings through the platform, you will separately
-complete identity verification (KYC) and provide your bank details directly
-through Stripe's own onboarding flow — not through us. See "Bank and
-payment information" below for why this distinction matters.
+If you begin receiving bookings through the platform, the Scout also
+collects the identity details our payment provider requires and your bank
+account or PromptPay ID, so we can pay you. See "Bank and payment
+information" below.
 
 ### Why we collect it
 
@@ -81,12 +81,14 @@ platform.
 
 ### Bank and payment information
 
-We do not collect or store your bank account details. When you're onboarded
-to receive bookings, Stripe — our payment infrastructure provider — invites
-you directly to complete your own KYC and banking details on their platform,
-not ours. This is true specifically because of how your account is
-configured on our side; if that configuration ever changes, we will update
-this notice before the change takes effect, not after.
+We act as your booking agent. Payments are processed by Xendit, our
+licensed payment provider, and we open and manage a payment account with
+Xendit on your behalf, so you don't have to. To do that and to pay you, we
+collect your bank account or PromptPay ID and the identity details Xendit
+requires. We store them encrypted, only our administrator can read them,
+and we share them only with Xendit to verify you and send your payouts.
+[Lawyer to review: wording, legal basis, and whether Xendit is a processor
+or a separate controller for the identity check — JP-036.]
 
 ### How long we keep your information
 
@@ -103,7 +105,7 @@ pending final confirmation — see Open Questions above.]
 
 ### Who else sees your information
 
-- **Stripe** (payment processing and your own KYC/banking, directly with you)
+- **Xendit** (payment processing, identity checks and payouts to your bank)
 - **Supabase** (our database and hosting provider)
 - **LINE** — not currently used to contact you. If we begin sending
   booking confirmations or reminders via LINE in the future, we will ask
@@ -168,7 +170,7 @@ Questions above.]
 
 ### Who else sees your information
 
-- **Stripe** (payment processing, only if you make a booking)
+- **Xendit** (payment processing, only if you make a booking)
 - **Supabase** (our database and hosting provider)
 
 ### Your rights

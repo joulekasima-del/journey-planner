@@ -667,7 +667,7 @@ Related Documents:
 - Booking System Structure Report
 - 08_DECISION_LOG.md (JP-014)
 
-Superseded By: JP-034 (provider). Its principle carries forward under JP-034: host bank data stays with the payment provider and never reaches our systems.
+Superseded By: JP-034 (provider), then JP-036 (Hosts now have OWNED sub-accounts, so Journey Planner holds Host bank details).
 
 ---
 
@@ -1056,7 +1056,7 @@ Superseded By: None
 
 Category: Business / Technical
 
-Status: Locked
+Status: Superseded
 
 Date: 2026-11-25
 
@@ -1094,7 +1094,7 @@ Related Documents:
 - docs/legal/PDPA_CONSENT_NOTICES.md
 - docs/DECISION_LOG.md (JP-014, JP-015, JP-021, JP-033)
 
-Superseded By: None
+Superseded By: JP-036 (back to Xendit xenPlatform, with Journey Planner as booking agent).
 
 ---
 
@@ -1143,6 +1143,67 @@ Related Documents:
 
 - docs/PRODUCT.md §9
 - docs/DECISION_LOG.md (JP-015, JP-018, JP-031, JP-034)
+
+Superseded By: None
+
+---
+
+## JP-036 — Booking Agent Model on Xendit xenPlatform
+
+Category: Business / Technical / Legal
+
+Status: Locked
+
+Date: 2026-11-25
+
+Decision:
+
+1. **Journey Planner is a booking agent only.** It never operates trips, stays or activities. Each Host is the provider of their Experience; Journey Planner arranges the booking and takes the payment on the Host's behalf, and earns a commission (JP-015).
+
+2. **Xendit xenPlatform is the payment infrastructure.** Xendit holds the payment licence; Journey Planner's main account is the platform account.
+
+3. **Hosts have OWNED sub-accounts.** Journey Planner creates and runs each Host's Xendit sub-account. Hosts never sign up for, log in to or see Xendit.
+
+4. **Host onboarding happens during the Scout visit.** The Scout collects the Host's Thai bank account or PromptPay ID and the identity details Xendit requires, and the Host signs the host agreement (JP-020).
+
+5. **One payment per Journey.** The Explorer pays once for every booked Experience in the Journey. Xendit split rules route each Host's 85% to that Host's sub-account in the same payment; Journey Planner keeps 15%. Payment methods: PromptPay, cards, Thai mobile banking and e-wallets, as Xendit supports them.
+
+6. **The Host always gets exactly 85%.** Journey Planner pays Xendit's processing fees out of its 15%.
+
+7. **Weekly payouts after the Experience.** A Host's money stays in their sub-account until the Experience has happened (for stays, after check-in). Every Monday the Administrator releases it to the Host's bank account (JP-018). Each payout comes with a statement by LINE or email: each booking, the gross amount, the 15% commission and the net amount paid.
+
+8. **Refunds and chargebacks.**
+   - Refunds follow JP-035. Before payout, the Host's part is refunded from their sub-account and the platform returns its commission in proportion.
+   - A chargeback caused by the Host (no-show, not as described) is recovered from the Host's sub-account or next payout.
+   - Every other chargeback, including fraud with stolen cards and anything the platform caused, is absorbed by Journey Planner.
+   - Hosts never deal with Xendit, banks or dispute evidence; the Administrator handles disputes using the booking records.
+
+Reason:
+
+Hosts are small local businesses and people; they shouldn't have to open a payment account, pass checks on a provider's site or handle disputes. One payment per Journey keeps checkout simple for Explorers. Staying an agent on licensed payment infrastructure avoids the two big problems of Journey Planner being the seller: needing its own payment licence, and likely VAT on the full booking price instead of only the commission. Paying out after the Experience means cancellations and no-shows are settled before money leaves.
+
+Impact:
+
+- Supersedes JP-034 (Stripe Connect).
+- Supersedes JP-021 (MANAGED sub-accounts). Journey Planner now holds Host bank details, so the Host privacy notice must be rewritten before the first Host is onboarded, and bank details need encrypted storage readable only by the Administrator.
+- Settles chargeback liability (rule 8). The Stripe-fee question from JP-035 no longer applies.
+- JP-029's "own booking marketplace" means a booking agent marketplace: Journey Planner books, Hosts provide.
+- Host agreement must state the agent relationship, the 85/15 split, the weekly payout and the chargeback recovery rule.
+- To confirm with Xendit Thailand before building, not assumed:
+  - OWNED sub-accounts are available in Thailand, and what identity checks Journey Planner must do for each Host
+  - one payment can split to several sub-accounts, and the maximum number of Hosts per payment
+  - funds can be held in a sub-account and paid out to the Host's bank on the platform's instruction
+  - fees per payment method, and the chargeback setting required at xenPlatform activation
+- To confirm with the accountant and lawyer, not assumed:
+  - VAT applies to the commission only under the agent model
+  - withholding-tax duties on commission and payouts
+  - whether a booking agent selling day trips needs its own Department of Tourism licence, or only the Hosts who run them do
+
+Related Documents:
+
+- docs/PRODUCT.md §6, §9
+- docs/legal/PDPA_CONSENT_NOTICES.md
+- docs/DECISION_LOG.md (JP-014, JP-015, JP-018, JP-020, JP-021, JP-029, JP-034, JP-035)
 
 Superseded By: None
 

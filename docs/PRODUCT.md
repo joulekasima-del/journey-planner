@@ -10,7 +10,7 @@ Every statement here traces to a locked decision in [DECISION_LOG.md](DECISION_L
 
 ## 1. What Journey Planner is
 
-Journey Planner is a journey-planning platform for travel across Thailand that runs its own booking marketplace. (JP-029)
+Journey Planner is a journey-planning platform for travel across Thailand that runs its own booking marketplace. (JP-029) It is a **booking agent only**: Hosts provide every trip, stay and activity; Journey Planner arranges the booking, takes payment on the Host's behalf and earns a commission. It never operates trips itself. (JP-036)
 
 1. The Explorer answers a short preference questionnaire for the whole trip, and can change any answer for an individual day. (JP-032)
 2. The platform builds a **draft Journey** from verified Experiences only. (JP-032)
@@ -69,7 +69,8 @@ Hosts keep availability accurate through the Host Calendar (JP-031). The detaile
 |---|---|
 | **Commission:** 15% flat on platform bookings (Group A). Ticket-agent resale for festivals and large events (Group B) is deferred to Phase 2. | Locked, JP-015 |
 | **Entity:** Thai limited company, registered before the first real booking | Locked, JP-033 |
-| **Payments:** Stripe Connect with direct charges. Each Host has their own Stripe account and is the seller; the commission is taken as an application fee. A checkout with several Hosts makes one charge per Host. Hosts onboard on Stripe's own pages, so the platform never stores bank details. Cards and PromptPay. | Locked, JP-034 (replaces JP-014 / JP-021). Account types and fee refunds to confirm with Stripe Thailand. |
+| **Payments:** Xendit xenPlatform. The Explorer pays once per Journey; split rules send each Host's 85% to their own sub-account and Journey Planner keeps 15%, paying Xendit's fees from it. Hosts have OWNED sub-accounts that Journey Planner creates and runs, so Hosts never see Xendit. Scouts collect bank or PromptPay details at onboarding. Payouts weekly, after the Experience. | Locked, JP-036 (replaces JP-034 and JP-021). Details to confirm with Xendit Thailand (§9). |
+| **Chargebacks:** recovered from the Host when they caused it; everything else, including card fraud, absorbed by Journey Planner. The Administrator handles all disputes. | Locked, JP-036 |
 | **Cancellations and refunds:** each Host picks Flexible, Moderate or Strict per Experience; no refund for no-shows; commission refunded in proportion; Host cancellations are full refunds; on weather or safety call-offs the Explorer chooses refund or reschedule | Locked, JP-035 |
 | **Conservation / community fund:** a share carved out of the 15% | **Open.** No percentage decided. |
 | **Financial records:** every booking logs date, host, gross amount, commission, net amount and payout reference from day one | Locked (JP-016 → carried into JP-033) |
@@ -122,10 +123,9 @@ Each of these needs a locked decision before the related build starts.
 
 | Question | Blocks |
 |---|---|
-| **Stripe Thailand confirmations** (JP-034): which connected account types a Thai platform can use; that application fees work with THB and PromptPay; how application fees are refunded; that PromptPay payments can be refunded, and how long refunds take. | Payments spec |
-| **Chargeback liability:** under Stripe direct charges the Host's account bears chargebacks by default. Stripe also keeps its processing fee on refunds, so the Host loses it. Decide whether the platform ever covers either loss, and when. | Admin Panel, host agreement |
+| **Xendit Thailand confirmations** (JP-036): OWNED sub-accounts in Thailand and the identity checks required per Host; splitting one payment across several sub-accounts, and the maximum per payment; holding funds until the platform releases them; fees per payment method; the chargeback setting at activation; refund timing, including PromptPay. | Payments spec |
 | **Conservation-fund percentage** | Marketing claims |
 | **Reviews:** excluded from V1 by the original contract, yet JP-018 includes review moderation. Which is it? | Admin Panel |
 | **Questionnaire generation:** rule-based or AI-assisted, and how each choice is explained to the Explorer | Questionnaire spec |
 | **Primary segment:** lock JP-028 | Questionnaire defaults, copy |
-| **Legal research:** tour-business licence for day trips, accommodation host registration, Digital Platform Services Royal Decree duties, consumer-protection rules on cancellations (JP-035) | Launch |
+| **Legal and tax research:** VAT on commission only and withholding tax under the agent model (accountant); whether a booking agent selling day trips needs its own tour-business licence or only the Hosts who run them do, accommodation host registration, Digital Platform Services Royal Decree duties, consumer-protection rules on cancellations (JP-035) | Launch |

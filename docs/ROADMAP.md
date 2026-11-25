@@ -18,9 +18,9 @@ Goal: a traveller can plan a complete Journey across Thailand and book every par
 | **2. Supply: Scout Workspace** | Collect, verify and publish Experiences and host records, including availability setup and host onboarding | Scouting form live; the full workspace is not built |
 | **3. Specifications** | Write the V1 specs in `docs/specs/`: Experience data, questionnaire, Journey planner, booking, payments, Host Calendar, Admin | Not started |
 | **4. Explorer Planner** | Accounts, questionnaire to draft Journey, day-by-day editing, discovery, maps, weather | Mockups only (`design-system/ui_kits/`) |
-| **5. Booking & Payments** | Availability engine, checkout, confirmation, cancellations and refunds, commission split, financial records | Provider chosen (Stripe, JP-034); refund policy locked (JP-035); waits on chargeback liability |
+| **5. Booking & Payments** | Availability engine, checkout, confirmation, cancellations and refunds, commission split, financial records | Xendit as booking agent (JP-036) and refund policy (JP-035) locked; waits on Xendit Thailand confirmations |
 | **6. Host Calendar** | Mobile page for hosts: dates, capacity, confirm or decline | Not started |
-| **7. Admin** | Payouts, verification, disputes and refunds, moderation | Blocked on chargeback liability |
+| **7. Admin** | Payouts, verification, disputes and refunds, moderation | Waits on the Payments spec and the reviews decision |
 | **8. Launch** | Company registered, legal checks done, supply in place, live payments, first real booking | Later |
 
 ## After Version 1
