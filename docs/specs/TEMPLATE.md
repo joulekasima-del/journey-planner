@@ -44,4 +44,4 @@ Owner: [Role or contributor responsible for this document]
 
 # Amendment Rule
 
-Changes to a Locked specification require an explicit new locked decision in `08_DECISION_LOG.md`, recorded as superseding the prior version. Do not edit Locked content directly — supersede it.
+Changes to a Locked specification require an explicit new locked decision in `docs/DECISION_LOG.md`, recorded as superseding the prior version. Do not edit Locked content directly — supersede it.

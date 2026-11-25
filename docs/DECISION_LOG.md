@@ -4,6 +4,8 @@ Version: 1.0
 
 Status: Active
 
+> **File locations (2026-11-25 reorganization).** This log moved from `bootstrap/08_DECISION_LOG.md` to `docs/DECISION_LOG.md`. Older entries' "Related Documents" use the old names; entries themselves are never edited. Map: `02_PRODUCT_CONTRACT.md` / `03_PROJECT_PHILOSOPHY.md` / `00_START_HERE.md` → `docs/PRODUCT.md`; `07_PROJECT_ROADMAP.md` → `docs/ROADMAP.md`; `09_BACKLOG.md` → `docs/BACKLOG.md`; `10_PROJECT_GLOSSARY.md` → `docs/GLOSSARY.md`; `01`/`05`/`06` → `docs/HOW_WE_WORK.md`; `04_CREATIVE_FRAMEWORK.md` → archived. Originals: `archive/bootstrap-v1/`.
+
 ---
 
 # Purpose

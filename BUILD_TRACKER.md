@@ -1,146 +1,82 @@
 # Build Tracker
 
-Status: Active
+Status: Active · Updated 2026-11-25 · Owner: Founder
 
-Version: 1.0
+The live list of what's being worked on, in dependency order. It doesn't replace specs or the Decision Log; it sequences work against them. Finished items are removed from this file; the full pre-reorganization tracker, including every completed item and its commit, is in `archive/BUILD_TRACKER-2026-08-18.md`.
 
-Owner: Product Owner
-
----
-
-# Purpose
-
-This is the living record of implementation progress referenced by `bootstrap/05_ENGINEERING_CONTRACT.md` and `bootstrap/07_PROJECT_ROADMAP.md`. It tracks what's actually being worked on and in what order. It does not replace specifications, the Decision Log, or the Backlog — it sequences work against them.
+**Now** is unblocked and should happen first. **Next** waits on something in Now. **Later** has nothing depending on it yet. **Flag** marks legal, ethical or trust risk.
 
 ---
 
-# Operating Principle — applies to every task added here, not just this pass
+## Now — decisions
 
-Journey Planner is founded solo and is intended to run on a fully AI-driven build process — there is no team to absorb complexity by throwing people at it.
+- [ ] **Payment provider: Xendit or Stripe.** Ask Stripe Thailand sales which Connect charge types a Thai platform can use. Their docs show direct charges only (each host is the seller, one charge per host) and no "separate charges and transfers". Ask Xendit whether one checkout can split to several hosts. Then lock a decision (replaces JP-014 if Stripe wins). **Blocks:** Payments spec, Booking spec, Admin.
+- [ ] **Chargeback liability** (host, platform, or split by cause). Decide right after the provider; under Stripe-Thailand direct charges the host bears it by default. **Blocks:** Admin, host agreement, Sales Plan.
+- [ ] **Cancellation and refund policy.** The founder chose to decide this after the provider. **Blocks:** Booking spec.
+- [ ] **Lock JP-028** (primary segment), currently a draft in `workspace/01_Handoffs/`. **Blocks:** Questionnaire spec defaults.
+- [ ] **Reviews in V1 or not?** The old contract excluded them, but JP-018 includes review moderation. **Blocks:** Admin spec.
+- [ ] **Conservation-fund percentage** (carve-out from the 15%, JP-015). **Flag:** Trust: no fund claim in marketing without a locked number. **Blocks:** Marketing Plan.
 
-For every backend and frontend choice, from here forward: prefer minimal, precise, and sustainable over feature-rich. A smaller thing that's fully understood and maintained by one person beats a larger thing that isn't. When in doubt, cut scope before adding process.
+## Now — specs (order and inputs in `docs/specs/README.md`)
 
----
+- [ ] Spec 1: Experience Data Standard
+- [ ] Spec 2: Journey & Data Model
+- [ ] Spec 3: Preference Questionnaire & Draft Journey (needs JP-028)
+- [ ] Spec 8: Language Standard (can run in parallel)
 
-# How to Read This Document
+## Now — legal and business (founder-owned)
 
-**Now / Next / Later** — grouped by actual dependency, not by how urgent something feels. A task sits in Next only if something in Now genuinely has to finish first. A task sits in Later only if nothing currently depends on it starting sooner.
+- [ ] **Register the Thai limited company** before the first real booking (JP-033). Confirm withholding-tax and VAT duties with an accountant.
+- [ ] **Legal research before launch:**
+  - Does selling day trips need a Department of Tourism tour-business licence?
+  - Must accommodation hosts be registered (hotel/homestay) before listing?
+  - What does the Digital Platform Services Royal Decree require of the platform?
+  - **Flag:** legal.
+- [ ] **Supply the PDPA notice inputs:** company name, official LINE ID, contact email, native Thai legal translation review. Then build the consent-capture UI (JP-020) on the scouting form, and later on the Host Calendar and Explorer sign-up.
 
-**Within each group**, tasks are sorted:
+## Now — design housekeeping (Claude Design)
 
-- Urgent + Important
-- Important, not urgent
-- Urgent, not important
-- Neither
-
-One line per task. This is a sequencing tool, not a scored matrix — don't over-engineer it.
-
-**Flags** appear only on tasks that genuinely touch legal, cultural, or ethical concerns. Most tasks won't have one. A missing flag means none was found, not that it wasn't considered.
-
----
-
-# Now
-
-## Urgent + Important
-
-- [x] Add authentication / access control to the live scouting form — right now anyone with the link can view, add, edit, or delete every entry, with no record of who did it. — **Flag:** real people's personal data is exposed with no protection, live, today. — **Done** (commit `c8239c1`).
-- [x] Move scouted data off browser-only `localStorage` onto something that actually syncs and backs up — field data currently exists only on the single device it was typed on, with no export path, and is unrecoverable if that device is lost, reset, or cleared. — **Flag:** real field work can be permanently and silently lost. — **Done** (commit `c8239c1`).
-- [x] Stop storing entries as plain readable text — anything typed into the form today is retrievable by anyone with a few seconds of access to the device via ordinary browser developer tools. — **Flag:** Thailand PDPA — personal data must be protected, not just collected. — **Done** (commit `c8239c1`).
-- [x] Get the PDPA consent / privacy notice reviewed — superseded by a full structural review, not just a review of the interim notice. Real finding: the "host-facing notice" was actually a Scout-facing reminder line, not a document hosts ever saw. Resolved: host-facing and Explorer-facing notices drafted (English + Thai), content and legal-basis reasoning independently verified across two research passes (Xendit's real product mechanics, Thailand's PDPC 90-day deletion rule, ETA Section 9/26, TDID's real existence, DocuSign's data-residency structure). Retention policy, consent mechanism, and Type B bank-data handling drafted as JP-019, JP-020, JP-021 — pending commit. — **Done** (structure and content; see Important/not-urgent below for what's still open).
-- [x] Tell hosts what's being recorded about them and why, at the point a Scout records it — there is currently no notice to the host at all. — **Flag:** Thailand PDPA / basic fairness — people are being written about without being told. — **Done** (commit `c8239c1`).
-- [x] Scouting form UX refinement round 2 — Description moved to last with a deterministic (non-AI) draft generator, Tags/Best-visit/Languages converted to multi-select chips, Landscape & geographic story converted to three chip-picker groups (kept on the shared Place record, not per-Experience), a general reusable "Other → free text" mechanism applied everywhere Other appears, Fusion options added. — **Done** (commits `f57fe2b`, `a92f27b`) — **live authenticated save/reload test confirmed directly by the founder**, closing the one verification gap no AI session could close itself.
-- [x] Explorer map / art-direction design session — Hand-drawn, Marauder's-Map-inspired, geographically real "Tropical Living Field Guide" direction locked (JP-022), including the working palette. Folded-in weather/time-awareness UI question resolved as a dual-layer pattern (JP-023). Platform strategy (JP-024), typography (JP-025), and design-system finalization — Card material, 10-icon system, semantic color tokens (JP-026) — also locked in the same extended session. Journey Day navigation pattern (JP-027) locked as a related follow-on, outside Claude Design. — **Done** (JP-022 through JP-027, `08_DECISION_LOG.md`; not yet committed to Claude Design's own system state — see new items below).
-- [ ] **(2nd)** Decide the conservation-fund percentage — a carve-out from the locked 15% commission (JP-015), discussed at length, never given a number. — **Flag:** Trust (Philosophy) — any conservation-fund claim in the future Marketing Plan must match a real, locked number, not a placeholder. — **Blocks:** the Marketing Plan (Next, below) can't reference the fund with any specific commitment until this is decided.
-- [ ] Decide chargeback/dispute liability — who is liable, platform or host, in a Xendit chargeback or dispute. Xendit's own xenPlatform activation flow requires an answer before it can be turned on. — **Blocks:** the Admin Panel's payout section and the Sales Plan's pitch to hosts (both Next, below) — neither can be built or pitched honestly against an undefined liability model.
-- [x] Draft & confirm JP-018 — Administrator Tooling into V1 scope — **Done**, locked (commit `efe9dff`). Partially supersedes JP-005 for the Administrator clause only; Host Portal remains excluded, unchanged.
-- [ ] Lock JP-019, JP-020, JP-021 — Data Retention & Deletion Policy, In-House Consent Capture Mechanism, Type B Host Bank-Data Handling via MANAGED Sub-Accounts. Drafted, diff-verified against the live Decision Log, staged for Claude Code. Sequenced ahead of the consent-notice commit since the notices' reasoning depends on these being locked first, not the other way around.
-- [ ] Build the consent-capture UI on the scouting form (checkbox + in-app signature canvas + document-version hash + timestamp/IP/device metadata) — content is finalized, mechanism is not yet built. Staged to happen in the same Claude Code handoff as the consent-notice commit, per explicit founder sequencing — not deferred to a later pass. Explorer-facing equivalent is out of scope until an Explorer-facing product exists.
-
-## Important, not urgent
-
-- [ ] Supply the 4 remaining inputs for the PDPA consent notices — legal entity name, official LINE ID, official contact email, native Thai/legal translation review. Explicitly classified Important, not urgent by founder direction, 2026-08-14 — the rest of the PDPA/consent work (JP-019–021, the UI build) proceeds in parallel without waiting on these. None of the four are tasks an AI session can complete: the entity name is confidential and founder-supplied only; the LINE ID and email likely require creating real business accounts, which stays a founder action; the translation review needs an actual native/legal reviewer, not a research pass. Once all four land, the staged consent-notice commit becomes a single drop-in action for Claude Code.
-- [ ] Wire the Station View structural prototype into Claude Design — mobile and desktop compositions currently exist only as chat-side proposals (Journey header, day nav, itinerary timeline, item card, travel connection, accommodation coverage, trust/status, offline state, AI guide entry point), skinned against real JP-022/JP-026 tokens. Nothing has been wired into Claude Design's actual system yet, per the project's standing propose-then-approve pattern.
-- [ ] Fix known-stale content in Claude Design's own readme — self-contradicts the real Decision Log (claims "only JP-022/023/024 locked," but JP-025/026 are also genuinely locked), plus a dead rust-token caveat and a stray Work Sans reference. Also re-pull three images lost during the last `/design-sync` (two truncated at fetch cap, one un-persistable) — flagged and deleted rather than left corrupt, not yet restored.
-- [ ] Complete icon-system integration — 4 of the 10 locked icons (verified, attention, route, offline) are exercised in live components (Badge, ActionCard, Toast); the remaining 6 (synced, syncing, connected, ready, selected, current) aren't wired anywhere yet. Already flagged as open scope in JP-026's own Impact note — this task just gives it a tracked line.
-
-## Urgent, not important
-
-*(none currently)*
-
-## Neither
-
-*(none currently)*
-
-*(Full detail on the five original findings: the Production Readiness Audit, 2026-08-10.)*
+- [ ] Update `design-system/readme.md`. It still says only JP-022–024 are locked and that platform accommodation booking is undecided; JP-025/026 and JP-030 settle both. It also has a dead rust-token caveat and a stray Work Sans reference. Re-pull the three images lost in the last `/design-sync`.
+- [ ] Choose one Explorer UI kit (`explorer` or `explorer-proposal`) and archive the other.
+- [ ] Wire the Station View prototype (Journey Day screen, mobile and desktop) into Claude Design.
+- [ ] Wire the 6 locked icons not yet used in components: synced, syncing, connected, ready, selected, current (JP-026).
 
 ---
 
-# Next
+## Next
 
-Tasks below are genuinely blocked by specific items in Now — not queued by default.
+- [ ] **Spec 4: Booking System.** Waits on the refund policy.
+- [ ] **Spec 5: Payments & Payouts.** Waits on the provider decision and chargeback liability.
+- [ ] **Spec 6: Host Calendar.** Waits on Spec 4.
+- [ ] **Spec 7: Admin Panel.** Waits on Spec 5 and the reviews decision.
+- [ ] **Build the Explorer Planner.** Waits on Specs 1–3.
+- [ ] **Build Booking, Payments, Host Calendar and Admin.** Each waits on its spec.
+- [ ] **Sales Plan:** host acquisition, the marketplace cold-start problem. Waits on chargeback liability, because payout terms must be honest when pitching hosts.
+- [ ] **Marketing Plan:** demand side, deliberately after the Sales Plan so travellers don't meet an empty shelf. Waits on the conservation-fund decision for any fund claim.
 
-## Urgent + Important
+## Later
 
-- [ ] Build the Admin Panel — payouts, Experience verification, dispute/refund handling, review moderation. — **Blocked on:** chargeback/dispute liability decision, and JP-018 confirmed (both in Now). Founder-idea-first item: Joule describes what he wants, Claude AI converts it into a structured spec for review before anything gets built.
-- [ ] Phase IV — Booking System Implementation — moved up from Later; this is the core "implementation" work blocking launch. — **Blocked on:** the conservation-fund and chargeback-liability decisions (both in Now) for anything commission-related. Must route through Experience per JP-017 — no shortcut from Itinerary Item to Booking. ~28 unlocked candidate ideas already preserved in `bootstrap/09_BACKLOG.md` under "Reference — Phase IV Booking Domain Candidate Ideas" (commit `96aaa73`) — read them there, do not duplicate the list into this file.
-- [ ] Build the Sales Plan — host/artisan acquisition, the actual cold-start problem for a two-sided marketplace. — **Blocked on:** chargeback/dispute liability decision (Now) — can't promise a specific payout mechanism to hosts before it's settled. Founder-idea-first item.
-
-## Important, not urgent
-
-- [ ] Build the Marketing Plan — demand-side, sequenced after the Sales Plan deliberately: pushing demand before there's enough real, verified supply (Experiences, hosts) risks an empty-shelf first impression, which works against the Trust principle. — **Blocked on:** conservation-fund percentage decision (Now) for any claim referencing the fund specifically. Founder-idea-first item.
-
-## Urgent, not important
-
-*(none currently)*
-
-## Neither
-
-*(none currently)*
+- [ ] **Launch:** go-live checklist, live payments, first real booking. Depends on everything in Next.
+- [ ] **CBT certification:** parked. Hosts are individual businesses and people for now, so CBT isn't the focus.
+- [ ] **Group B ticket-agent commission rate:** deferred to Phase 2 (JP-015).
 
 ---
 
-# Later
+## Revisit when triggered
 
-## Important, not urgent
+These aren't scheduled. Come back to each one when its trigger happens.
 
-- [ ] Launch Process — the final gate: go-live checklist, Xendit live mode, first real booking. — **Depends on:** Admin Panel, Phase IV, Sales Plan, and Marketing Plan (all Next) being substantially complete. Founder-idea-first item, last to detail once the pieces feeding into it exist.
-- [ ] CBT certification — parked, awaiting a founder decision on whether and when to pursue it. Nothing further defined yet.
-- [ ] Ticket Agent commission rate (Group B — festivals/large events) — explicitly deferred to Phase 2 per JP-015, not needed for launch. Not blocking anything in Now or Next.
-- [ ] Experience Data Standard — Identity, Geographic Reality, and Physical Reality sections defining what an Experience record actually needs to contain. Restored to tracking 2026-08-16 — this was real, genuinely lost work: referenced in `docs/00_INDEX.md`, never delivered, never previously reflected anywhere in this tracker. Its old JP-009/010/011 assignment was never actually locked and is not being reused — this gets the next real available JP number when it's actually locked, not a pre-reserved one. — **Flag:** the scouting form already collects much of this ad hoc (Landscape chip-pickers, category-specific questions); this standard would formalize what's already being built rather than starting from nothing.
-- [ ] Language Standard — a locked standard for terminology/language consistency across the platform. Restored to tracking 2026-08-16, same basis as above (old JP-012 assignment never locked, not reused). Relevant now in a way it wasn't when first proposed: the PDPA consent notices are already bilingual (EN/TH), so this has real, current material to draw on rather than being purely speculative.
-- [ ] **Not restored, flagged instead:** three other items from `docs/00_INDEX.md`'s pending list were considered and deliberately left out — Journey Architecture v2 (likely superseded by JP-017's data-model correction, needs founder confirmation before any work resumes, not resumed by default), Platform Knowledge Architecture v1 (deprecated — traces to the discarded "Batch 2" architecture draft investigated and confirmed incorrect), and Booking System Specification (superseded by the real booking-system work already done via JP-014–021). None of these get restored without an explicit founder decision, unlike the two items above.
-
-## Urgent, not important
-
-*(none currently)*
-
-## Neither
-
-*(none currently)*
+- **Supabase cross-border classification and ETA Section 26.** Trigger: the founder's government contact replies. The notices currently assume Singapore hosting counts as cross-border (the safer default).
+- **LINE as a data processor.** Trigger: LINE-based host notifications ship. That needs its own consent line, not a silent notice edit.
+- **Host bank-data guarantee.** Today the notice can truthfully say bank data never touches our systems, because hosts are Xendit MANAGED sub-accounts (JP-021). Trigger: any change of provider or account type. Update the notice **before** the change ships.
+- **DocuSign / Zoho Sign upgrade path.** Trigger: a real signature dispute, or enough scale to justify moving off the in-house mechanism (JP-020).
+- **Map screen-reader equivalence testing (WCAG 1.1.1).** The highest accessibility risk: the non-visual alternative must convey route and spatial relationships, not a flat list. Trigger: the Station View prototype has real content. It blocks production, not prototyping.
 
 ---
 
-# To Revisit Soon
-
-Distinct from Now/Next/Later — these aren't scheduled tasks with a clear next action, they're **trigger-based**: come back to each one when its specific trigger happens, not on any calendar. Grouped here so they don't get silently forgotten once the PDPA thread closes.
-
-- **Government contact's answer on Supabase cross-border classification** — still with Joule, no report back yet. Trigger: when his contact responds. Until then, the consent notices conservatively assume Supabase's Singapore hosting *does* count as a cross-border transfer — the safer default, not a final legal conclusion.
-- **ETA Section 26 "Reliable Electronic Signature" question** — JP-020 explicitly claims Section 9 compliance only, not Section 26; Thai legal commentary is split on whether in-house engineering can meet Section 26 without third-party certification. Trigger: same government-contact conversation as above, or sooner if a real signature dispute ever comes up.
-- **LINE as a data processor** — currently disclosed in the consent notices as "not yet active." Trigger: the moment host-communication automation (booking confirmations, 24hr reminders, revenue summaries via LINE OA, per the Booking System Structure Report §5) actually ships. Needs its own explicit consent line at that point — don't just silently edit the existing notice.
-- **Explorer-facing consent-capture UI** — the notice text exists (Explorer section of the consent notices), but no Explorer-facing product exists yet to build the actual checkbox/signature mechanism into. Trigger: whenever Explorer-facing product work starts.
-- **MANAGED → OWNED sub-account watch** — the host-facing notice's claim that Journey Planner "does not collect or store" bank data is true specifically because Type B hosts are onboarded as MANAGED sub-accounts (JP-021). Trigger: if any host's Xendit sub-account type is ever changed to OWNED, for any reason — the notice becomes inaccurate the moment that happens and must be updated *before* the change ships, not after.
-- **DocuSign / Zoho Sign as a signature upgrade path** — set aside, not ruled out. Trigger: a real dispute that tests the Section 26 question, or scale that justifies moving off the in-house mechanism. DocuSign (Australia data-residency region) and Zoho Sign (India region) remain the two evaluated options if that trigger happens — neither covers Thailand/Singapore directly, so the notice's data-residency disclosure would need updating alongside any switch.
-- **Details View / Living Map screen-reader equivalence testing** — an independent research validation (2026-08-18, 23 sources) flags this as the single highest-risk open item: WCAG 1.1.1 requires a non-visual map alternative to convey landmark, route, *and* spatial relationship — not just a flattened list of stops — and this is unproven until tested with real screen-reader users. Not blocking the current prototype phase; genuinely blocking before production. Trigger: once the Station View prototype has enough real, non-placeholder content to test comprehension against.
-
----
-
-# Revision History
+## Revision history
 
 | Date | Change |
 |---|---|
-| 2026-08-10 | Created. Seeded with the five Critical findings from the Production Readiness Audit (Now / Urgent+Important), the Explorer map/art-direction session (Now / Important), CBT certification (Later, parked), and a link to the Phase IV booking-domain reference list already in the Backlog (Later). |
-| 2026-08-12 | Founder set an explicit immediate sequence: PDPA review (1st) → Explorer map/art-direction session (2nd, reclassified Urgent+Important) → conservation-fund percentage decision (3rd, newly added). Added chargeback/dispute liability as a new Now decision, blocking Admin Panel and Sales Plan. Added JP-018 draft (Administrator Tooling into V1 scope, partially superseding JP-005 — Host Portal stays excluded, unchanged) as a Now item pending founder confirmation and Claude Code commit. Added the V1 Launch Path to Next/Later: Admin Panel Build, Phase IV Booking System Implementation (moved up from Later), Sales Plan, Marketing Plan, and Launch Process — each blocked or sequenced per the dependencies noted inline. |
-| 2026-08-14 | PDPA review's substantive work marked done: notices drafted (EN/TH, host + Explorer) and independently verified across two research passes; JP-018 confirmed locked (commit `efe9dff`); JP-019–021 (retention policy, consent mechanism, Type B bank-data handling) drafted and staged. Art-direction session moves up to 1st in the sequence, conservation-fund decision to 2nd. Added a new Important/not-urgent item: supplying the 4 remaining inputs (legal entity name, LINE ID, contact email, Thai translation review) needed before the consent notices and consent-capture UI can go live — explicitly non-blocking for everything else, per founder direction. |
-| 2026-08-14 (cont.) | Added a new **To Revisit Soon** section — trigger-based follow-ups distinct from scheduled Now/Next/Later work: the government contact's cross-border/Section 26 answer, LINE's processor status once automation ships, the Explorer-facing consent UI once that product exists, a standing watch on the MANAGED-sub-account guarantee, and DocuSign/Zoho Sign as a shelved signature upgrade path. Documented so the PDPA thread can close without any of these silently dropping. |
-| 2026-08-16 | Reviewing an old ChatGPT/Codex-era export surfaced `docs/00_INDEX.md`, which had gone stale — it referenced JP-007/008 for decisions that collided with what those numbers actually became in `bootstrap/08_DECISION_LOG.md`, among other drift. Corrected separately (see `docs/00_INDEX.md` revision history). Two genuinely lost, not-yet-superseded items restored to this tracker: Experience Data Standard and Language Standard, both under Later/Important-not-urgent, neither with a pre-assigned JP number. Three other items from the same index (Journey Architecture v2, Platform Knowledge Architecture v1, Booking System Specification) were deliberately left out as likely superseded or fabrication-adjacent — flagged, not restored, pending founder confirmation. Founder confirmed Codex (OpenAI) is retired from this project; Claude Cowork now covers indexing/documentation work of this kind going forward. |
-| 2026-08-18 | Explorer map/art-direction design session marked Done — JP-022 through JP-026 locked in an extended Claude Design session; JP-027 (Journey Day navigation pattern) locked as a related follow-on outside Claude Design. An independent research validation (23 sources, accessibility/UX/ethics) found no contradictions with locked principles, three refinements, and one build-blocking evidence gap, added to To Revisit Soon. Three new Important/not-urgent Now items added reflecting actual current Claude Design work: wiring the Station View prototype in, fixing known-stale readme content plus re-pulling three lost images, and completing icon-system integration. |
+| 2026-08-10 → 2026-08-18 | See `archive/BUILD_TRACKER-2026-08-18.md`. |
+| 2026-11-25 | Rewritten for JP-029 to JP-033 and the docs reorganization. Removed finished items (now in the archived copy). Removed the stale "lock JP-019–021" item, since they are locked. Added the payment-provider, refund, JP-028 and reviews decisions; company registration and legal research; the 8 V1 specs; design-system readme drift. Experience Data Standard and Language Standard moved into the spec list. Booking, Host Calendar and Admin are now V1 work. |

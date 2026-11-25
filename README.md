@@ -1,24 +1,38 @@
 # Journey Planner
 
-Journey Planner is an independent repository for defining and guiding the Journey Planner product from its foundation documents before application code exists.
+A journey-planning platform for travel across Thailand with its own booking marketplace. Travellers answer a few questions about their trip, get an editable draft Journey built from verified places and experiences, and book stays, reservations and day trips through the platform. The platform earns a commission on each booking.
 
-## Bootstrap Pack
+**Start here. Read in this order (about 30 minutes):**
 
-The Bootstrap Pack in `bootstrap/` is the project authority for early product, creative, engineering, roadmap, decision, backlog, and glossary work. The numbered documents must remain intact and should not be rewritten, shortened, or reorganized casually.
+| # | Document | What it answers |
+|---|---|---|
+| 1 | [docs/PRODUCT.md](docs/PRODUCT.md) | What we're building, for whom, what V1 includes, open questions |
+| 2 | [docs/DECISION_LOG.md](docs/DECISION_LOG.md) | Every locked decision (JP-001 to JP-033). The highest authority. |
+| 3 | [BUILD_TRACKER.md](BUILD_TRACKER.md) | What's being worked on now and next |
+| 4 | [docs/HOW_WE_WORK.md](docs/HOW_WE_WORK.md) | How decisions get made and how code gets built |
+| 5 | [docs/AI_WORKING_DISCIPLINE.md](docs/AI_WORKING_DISCIPLINE.md) | Rules every AI session must follow |
 
-## Required Reading Order
+**Reference**
 
-Every contributor must begin with `bootstrap/00_START_HERE.md`.
+- [docs/ROADMAP.md](docs/ROADMAP.md): the phases to launch and beyond
+- [docs/GLOSSARY.md](docs/GLOSSARY.md): the official terms (Journey, Experience, Host Calendar…)
+- [docs/BACKLOG.md](docs/BACKLOG.md): parked ideas, including ~28 booking design candidates
+- [docs/specs/](docs/specs/README.md): feature specifications (which exist, which are still to write)
+- [docs/legal/](docs/legal/PDPA_CONSENT_NOTICES.md): PDPA consent notices (draft, not for use)
+- [design-system/](design-system/readme.md): tokens, components and Explorer UI kits (JP-022 to JP-027)
+- [prototypes/](prototypes/README.md): the working Scout scouting form (Supabase)
+- [archive/](archive/README.md): retired documents, kept for history only
 
-After that, read the numbered Bootstrap documents in order:
+**Source-of-truth order when documents disagree:**
+1. The latest locked decision in the Decision Log
+2. `docs/PRODUCT.md`
+3. Specifications in `docs/specs/`
+4. Everything else
 
-1. `bootstrap/01_WORKING_PROTOCOL.md`
-2. `bootstrap/02_PRODUCT_CONTRACT.md`
-3. `bootstrap/03_PROJECT_PHILOSOPHY.md`
-4. `bootstrap/04_CREATIVE_FRAMEWORK.md`
-5. `bootstrap/05_ENGINEERING_CONTRACT.md`
-6. `bootstrap/06_AI_AGENT_GUIDE.md`
-7. `bootstrap/07_PROJECT_ROADMAP.md`
-8. `bootstrap/08_DECISION_LOG.md`
-9. `bootstrap/09_BACKLOG.md`
-10. `bootstrap/10_PROJECT_GLOSSARY.md`
+Conversation history is never a source of truth. Anything important must land in these documents.
+
+**Current state (2026-11-25):**
+- Docs and design system: in place
+- Scouting form: live on Supabase
+- Explorer app, Host Calendar, Admin and booking: not built yet
+- Next: write the specs (see the Build Tracker)
