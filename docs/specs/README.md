@@ -11,7 +11,7 @@ Feature specs turn locked decisions into buildable detail. Use [TEMPLATE.md](TEM
 | 1 | **Experience Data Standard**: what every Experience record must contain, per category, including what's needed for booking | JP-007, JP-030 | `prototypes/supabase-schema.sql`, scouting-form fields and category questions | — |
 | 2 | **Journey & Data Model**: Journey, Day, Item, preferences and overrides, Availability Slot, Booking tables | JP-004, JP-007, JP-017, JP-032 | `docs/PRODUCT.md` §4 | — |
 | 3 | **Preference Questionnaire & Draft Journey**: the questions, per-day overrides, how a draft is built and explained | JP-032, JP-008, JP-023 | Compass mockups in `design-system/ui_kits/explorer/` (8 questions) and `explorer-proposal/` (5 questions); JP-028 draft | JP-028 (segment), generation approach |
-| 4 | **Booking System**: availability models, holds, lifecycle, request windows, cancellations | JP-017, JP-030, JP-031 | ~28 candidate ideas in `docs/BACKLOG.md` | Refund policy |
+| 4 | **Booking System**: availability models, holds, lifecycle, request windows, cancellations | JP-017, JP-030, JP-031, JP-035 | ~28 candidate ideas in `docs/BACKLOG.md` | — |
 | 5 | **Payments & Payouts**: provider, commission split, payouts, chargebacks, financial records | JP-034, JP-015, JP-033 | `docs/PRODUCT.md` §6 and §9 | Stripe Thailand confirmations, chargeback liability |
 | 6 | **Host Calendar** | JP-031, JP-020 | — | Spec 4 |
 | 7 | **Admin Panel** | JP-018 | Build Tracker notes | Spec 5, reviews question |

@@ -36,6 +36,8 @@ These are the official terms. Use them in docs, code and specs. Don't invent new
 
 **Booking.** A reservation of one or more Availability Slots, paid through the platform. It is the business's revenue engine (JP-029).
 
+**Cancellation policy.** The refund terms a Host picks for each Experience: Flexible, Moderate or Strict. The policy is saved with each Booking when it's made (JP-035).
+
 **Commission.** The platform's 15% share of a Group A booking, taken automatically at payment (JP-015).
 
 **Group A / Group B.**

@@ -1098,6 +1098,56 @@ Superseded By: None
 
 ---
 
+## JP-035 — Cancellation and Refund Policy
+
+Category: Business / Product
+
+Status: Locked
+
+Date: 2026-11-25
+
+Decision:
+
+1. **Explorer cancels: Host picks a preset.** For each bookable Experience, the Host chooses one of three platform-defined cancellation policies:
+
+   | Preset | Full refund | 50% refund | No refund |
+   |---|---|---|---|
+   | **Flexible** | Until 24 hours before start | — | Within 24 hours |
+   | **Moderate** | Until 5 days before | Until 24 hours before | Within 24 hours |
+   | **Strict** | Until 14 days before | Until 7 days before | Within 7 days |
+
+   A no-show gets no refund under every preset. The policy in force when the Explorer books is saved with the Booking; a Host changing their preset later never affects existing bookings.
+
+2. **Commission is refunded proportionally.** When an Explorer gets money back, the platform returns the same share of its 15% application fee (JP-015). A 50% refund returns 50% of the fee.
+
+3. **Host cancels: full refund.** If a Host cancels a confirmed booking, the Explorer gets 100% back and the platform returns its whole fee. The cancellation is recorded against the Host; repeated Host cancellations lead to Admin review and possible removal.
+
+4. **Weather and safety: the Explorer chooses.** If the Host or the platform calls off an Experience because it is unsafe or impossible (storm, flood, park closure), the Explorer chooses either a full refund or a free move to another available date. If the Explorer cancels because of weather worries but the Experience isn't called off, the normal preset applies.
+
+5. **Refunds are automatic where the rules are clear.** Refunds under rules 1–4 are calculated by the system and returned to the original payment method. Anything outside them (disputes, exceptions, goodwill) goes to the Administrator (JP-018).
+
+Reason:
+
+Presets give Explorers the same familiar wording on every Experience and let Hosts with different risks (a homestay versus a one-hour workshop) protect themselves without writing their own terms. Refunding commission proportionally means a Host never pays commission on money they didn't keep, which matters for the Trust principle and for recruiting Hosts. Full refunds on Host cancellations and a refund-or-reschedule choice on safety cancellations keep the Explorer's Journey intact when something goes wrong that isn't their fault.
+
+Impact:
+
+- The Booking spec (Spec 4) must cover: preset selection per Experience, storing the policy on each Booking, the refund calculation, Host-cancellation tracking, and the reschedule flow for safety cancellations.
+- The Host Calendar (JP-031) needs a way for a Host to cancel a booking and to call off a date for safety, with a reason.
+- Under Stripe direct charges (JP-034), refunds come out of the Host's Stripe account. Stripe does not return its own processing fee on a refund, so on a refunded booking the Host loses that fee unless the platform chooses to cover it. Settle this together with chargeback liability, and say it plainly in the host agreement and Sales Plan.
+- Experiences with no payment (free Optional Reservations, Informational Only) have no refund rules; a Host or Explorer can simply cancel.
+- To confirm with Stripe Thailand, not assumed: that PromptPay payments can be refunded through Stripe, and how long refunds take to reach the Explorer.
+- Thai consumer-protection rules on cancellations should be checked as part of the pre-launch legal research.
+
+Related Documents:
+
+- docs/PRODUCT.md §9
+- docs/DECISION_LOG.md (JP-015, JP-018, JP-031, JP-034)
+
+Superseded By: None
+
+---
+
 # Adding New Decisions
 
 New entries should only be added after an explicit locked approval.
