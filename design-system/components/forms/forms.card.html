@@ -1,0 +1,23 @@
+<!-- @dsCard group="Components" viewport="700x360" name="Forms" subtitle="Input, Select, Checkbox, Radio, Switch" -->
+<html><head><link rel="stylesheet" href="../../styles.css"><script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script><script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script><script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script><script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;font-family:var(--font-body);background:var(--surface-page);padding:20px;box-sizing:border-box;display:flex;gap:28px;flex-wrap:wrap}</style></head>
+<body><div id="root"></div>
+<script type="text/babel">
+const { Input, Select, Checkbox, Radio, Switch } = window.JPProductFoundationJourneyPlannerDesignSystem_e30f18;
+function Demo(){
+const [c,setC]=React.useState(true);const [r,setR]=React.useState("calm");const [s,setS]=React.useState(false);
+return (<>
+<div style={{display:"flex",flexDirection:"column",gap:14,width:220}}>
+<Input label="Journey name" placeholder="Northern Thailand Loop" />
+<Input label="Nights" error="Enter at least 1 night" />
+<Select label="Transport" options={[{value:"walk",label:"Walking"},{value:"car",label:"Car"}]} />
+</div>
+<div style={{display:"flex",flexDirection:"column",gap:12}}>
+<Checkbox label="Prepare for offline use" checked={c} onChange={setC}/>
+<Radio name="mood" label="Calm & restorative" checked={r==="calm"} onChange={()=>setR("calm")}/>
+<Radio name="mood" label="Active & outdoors" checked={r==="active"} onChange={()=>setR("active")}/>
+<Switch label="Reduced motion" checked={s} onChange={setS}/>
+</div>
+</>);}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo/>);
+</script></body></html>

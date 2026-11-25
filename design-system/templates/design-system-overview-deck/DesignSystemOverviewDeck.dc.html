@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Design System Overview Deck" description="Slide deck presenting the JP Product Foundation design system" -->
+<helmet><script src="./ds-base.js"></script></helmet>
+<x-import component-from-global-scope="deck-stage" from="./deck-stage.js" width="1920" height="1080" hint-size="100%,100%" data-uneditable="">
+
+<section data-label="Title" style="background:#123C32;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:0 140px">
+<div style="font-family:var(--font-display);font-weight:600;font-size:96px;color:#F3F7F1;line-height:1.05">Journey Planner</div>
+<div style="font-family:var(--font-ui);font-size:36px;color:#A6D9C9;margin-top:28px">JP Product Foundation — Design System</div>
+<div style="font-family:'Space Mono',monospace;font-size:24px;color:#6FAFA6;margin-top:64px">Locked structure, components, states — August 2026</div>
+</section>
+
+<section data-label="Position" style="background:#F3F7F1;display:flex;flex-direction:column;justify-content:center;padding:0 160px">
+<div style="font-family:var(--font-ui);font-size:28px;color:#7C7768;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:32px">What Journey Planner is</div>
+<div style="font-family:var(--font-display);font-weight:600;font-size:58px;color:#123C32;line-height:1.3;max-width:1400px">A structured, saved, trusted, editable Journey workspace — not a general AI itinerary generator.</div>
+<div style="font-family:'Space Mono',monospace;font-size:26px;color:#2F6F4E;margin-top:48px">Journey → Journey Day → Itinerary Item</div>
+</section>
+
+<section data-label="Locked Decisions" style="background:#F3F7F1;display:flex;flex-direction:column;padding:100px 140px">
+<div style="font-family:var(--font-ui);font-weight:600;font-size:44px;color:#123C32;margin-bottom:64px">Three decisions are genuinely locked</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;background:#FFFFFF;border-radius:24px;border:1px solid #A6A09280;padding:44px;display:flex;flex-direction:column;gap:20px">
+<div style="font-family:'Space Mono',monospace;font-size:22px;color:#2F6F4E">JP-022</div>
+<div style="font-family:var(--font-ui);font-weight:600;font-size:32px;color:#123C32">Tropical Living Field Guide</div>
+<div style="font-family:var(--font-ui);font-size:26px;color:#4A5C55;line-height:1.5">Calm, shaded-garden atmosphere with a Marauder's-Map-style progressive reveal. Restrained illustration, geographic truth.</div>
+</div>
+<div style="flex:1;background:#FFFFFF;border-radius:24px;border:1px solid #A6A09280;padding:44px;display:flex;flex-direction:column;gap:20px">
+<div style="font-family:'Space Mono',monospace;font-size:22px;color:#2F6F4E">JP-023</div>
+<div style="font-family:var(--font-ui);font-weight:600;font-size:32px;color:#123C32">Dual-layer weather pattern</div>
+<div style="font-family:var(--font-ui);font-size:26px;color:#4A5C55;line-height:1.5">Precise data plus one warm contextual phrase — never precision traded for mood, and never the reverse.</div>
+</div>
+<div style="flex:1;background:#FFFFFF;border-radius:24px;border:1px solid #A6A09280;padding:44px;display:flex;flex-direction:column;gap:20px">
+<div style="font-family:'Space Mono',monospace;font-size:22px;color:#2F6F4E">JP-024</div>
+<div style="font-family:var(--font-ui);font-weight:600;font-size:32px;color:#123C32">Mobile-first, desktop intentional</div>
+<div style="font-family:var(--font-ui);font-size:26px;color:#4A5C55;line-height:1.5">Mobile is the starting point. Desktop is a properly designed experience, never a stretched mobile layout.</div>
+</div>
+</div>
+</section>
+
+<section data-label="Palette" style="background:#F3F7F1;display:flex;flex-direction:column;padding:100px 140px 0">
+<div style="font-family:var(--font-ui);font-weight:600;font-size:44px;color:#123C32;margin-bottom:16px">The working palette</div>
+<div style="font-family:var(--font-ui);font-size:24px;color:#7C7768;margin-bottom:56px">JP-022, locked direction — pending accessibility contrast validation</div>
+<div style="display:flex;flex:1">
+<div style="flex:1;background:#2F6F4E;display:flex;align-items:flex-end;padding:28px;font-family:'Space Mono',monospace;font-size:20px;color:#F3F7F1">Canopy Green</div>
+<div style="flex:1;background:#123C32;display:flex;align-items:flex-end;padding:28px;font-family:'Space Mono',monospace;font-size:20px;color:#F3F7F1">Forest Shade</div>
+<div style="flex:1;background:#6FAFA6;display:flex;align-items:flex-end;padding:28px;font-family:'Space Mono',monospace;font-size:20px;color:#123C32">Pond Teal</div>
+<div style="flex:1;background:#B87955;display:flex;align-items:flex-end;padding:28px;font-family:'Space Mono',monospace;font-size:20px;color:#F3F7F1">Clay Terracotta</div>
+<div style="flex:1;background:#6B4A34;display:flex;align-items:flex-end;padding:28px;font-family:'Space Mono',monospace;font-size:20px;color:#F3F7F1">Weathered Wood</div>
+<div style="flex:1;background:#A6A092;display:flex;align-items:flex-end;padding:28px;font-family:'Space Mono',monospace;font-size:20px;color:#123C32">Path Stone</div>
+<div style="flex:1;background:#C89B3C;display:flex;align-items:flex-end;padding:28px;font-family:'Space Mono',monospace;font-size:20px;color:#123C32">Sunlit Ochre</div>
+</div>
+</section>
+
+<section data-label="Type and Spacing" style="background:#FFFFFF;display:flex;padding:100px 140px">
+<div style="flex:1;display:flex;flex-direction:column;gap:40px;justify-content:center">
+<div style="font-family:var(--font-display);font-weight:600;font-size:64px;color:#123C32">Lora</div>
+<div style="font-family:var(--font-ui);font-weight:600;font-size:48px;color:#123C32">Noto Sans Thai</div>
+<div style="font-family:'Space Mono',monospace;font-size:38px;color:#123C32">Space Mono</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:24px;border-left:1px solid #A6A09280;padding-left:80px">
+
+<div style="font-family:var(--font-ui);font-size:26px;color:#4A5C55">Noto Sans Thai — every operational interface string</div><div style="font-family:var(--font-ui);font-size:26px;color:#4A5C55">Lora — evocative moments only: Journey names, big headers</div>
+<div style="font-family:var(--font-ui);font-size:26px;color:#4A5C55">Space Mono — distances, dates, confirmation codes</div>
+<div style="font-family:var(--font-ui);font-size:24px;color:#B87955;margin-top:24px">Placeholder pairing — no real typography supplied yet</div>
+</div>
+</section>
+
+<section data-label="State Principle" style="background:#F3F7F1;display:flex;flex-direction:column;justify-content:center;padding:0 140px;gap:56px">
+<div style="font-family:var(--font-ui);font-weight:600;font-size:44px;color:#123C32">Color reinforces meaning. It never carries it alone.</div>
+<div style="display:flex;gap:32px">
+<div style="display:flex;align-items:center;gap:14px;padding:18px 32px;border-radius:999px;background:#DCEEE3;color:#2F6F4E;border:1px solid #2F6F4E;font-family:var(--font-ui);font-size:28px"><span style="width:14px;height:14px;border-radius:50%;background:#2F6F4E"></span>Ready</div>
+<div style="display:flex;align-items:center;gap:14px;padding:18px 32px;border-radius:999px;background:#F3E7CC;color:#8a6a29;border:1.5px dashed #8a6a29;font-family:var(--font-ui);font-size:28px"><span style="width:14px;height:14px;border-radius:50%;background:#C89B3C"></span>Needs Attention</div>
+<div style="display:flex;align-items:center;gap:14px;padding:18px 32px;border-radius:999px;background:#E7EEE3;color:#7C7768;border:1px solid #A6A09280;font-family:var(--font-ui);font-size:28px"><span style="width:14px;height:14px;border-radius:50%;background:#7C7768"></span>Exploring</div>
+</div>
+<div style="background:#F3E7CC;border-radius:24px;padding:36px 44px;max-width:640px">
+<div style="font-family:var(--font-ui);font-weight:600;font-size:34px;color:#123C32">32°C</div>
+<div style="font-family:var(--font-ui);font-size:26px;color:#4A5C55;margin-top:8px">Sticky by midday — good for an early waterfall visit, rest after lunch.</div>
+</div>
+</section>
+
+<section data-label="Action Card Pattern" style="background:#FFFFFF;display:flex;flex-direction:column;justify-content:center;padding:0 140px;gap:48px">
+<div style="font-family:var(--font-ui);font-weight:600;font-size:44px;color:#123C32">The Action Card pattern</div>
+<div style="font-family:var(--font-ui);font-size:26px;color:#7C7768">What happened → why it matters → what to do → current status</div>
+<div style="background:#FFFFFF;border:1px solid #8a6a29;border-left:6px solid #8a6a29;border-radius:20px;padding:40px 48px;max-width:900px">
+<div style="font-family:var(--font-ui);font-weight:600;font-size:32px;color:#123C32;margin-bottom:14px">Indigo weaving requires booking.</div>
+<div style="font-family:var(--font-ui);font-size:26px;color:#4A5C55;margin-bottom:24px">Journey Day 4 cannot become Ready until the host confirms.</div>
+<div style="display:flex;justify-content:space-between;align-items:center">
+<div style="font-family:var(--font-ui);font-size:22px;color:#7C7768">Waiting for provider — updated 12 minutes ago</div>
+<div style="background:#F3E7CC;color:#8a6a29;border-radius:999px;padding:14px 32px;font-family:var(--font-ui);font-size:24px">Continue booking</div>
+</div>
+</div>
+</section>
+
+<section data-label="Components" style="background:#F3F7F1;display:flex;flex-direction:column;padding:100px 140px">
+<div style="font-family:var(--font-ui);font-weight:600;font-size:44px;color:#123C32;margin-bottom:64px">Fifteen components, four groups</div>
+<div style="display:flex;gap:40px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<div style="font-family:'Space Mono',monospace;font-size:22px;color:#2F6F4E">Core</div>
+<div style="font-family:var(--font-ui);font-size:28px;color:#123C32">Button</div>
+<div style="font-family:var(--font-ui);font-size:28px;color:#123C32">IconButton</div>
+<div style="font-family:var(--font-ui);font-size:28px;color:#123C32">Badge</div>
+<div style="font-family:var(--font-ui);font-size:28px;color:#123C32">Tag</div>
+<div style="font-family:var(--font-ui);font-size:28px;color:#123C32">Card</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<div style="font-family:'Space Mono',monospace;font-size:22px;color:#2F6F4E">Forms</div>
+<div style="font-family:var(--font-ui);font-size:28px;color:#123C32">Input</div>
+<div style="font-family:var(--font-ui);font-size:28px;color:#123C32">Select</div>
+<div style="font-family:var(--font-ui);font-size:28px;color:#123C32">Checkbox</div>
+<div style="font-family:var(--font-ui);font-size:28px;color:#123C32">Radio</div>
+<div style="font-family:var(--font-ui);font-size:28px;color:#123C32">Switch</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<div style="font-family:'Space Mono',monospace;font-size:22px;color:#2F6F4E">Feedback</div>
+<div style="font-family:var(--font-ui);font-size:28px;color:#123C32">Toast</div>
+<div style="font-family:var(--font-ui);font-size:28px;color:#123C32">Tooltip</div>
+<div style="font-family:var(--font-ui);font-size:28px;color:#123C32">Dialog</div>
+<div style="font-family:var(--font-ui);font-size:28px;color:#123C32">ActionCard *</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<div style="font-family:'Space Mono',monospace;font-size:22px;color:#2F6F4E">Navigation</div>
+<div style="font-family:var(--font-ui);font-size:28px;color:#123C32">Tabs</div>
+<div style="font-family:var(--font-ui);font-size:22px;color:#B87955;margin-top:40px">* intentional addition — a locked content pattern, not a standard primitive</div>
+</div>
+</div>
+</section>
+
+<section data-label="UI Kit" style="background:#123C32;display:flex;flex-direction:column;padding:100px 140px">
+<div style="font-family:var(--font-ui);font-weight:600;font-size:44px;color:#F3F7F1;margin-bottom:16px">The Explorer click-through kit</div>
+<div style="font-family:var(--font-ui);font-size:26px;color:#A6D9C9;margin-bottom:56px">Mobile-first, with an intentional desktop composition for Journeys and Journey Day</div>
+<div style="display:flex;gap:28px;flex:1">
+<div style="flex:1;background:#1B4E41;border-radius:20px;display:flex;align-items:flex-end;padding:28px;font-family:var(--font-ui);font-size:26px;color:#F3F7F1">Discovery landing</div>
+<div style="flex:1;background:#1B4E41;border-radius:20px;display:flex;align-items:flex-end;padding:28px;font-family:var(--font-ui);font-size:26px;color:#F3F7F1">Journey Compass</div>
+<div style="flex:1;background:#1B4E41;border-radius:20px;display:flex;align-items:flex-end;padding:28px;font-family:var(--font-ui);font-size:26px;color:#F3F7F1">Experience Information</div>
+<div style="flex:1;background:#1B4E41;border-radius:20px;display:flex;align-items:flex-end;padding:28px;font-family:var(--font-ui);font-size:26px;color:#F3F7F1">Journeys list</div>
+<div style="flex:1;background:#1B4E41;border-radius:20px;display:flex;align-items:flex-end;padding:28px;font-family:var(--font-ui);font-size:26px;color:#F3F7F1">Journey Day</div>
+</div>
+</section>
+
+<section data-label="Open Questions" style="background:#F3F7F1;display:flex;flex-direction:column;justify-content:center;padding:0 140px;gap:28px">
+<div style="font-family:var(--font-ui);font-weight:600;font-size:44px;color:#123C32;margin-bottom:20px">Still open — do not build against these as settled</div>
+<div style="font-family:var(--font-ui);font-size:30px;color:#4A5C55">Whether accommodation is ever booked through the platform itself</div>
+<div style="font-family:var(--font-ui);font-size:30px;color:#4A5C55">The route/travel-time calculation architecture</div>
+<div style="font-family:var(--font-ui);font-size:30px;color:#4A5C55">Final typography, motion system, and color tokens</div>
+<div style="font-family:var(--font-ui);font-size:30px;color:#4A5C55">The three-surface Station View / Inspector / Details View model</div>
+</section>
+
+<section data-label="Closing" style="background:#123C32;display:flex;flex-direction:column;justify-content:center;padding:0 140px">
+<div style="font-family:var(--font-display);font-weight:600;font-size:58px;color:#F3F7F1;line-height:1.3;max-width:1400px">Help us lock down the color tokens, real typography, and the icon system.</div>
+<div style="font-family:var(--font-ui);font-size:28px;color:#A6D9C9;margin-top:48px">JP Product Foundation — Journey Planner Design System</div>
+</section>
+
+</x-import>
+</x-dc>
+</body>
+</html>

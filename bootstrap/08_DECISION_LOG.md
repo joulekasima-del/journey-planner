@@ -835,6 +835,57 @@ Superseded By: None
 
 ---
 
+## JP-027 — Journey Day Navigation: Bookmark, Not Tracker
+
+Category: Creative / Product
+
+Status: Locked
+
+Date: 2026-08-18
+
+Decision:
+
+Journey Day navigation functions as a notebook bookmark, not a progress tracker.
+Day pills let the Explorer open any Journey Day independently, each carrying a
+small readiness-status dot using the existing semantic tokens (Verified,
+Attention, Neutral — JP-026). No connecting line, percentage, streak, or
+completion sequence exists between days. Days are independent pages the
+Explorer can open in any order, not steps in a required traversal.
+
+Reason:
+
+Surfaced while designing the Station View day-selection component: an early
+rail-based "progress" variant was proposed, using the same visual grammar as
+flight trackers and fitness apps (a connecting line, a marker's position
+implying how far through the journey the Explorer is). On reflection against
+the platform's actual identity — an operational planning notebook, not a
+live-tracking companion — that variant was rejected. It implied linear motion
+and completion pressure even without a percentage or streak attached, which
+works against the project's standing no-gamification principle more subtly
+than an obvious points system would, but no less really. The bookmark framing
+was chosen instead because it matches how a physical planner actually works:
+a ribbon or dog-ear marks where you are; it doesn't imply the earlier pages
+are "more complete" than the later ones.
+
+Impact:
+
+Applies to the Journey Day navigation component specifically (the day-pill
+row already present in the Station View prototype work). Does not introduce
+new tokens or components — reuses the semantic-status dots from JP-026
+directly. Establishes a reusable filter for future components: any proposed
+UI element should be checked against whether it describes an independent
+page (fits the platform) or implies motion/sequence through a journey
+(doesn't), rather than being decided case-by-case on aesthetics alone.
+
+Related Documents:
+
+- 08_DECISION_LOG.md (JP-026)
+- Independent Validation Report — Journey Planner Research Handoff (accessibility/ethics research session, 2026-08-18)
+
+Superseded By: None
+
+---
+
 # Adding New Decisions
 
 New entries should only be added after an explicit locked approval.

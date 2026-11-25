@@ -1,0 +1,22 @@
+/* Semantic interface color layer — locked JP-026. Distinct from the JP-022 illustrated-world
+   palette (tokens/colors.css --canopy-green etc). Six roles, each with a text variant (>=4.5:1 on Mist White/white), a base/icon variant
+   (>=3:1, for borders/icons/dots), and a light bg wash. Every role is meant to pair with an
+   icon or shape per state — never color alone. */
+:root{
+--semantic-verified-text:#1E4FC2;/* @kind color */
+--semantic-verified-base:#3568E0;/* @kind color */
+--semantic-verified-bg:#E2EAFB;/* @kind color */
+--semantic-attention-text:#8A4B0B;/* @kind color */
+--semantic-attention-base:#B4630F;/* @kind color */
+--semantic-attention-bg:#F6E9DA;/* @kind color */
+--semantic-critical-text:#A32B22;/* @kind color */
+--semantic-critical-base:#C93C30;/* @kind color */
+--semantic-critical-bg:#F8E2DF;/* @kind color */
+--semantic-proposal-text:#5B2FAE;/* @kind color */
+--semantic-proposal-base:#7C4DDC;/* @kind color */
+--semantic-proposal-bg:#EDE6FA;/* @kind color */
+--semantic-neutral-text:#454E58;/* @kind color */
+--semantic-neutral-base:#647082;/* @kind color */
+--semantic-neutral-bg:#E7E9EC;/* @kind color */
+--semantic-focus-ring:#3568E0;/* @kind color */
+}
