@@ -68,7 +68,7 @@ activity you're offering, and photographs or descriptions you provide.
 
 If you begin receiving bookings through the platform, you will separately
 complete identity verification (KYC) and provide your bank details directly
-through Xendit's own onboarding flow — not through us. See "Bank and
+through Stripe's own onboarding flow — not through us. See "Bank and
 payment information" below for why this distinction matters.
 
 ### Why we collect it
@@ -82,7 +82,7 @@ platform.
 ### Bank and payment information
 
 We do not collect or store your bank account details. When you're onboarded
-to receive bookings, Xendit — our payment infrastructure provider — invites
+to receive bookings, Stripe — our payment infrastructure provider — invites
 you directly to complete your own KYC and banking details on their platform,
 not ours. This is true specifically because of how your account is
 configured on our side; if that configuration ever changes, we will update
@@ -103,7 +103,7 @@ pending final confirmation — see Open Questions above.]
 
 ### Who else sees your information
 
-- **Xendit** (payment processing and your own KYC/banking, directly with you)
+- **Stripe** (payment processing and your own KYC/banking, directly with you)
 - **Supabase** (our database and hosting provider)
 - **LINE** — not currently used to contact you. If we begin sending
   booking confirmations or reminders via LINE in the future, we will ask
@@ -168,7 +168,7 @@ Questions above.]
 
 ### Who else sees your information
 
-- **Xendit** (payment processing, only if you make a booking)
+- **Stripe** (payment processing, only if you make a booking)
 - **Supabase** (our database and hosting provider)
 
 ### Your rights

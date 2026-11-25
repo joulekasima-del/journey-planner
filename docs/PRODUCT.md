@@ -69,7 +69,7 @@ Hosts keep availability accurate through the Host Calendar (JP-031). The detaile
 |---|---|
 | **Commission:** 15% flat on platform bookings (Group A). Ticket-agent resale for festivals and large events (Group B) is deferred to Phase 2. | Locked, JP-015 |
 | **Entity:** Thai limited company, registered before the first real booking | Locked, JP-033 |
-| **Payments:** Xendit xenPlatform with split fees; hosts onboard as MANAGED sub-accounts, so the platform never stores bank details | Locked, JP-014 / JP-021. **Under review:** the founder wants to evaluate Stripe instead (see §9). |
+| **Payments:** Stripe Connect with direct charges. Each Host has their own Stripe account and is the seller; the commission is taken as an application fee. A checkout with several Hosts makes one charge per Host. Hosts onboard on Stripe's own pages, so the platform never stores bank details. Cards and PromptPay. | Locked, JP-034 (replaces JP-014 / JP-021). Account types and fee refunds to confirm with Stripe Thailand. |
 | **Conservation / community fund:** a share carved out of the 15% | **Open.** No percentage decided. |
 | **Financial records:** every booking logs date, host, gross amount, commission, net amount and payout reference from day one | Locked (JP-016 → carried into JP-033) |
 
@@ -121,8 +121,8 @@ Each of these needs a locked decision before the related build starts.
 
 | Question | Blocks |
 |---|---|
-| **Payment provider: Xendit or Stripe.** In Thailand, Stripe supports only direct charges: each host is the seller, one charge per host, and there is no "separate charges and transfers". Confirm with Stripe Thailand sales. | Booking checkout, Admin payouts |
-| **Chargeback liability:** host, platform, or split by cause. Depends on the provider. | Admin Panel, host agreement |
+| **Stripe Thailand confirmations** (JP-034): which connected account types a Thai platform can use; that application fees work with THB and PromptPay; whether the fee is refunded with a booking refund. | Payments spec |
+| **Chargeback liability:** under Stripe direct charges the Host's account bears chargebacks by default. Decide whether the platform ever covers a Host's loss, and when. | Admin Panel, host agreement |
 | **Cancellation and refund policy.** Founder: decide after the provider. | Booking spec |
 | **Conservation-fund percentage** | Marketing claims |
 | **Reviews:** excluded from V1 by the original contract, yet JP-018 includes review moderation. Which is it? | Admin Panel |

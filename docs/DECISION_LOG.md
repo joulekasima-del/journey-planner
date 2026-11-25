@@ -441,7 +441,7 @@ Superseded By: None
 
 Category: Business / Technical
 
-Status: Locked
+Status: Superseded
 
 Date: 2026-08-12
 
@@ -463,7 +463,7 @@ Related Documents:
 
 - Booking System Structure Report, August 2026
 
-Superseded By: None
+Superseded By: JP-034 (Stripe Connect replaces Xendit xenPlatform).
 
 ---
 
@@ -645,7 +645,7 @@ Superseded By: None
 
 Category: Business / Technical
 
-Status: Locked
+Status: Superseded
 
 Date: 2026-08-14
 
@@ -667,7 +667,7 @@ Related Documents:
 - Booking System Structure Report
 - 08_DECISION_LOG.md (JP-014)
 
-Superseded By: None
+Superseded By: JP-034 (provider). Its principle carries forward under JP-034: host bank data stays with the payment provider and never reaches our systems.
 
 ---
 
@@ -1047,6 +1047,52 @@ Related Documents:
 
 - docs/legal/PDPA_CONSENT_NOTICES.md
 - 08_DECISION_LOG.md (JP-016, JP-030)
+
+Superseded By: None
+
+---
+
+## JP-034 — Payment Infrastructure: Stripe Connect (Direct Charges)
+
+Category: Business / Technical
+
+Status: Locked
+
+Date: 2026-11-25
+
+Decision:
+
+Journey Planner uses Stripe Connect, registered to the Thai limited company (JP-033), as its payment infrastructure, replacing Xendit xenPlatform.
+
+- Each Host has their own Stripe connected account and is the seller of record for their bookings.
+- Payments use **direct charges** with an application fee: the Explorer pays the Host's account, and the platform's commission (JP-015) is taken automatically as the application fee.
+- A checkout covering Experiences from several Hosts creates **one charge per Host**. The Explorer still sees a single checkout.
+- Hosts complete identity checks and enter bank details on Stripe-hosted onboarding. Journey Planner's systems never receive or store host bank details.
+- Payment methods at launch: cards and PromptPay.
+
+Reason:
+
+The founder chose to move off Xendit. Stripe is the provider the founder prefers to build on, and Stripe Thailand supports Connect, THB payouts and PromptPay.
+
+Impact:
+
+- Supersedes JP-014 (Xendit xenPlatform) and JP-021 (Xendit MANAGED sub-accounts). JP-021's principle carries over: host bank data stays with the provider, never with us. If onboarding ever moves to a platform-collected flow, the host consent notice must be updated first.
+- Stripe Thailand does not support "separate charges and transfers", so the platform cannot take one combined payment and split it. Multi-host checkout must be built as several charges, including handling one Host's charge failing while others succeed.
+- Under direct charges, the Host's account bears refunds and chargebacks by default. The chargeback-liability decision is still open; it now decides whether the platform reimburses Hosts in some cases, by policy.
+- Payouts to Hosts in THB arrive about 7 business days after payment, on Stripe's standard schedule.
+- Needs the Thai limited company (JP-033) to open the platform's Stripe account.
+- To confirm with Stripe Thailand sales before building, not assumed:
+  - which connected account types (Standard / Express) are available to a Thai platform
+  - that application fees on direct charges work as described for THB and PromptPay
+  - whether the platform can refund its application fee on a refund
+- JP-015's 15% commission is unchanged; it is now collected as a Stripe application fee instead of a Xendit Split Fee. JP-018's payout oversight now means Stripe payouts. Neither entry is superseded.
+- Update the PDPA notices and the Build Tracker "Host bank-data guarantee" trigger from Xendit to Stripe.
+
+Related Documents:
+
+- docs/PRODUCT.md §6, §9
+- docs/legal/PDPA_CONSENT_NOTICES.md
+- docs/DECISION_LOG.md (JP-014, JP-015, JP-021, JP-033)
 
 Superseded By: None
 
