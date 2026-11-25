@@ -10,16 +10,15 @@ The live list of what's being worked on, in dependency order. It doesn't replace
 
 ## Now — decisions
 
+- [ ] **Launch region(s)** (JP-028 leaves this open). Research suggests Chiang Mai with Bangkok as the arrival hub, timed for the November–January high season. **Blocks:** inspection plan, Sales Plan.
 - [ ] **Confirm Xendit Thailand details** (JP-036). Ask Xendit: OWNED sub-accounts in Thailand and the identity checks required per Host; splitting one payment across several sub-accounts, and the maximum per payment; holding funds in a sub-account until the platform releases them to the Host's bank; fees per payment method; the chargeback setting required at xenPlatform activation; refund timing, including PromptPay. **Blocks:** Payments spec.
-- [ ] **Lock JP-028** (primary segment), currently a draft in `workspace/01_Handoffs/`. **Blocks:** Questionnaire spec defaults.
-- [ ] **Reviews in V1 or not?** The old contract excluded them, but JP-018 includes review moderation. **Blocks:** Admin spec.
 - [ ] **Conservation-fund percentage** (carve-out from the 15%, JP-015). **Flag:** Trust: no fund claim in marketing without a locked number. **Blocks:** Marketing Plan.
 
 ## Now — specs (order and inputs in `docs/specs/README.md`)
 
-- [ ] Spec 1: Experience Data Standard
+- [ ] Spec 1: Experience Data & Verification Standard (JP-037)
 - [ ] Spec 2: Journey & Data Model
-- [ ] Spec 3: Preference Questionnaire & Draft Journey (needs JP-028)
+- [ ] Spec 3: Preference Questionnaire & Draft Journey (JP-028 locked; English only)
 - [ ] Spec 4: Booking System (unblocked by JP-035)
 - [ ] Spec 8: Language Standard (can run in parallel)
 
@@ -49,7 +48,7 @@ The live list of what's being worked on, in dependency order. It doesn't replace
 
 - [ ] **Spec 5: Payments & Payouts.** Waits on the Xendit Thailand confirmations.
 - [ ] **Spec 6: Host Calendar.** Waits on Spec 4.
-- [ ] **Spec 7: Admin Panel.** Waits on Spec 5 and the reviews decision.
+- [ ] **Spec 7: Admin Panel** (including the registration queue and review moderation). Waits on Spec 5.
 - [ ] **Build the Explorer Planner.** Waits on Specs 1–3.
 - [ ] **Build Booking, Payments, Host Calendar and Admin.** Each waits on its spec.
 - [ ] **Sales Plan:** host acquisition, the marketplace cold-start problem. Payout terms are now settled (JP-036: 85%, weekly, after the Experience); can start once Spec 5 confirms the details.
@@ -79,6 +78,7 @@ These aren't scheduled. Come back to each one when its trigger happens.
 | Date | Change |
 |---|---|
 | 2026-08-10 → 2026-08-18 | See `archive/BUILD_TRACKER-2026-08-18.md`. |
+| 2026-11-25 | JP-028, JP-037, JP-038 locked (launch audience, Host self-registration and inspection, Explorer reviews). Removed the JP-028 and reviews items; added the launch-region decision; Spec 1 now includes the Verification Standard; Spec 3 and Spec 7 unblocked from those decisions. |
 | 2026-11-25 | JP-036 locked (Xendit, booking agent, OWNED sub-accounts). Stripe confirmations replaced by Xendit confirmations; chargeback item removed (settled); Host notice review added; bank-data trigger removed (now a Now item); legal research and Sales Plan updated. |
 | 2026-11-25 | JP-035 locked (refund policy). Spec 4 moved to Now; refund item removed; Stripe confirmations, chargeback item and legal research extended. |
 | 2026-11-25 | JP-034 locked (Stripe). Provider decision replaced by Stripe Thailand confirmations; chargeback, refund, Spec 5 and bank-data trigger updated. |

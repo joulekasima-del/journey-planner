@@ -305,7 +305,7 @@ Related Documents:
 - 02_PRODUCT_CONTRACT.md
 - 07_PROJECT_ROADMAP.md
 
-Superseded By: JP-018 (Administrator clause) and JP-031 (Host clause, partially — a minimal Host Calendar enters Version 1; the full Host Portal stays excluded). The Explorer and Scout clauses remain Locked and unaffected.
+Superseded By: JP-018 (Administrator clause) and JP-031 (Host clause, partially — a minimal Host Calendar enters Version 1; the full Host Portal stays excluded). The Scout clause is renamed Inspector by JP-037. The Explorer clause remains Locked and unaffected.
 
 ---
 
@@ -982,7 +982,7 @@ Related Documents:
 - 07_PROJECT_ROADMAP.md (Phase VI)
 - 08_DECISION_LOG.md (JP-005, JP-020, JP-030)
 
-Superseded By: None
+Superseded By: JP-037, partially: Hosts also register their own place in Version 1, and after verification their changes to place details need Administrator approval. The Host Calendar itself stays as decided here.
 
 ---
 
@@ -1204,6 +1204,138 @@ Related Documents:
 - docs/PRODUCT.md §6, §9
 - docs/legal/PDPA_CONSENT_NOTICES.md
 - docs/DECISION_LOG.md (JP-014, JP-015, JP-018, JP-020, JP-021, JP-029, JP-034, JP-035)
+
+Superseded By: JP-037, rule 4 only: bookable Hosts enter their bank or PromptPay details themselves at registration, and the Inspector confirms identity in person. All other rules remain Locked.
+
+---
+
+## JP-028 — Purpose and Launch Audience: Itineraries Made Easy, English-Speaking Foreign Travellers First
+
+Category: Product / Business
+
+Status: Locked
+
+Date: 2026-11-25
+
+Decision:
+
+1. **Purpose.** Journey Planner exists to help Explorers create the itinerary for their journey across Thailand easily. Planning is the product; booking supports the plan and is how the platform earns (JP-029, JP-036).
+
+2. **Open to everyone.** Anyone can use Journey Planner: foreign tourists, expats, and Thai residents.
+
+3. **Launch focus: foreign tourists and expats.** Version 1 is designed first for:
+   - independent foreign tourists visiting Thailand;
+   - English-speaking expats and long-stayers living in Thailand, who plan weekend and holiday trips and test hosts year-round.
+
+4. **English only at launch.** The interface is in English. Thai place names are shown alongside English. A Thai-language interface, and the Thai domestic traveller features that come with it (LINE, weekend templates, Thai holiday modes), come in a later phase.
+
+Reason:
+
+The market research (2026-11-25) found foreign independent travellers earn about 5–10 times more commission per trip than Thai domestic trips, and their trip shape (long, multi-region, booked online) is exactly what a whole-journey planner does. Expats are small in number but cheap to reach, travel all year, and face the frictions Journey Planner removes (Thai-only hosts, LINE-only booking, no Thai bank account, dual pricing). Both groups can be served in English, so one language keeps Version 1 small. Thai travellers are the largest and most resilient market, so the platform stays open to them and the design leaves room for Thai later.
+
+Impact:
+
+- Replaces the 2026-11-16 JP-028 draft (Western experience seekers).
+- The questionnaire asks travel dates first, and asks whether the Explorer is visiting or living in Thailand; that switches between full-journey and weekend-trip planning.
+- 1–3 day Journeys (expat weekends) and 10+ day multi-region Journeys are both normal cases.
+- Prices shown are the Host's own price; no foreigner markup.
+- Still open, not decided here: launch region(s) (the research suggests Chiang Mai with Bangkok as the arrival hub); when Thai language ships; Chinese or other languages.
+
+Related Documents:
+
+- workspace/reports/Thailand traveller market potential.md
+- docs/PRODUCT.md §1, §2
+- docs/DECISION_LOG.md (JP-029, JP-032, JP-036)
+
+Superseded By: None
+
+---
+
+## JP-037 — Host Self-Registration, Verification Standard and Inspection
+
+Category: Product / Operations
+
+Status: Locked
+
+Date: 2026-11-25
+
+Decision:
+
+1. **Every Host registers themselves.** Any place can register through an online form, including places that need no booking (cafés, viewpoints, markets run by an owner). Registration collects: place details, category, contact, what the Explorer can do there, availability model (JP-030), any licence the law requires for that category, and, for bookable Hosts, the bank account or PromptPay ID for payouts (JP-036).
+
+2. **Registration is free.** Journey Planner earns only its booking commission.
+
+3. **Hidden until verified.** A registered place is not visible to Explorers and cannot go into a Journey until an Inspector has verified it.
+
+4. **Verification Standard.** Journey Planner publishes a written standard for what a verified place must meet, per category: it exists and matches its description, it is safe, it holds the licences the law requires, prices are honest and shown in full, and category-specific rules (for example hygiene for food, animal welfare for animal experiences).
+
+5. **Inspectors verify in person.** An Inspector visits each registered place, checks it against the standard, and confirms the Host's identity. The outcome is **verified** (the place gets the Verified badge and is published) or **not verified** (the Host is told why and can reapply).
+
+6. **Inspectors add public places.** Places nobody owns (waterfalls, beaches, viewpoints, public markets) are added and verified by Inspectors directly.
+
+7. **Verification can lapse.** Places are re-inspected periodically, and after serious complaints. A place that no longer meets the standard loses its badge and is hidden.
+
+Reason:
+
+Self-registration lets supply grow without Journey Planner finding every place itself, and covers every kind of place an itinerary needs, not just bookable ones. In-person inspection against a written standard keeps the "verified information only" principle and answers the trust problems found in the research (scams, unsafe or misleading experiences, unlicensed stays). Free registration removes the main barrier for small hosts.
+
+Impact:
+
+- **Scout becomes Inspector.** The Scout role (JP-005) is renamed Inspector: an internal field operator who inspects registered places against the standard and adds public places.
+- **Supersedes part of JP-031.** In Version 1 a Host also uses the registration form, not only the Host Calendar. After verification, a Host's changes to their place's details go to the Administrator for approval before they show.
+- **Changes JP-036 rule 4.** Bookable Hosts enter their bank or PromptPay details themselves at registration; the Inspector confirms their identity in person. Journey Planner still holds these details (encrypted, Administrator-only).
+- **New spec:** the Verification Standard, written together with the Experience Data Standard (Spec 1).
+- **Inspection capacity is the bottleneck.** With one founder, inspections must be queued and planned by region; the launch region sets where Inspectors work first.
+- The Administrator (JP-018) handles the registration queue, verification outcomes, appeals and lapses.
+- To check in legal research: which licences must be shown for each category (hotel/homestay registration, tour-business licence for day-trip operators).
+- How often re-inspection happens is decided in the Verification Standard spec.
+
+Related Documents:
+
+- docs/PRODUCT.md §3, §8
+- docs/DECISION_LOG.md (JP-005, JP-007, JP-018, JP-030, JP-031, JP-036)
+
+Superseded By: None
+
+---
+
+## JP-038 — Explorer Star Ratings and Reviews in Version 1
+
+Category: Product
+
+Status: Locked
+
+Date: 2026-11-25
+
+Decision:
+
+1. **Stars come from Explorers.** Each verified place shows a 1–5 star average and written reviews from Explorers. The Inspector does not give stars; the Verified badge (JP-037) is pass or fail.
+
+2. **Who can review.** Only signed-in Explorers who actually had the place in their Journey:
+   - for bookable places, after a completed booking (marked "Booked through Journey Planner");
+   - for places that need no booking, after the Journey Day that included it has passed.
+
+3. **New places** show "Verified · No reviews yet" instead of an empty rating.
+
+4. **Moderation.** The Administrator moderates reviews (JP-018): removes abuse, spam and reviews unrelated to the place. Hosts can reply publicly once to each review.
+
+5. **Explorers see both** the Verified badge and the star rating when choosing places and in their Draft Journey.
+
+Reason:
+
+The founder wants Explorers to judge places before building an itinerary. Star ratings from real visitors are the signal travellers already trust and understand; the Verified badge covers safety and honesty, so stars can focus on the experience itself. Limiting reviews to Explorers who had the place in their Journey reduces fake reviews.
+
+Impact:
+
+- Settles the open "Reviews in V1?" question: reviews are in Version 1, overriding the old Product Contract's exclusion.
+- The Booking spec and Journey model need a completed-visit state to unlock reviews.
+- Reviews of places that need no booking cannot prove the Explorer was there; the Administrator watches for abuse, and the rule may be tightened later.
+- Ranking of places in discovery and in the Draft Journey may use ratings; how is decided in the Questionnaire & Draft Journey spec.
+
+Related Documents:
+
+- docs/PRODUCT.md §7, §9
+- docs/DECISION_LOG.md (JP-018, JP-032, JP-037)
 
 Superseded By: None
 

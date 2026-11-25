@@ -22,7 +22,13 @@ These are the official terms. Use them in docs, code and specs. Don't invent new
 
 **Experience.** A verified place, activity, stay, service or event that can be added to a Journey. It is the main content object, collected and verified once and reused by every Journey that includes it (JP-007). Examples: homestay, weaving workshop, guided walk, restaurant, waterfall.
 
-**Verified.** An Experience a Scout has checked in person and published. Only verified Experiences appear publicly or in a Draft Journey.
+**Verified.** An Experience an Inspector has checked in person against the Verification Standard and published. Only verified Experiences appear publicly or in a Draft Journey. Shown to Explorers as the **Verified badge**, which can lapse (JP-037).
+
+**Verification Standard.** The published, per-category criteria a place must meet to be verified: it exists and matches its description, is safe, holds required licences, shows honest full prices, and meets category rules (JP-037).
+
+**Registration.** A Host adding their own place to the platform, free. A registered place stays hidden until verified (JP-037).
+
+**Star rating / Review.** A 1–5 star score and optional text from an Explorer who had the place in their Journey. Moderated by the Administrator; Hosts may reply once (JP-038).
 
 ## Booking
 
@@ -54,7 +60,7 @@ These are the official terms. Use them in docs, code and specs. Don't invent new
 
 **Explorer.** The traveller: the customer.
 
-**Scout.** An internal field operator who collects, verifies and publishes Experiences and onboards Hosts.
+**Inspector.** An internal field operator who inspects registered places against the Verification Standard, confirms Host identity, and adds public places nobody owns. Formerly called Scout (JP-037).
 
 **Host.** The person or business providing an Experience. In Version 1 a Host uses only the Host Calendar (JP-031).
 

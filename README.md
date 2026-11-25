@@ -1,6 +1,6 @@
 # Journey Planner
 
-A journey-planning platform for travel across Thailand with its own booking marketplace. Travellers answer a few questions about their trip, get an editable draft Journey built from verified places and experiences, and book stays, reservations and day trips through the platform. The platform earns a commission on each booking.
+A platform that helps travellers create the itinerary for their journey across Thailand easily (JP-028). Travellers answer a few questions about their trip, get an editable draft Journey built from verified, star-rated places, and book stays, reservations and day trips through the platform, which earns a commission as a booking agent (JP-036). Hosts register themselves; Inspectors verify every place in person (JP-037).
 
 **Start here. Read in this order (about 30 minutes):**
 
