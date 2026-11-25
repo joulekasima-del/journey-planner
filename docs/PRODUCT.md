@@ -27,6 +27,7 @@ It is a journey-planning platform that runs its own booking marketplace. (JP-029
 - **Open to everyone:** foreign tourists, expats and Thai residents can all use Journey Planner. (JP-028)
 - **Launch focus:** independent foreign tourists visiting Thailand, and English-speaking expats and long-stayers living there. (JP-028)
 - **Language:** English only at launch, with Thai place names alongside. A Thai interface and Thai-traveller features come later. (JP-028)
+- **Launch region:** Chiang Mai province (city and day-trip reach). Journeys can include days elsewhere, filled in by the Explorer; only Chiang Mai places are suggested or bookable at launch. Each new region needs a locked decision. (JP-039)
 - **Trip shapes:** multi-region journeys of 10+ days and 1–3 day weekend trips are both normal cases. Basis: `workspace/reports/Thailand traveller market potential.md`.
 
 **Supply side:** Hosts are individual local businesses and people. Community-based tourism (CBT) groups are not the focus for now; they can be listed like any other Host, but nothing in Version 1 is designed around them. (Founder direction, 2026-11-25.)
@@ -132,6 +133,6 @@ Each of these needs a locked decision before the related build starts.
 | **Xendit Thailand confirmations** (JP-036): OWNED sub-accounts in Thailand and the identity checks required per Host; splitting one payment across several sub-accounts, and the maximum per payment; holding funds until the platform releases them; fees per payment method; the chargeback setting at activation; refund timing, including PromptPay. | Payments spec |
 | **Conservation-fund percentage** | Marketing claims |
 | **Questionnaire generation:** rule-based or AI-assisted, and how each choice is explained to the Explorer | Questionnaire spec |
-| **Launch region(s):** where Inspectors work first. Research suggests Chiang Mai with Bangkok as the arrival hub. | Inspection plan, Sales Plan |
+| **Next region after Chiang Mai** (research suggests Bangkok, then Krabi/Phuket) | Expansion |
 | **Re-inspection interval** and the content of the Verification Standard | Verification Standard spec |
 | **Legal and tax research:** VAT on commission only and withholding tax under the agent model (accountant); whether a booking agent selling day trips needs its own tour-business licence or only the Hosts who run them do, accommodation host registration, Digital Platform Services Royal Decree duties, consumer-protection rules on cancellations (JP-035) | Launch |

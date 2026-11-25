@@ -1341,6 +1341,45 @@ Superseded By: None
 
 ---
 
+## JP-039 — Launch Region: Chiang Mai
+
+Category: Product / Operations
+
+Status: Locked
+
+Date: 2026-11-25
+
+Decision:
+
+1. **Chiang Mai province is the first region.** At launch, Inspectors register and verify places only in Chiang Mai province: the city and the places within day-trip reach (for example Mae Rim, Doi Suthep, Doi Inthanon, Mae Taeng, Chiang Dao).
+
+2. **Explorers can still plan a whole trip.** A Journey can include days elsewhere in Thailand (arrival in Bangkok, travel days, other regions), but at launch only Chiang Mai places can be suggested, added from the platform or booked. Days elsewhere are free-text days the Explorer fills in themselves.
+
+3. **The platform says so plainly.** Explorers are told that verified places are currently in Chiang Mai only, and which regions are coming next.
+
+4. **Expansion is a new decision.** Each further region is added by a locked decision, once Chiang Mai has enough verified places and inspection capacity allows.
+
+Reason:
+
+Chiang Mai fits both launch groups in JP-028: it is a top destination for independent foreign tourists, and a main home for English-speaking expats, digital nomads and retirees, who travel and test hosts year-round. It has dense small local hosts across every category (stays, cooking classes, workshops, guides, cafés and restaurants, nature). One region keeps inspection possible for a single founder.
+
+Impact:
+
+- Inspection, host registration and the Sales Plan start in Chiang Mai.
+- Seasonality: high season is November–January. The February–April smoke-haze season lowers demand; the planner must show air-quality guidance for those months (JP-023), and expats are the main users then.
+- The Journey model needs a "day outside a verified region" with free-text content (Spec 2).
+- The Questionnaire & Draft Journey spec (Spec 3) builds Draft Journeys from Chiang Mai places only at launch.
+- Next region candidates (from the research), not decided here: Bangkok as the arrival hub and expat weekend base, then Krabi/Phuket for the beach leg.
+
+Related Documents:
+
+- workspace/reports/Thailand traveller market potential.md
+- docs/DECISION_LOG.md (JP-023, JP-028, JP-032, JP-037)
+
+Superseded By: None
+
+---
+
 # Adding New Decisions
 
 New entries should only be added after an explicit locked approval.
