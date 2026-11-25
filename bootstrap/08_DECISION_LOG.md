@@ -177,7 +177,7 @@ Related Documents:
 - 03_PROJECT_PHILOSOPHY.md
 - 07_PROJECT_ROADMAP.md
 
-Superseded By: None
+Superseded By: JP-029 (identity wording only — "Booking exists only to support the journey" is replaced; "Journey before Booking" remains a UX principle)
 
 ---
 
@@ -303,7 +303,7 @@ Related Documents:
 - 02_PRODUCT_CONTRACT.md
 - 07_PROJECT_ROADMAP.md
 
-Superseded By: JP-018 (Administrator clause only — Explorer, Scout, and Host clauses remain Locked and unaffected)
+Superseded By: JP-018 (Administrator clause) and JP-031 (Host clause, partially — a minimal Host Calendar enters Version 1; the full Host Portal stays excluded). The Explorer and Scout clauses remain Locked and unaffected.
 
 ---
 
@@ -398,7 +398,7 @@ Related Documents:
 - 02_PRODUCT_CONTRACT.md
 - 07_PROJECT_ROADMAP.md
 
-Superseded By: None
+Superseded By: JP-032 (the exclusion of automatic itinerary generation only — AI-assisted suggestions remain in scope)
 
 ---
 
@@ -498,7 +498,7 @@ Superseded By: None
 
 Category: Business / Legal
 
-Status: Locked
+Status: Superseded
 
 Date: 2026-08-12
 
@@ -518,7 +518,7 @@ Related Documents:
 
 - Booking System Structure Report, August 2026
 
-Superseded By: None
+Superseded By: JP-033 (entity). The accommodation pause in its Impact is replaced by JP-030; its per-booking financial-record requirement carries forward under JP-033.
 
 ---
 
@@ -881,6 +881,170 @@ Related Documents:
 
 - 08_DECISION_LOG.md (JP-026)
 - Independent Validation Report — Journey Planner Research Handoff (accessibility/ethics research session, 2026-08-18)
+
+Superseded By: None
+
+---
+
+## JP-029 — Product Identity: Journey Planner with Its Own Booking Marketplace
+
+Category: Product / Business
+
+Status: Locked
+
+Date: 2026-11-25
+
+Decision:
+
+Journey Planner is a journey-planning platform for travel across Thailand that runs its own booking marketplace. Travellers plan a Journey first; the Experiences in that Journey that need advance booking (accommodation, reservations, day trips and similar) are booked through the platform, which earns a commission on each booking. Planning stays first in the interface. Booking is openly the business's revenue engine, not a side capability.
+
+Reason:
+
+The founding wording ("not a booking platform", "not a marketplace", "booking is not the product") contradicts the locked commission model (JP-014, JP-015) and the founder's business plan. Every AI session reading the old wording pushes back on booking work.
+
+Impact:
+
+- Supersedes JP-001's "Booking exists only to support the journey" wording. "Journey before Booking" stays as a UX principle.
+- Rewrite the identity sections of `00_START_HERE.md`, `02_PRODUCT_CONTRACT.md` (Mission, Product Identity, "It is not" list, Product Boundaries) and `03_PROJECT_PHILOSOPHY.md` Success section to match.
+- Booking System becomes a V1 core spec, not a later phase.
+
+Related Documents:
+
+- 00_START_HERE.md
+- 02_PRODUCT_CONTRACT.md
+- 03_PROJECT_PHILOSOPHY.md
+- 08_DECISION_LOG.md (JP-001, JP-014, JP-015)
+
+Superseded By: None
+
+---
+
+## JP-030 — Version 1 Bookable Categories: Everything Bookable in Advance
+
+Category: Product / Business
+
+Status: Locked
+
+Date: 2026-11-25
+
+Decision:
+
+Version 1 launches with all advance-bookable categories: accommodation (stays), reservations (e.g. dining or experiences that hold a place without a fixed product), and day trips / activities / workshops (timed slots). Experiences that need no booking stay in Journeys as Informational Only. All four availability models from the Phase IV candidate list are in V1: Timed Slot, Stay, Optional Reservation, Informational Only.
+
+Reason:
+
+Founder direction: the platform must be able to complete a traveller's whole plan, and accommodation is the largest share of trip spend.
+
+Impact:
+
+- Supersedes the JP-016 Impact clause pausing accommodation. Accommodation launch is gated on JP-033 (company registered) instead.
+- Requires JP-031 (Host Calendar): accurate availability for stays is impossible without hosts updating their own dates.
+- Launch is later than a day-trips-first launch would be. Accepted by the founder.
+- Research needed before launch, not assumed: (1) whether selling day trips/tours requires a Department of Tourism tour-business licence; (2) whether accommodation hosts must hold hotel/homestay registration before they can be listed; (3) platform registration duties under the Digital Platform Services Royal Decree.
+
+Related Documents:
+
+- 02_PRODUCT_CONTRACT.md
+- 09_BACKLOG.md (Phase IV Booking Domain Candidate Ideas)
+- 08_DECISION_LOG.md (JP-016, JP-017, JP-031, JP-033)
+
+Superseded By: None
+
+---
+
+## JP-031 — Minimal Host Calendar in Version 1
+
+Category: Product
+
+Status: Locked
+
+Date: 2026-11-25
+
+Decision:
+
+Version 1 includes a minimal, mobile-first Host Calendar where a Host can: open and block dates or time slots, set capacity (rooms, seats), and confirm or decline booking requests. Nothing else. Content editing, media, analytics, messaging and payout settings stay out of V1 (Scouts and Administrators handle those).
+
+Reason:
+
+JP-030 puts accommodation and reservations in V1. Without hosts keeping their own availability, the platform will double-book, which breaks the Trust principle and causes refunds and chargebacks.
+
+Impact:
+
+- Partially supersedes JP-005 (Host clause) and the Product Contract's "Host Portal is intentionally excluded from Version 1". The full Host Portal (Roadmap Phase VI) stays future.
+- Hosts become logged-in users: Host consent capture (JP-020) and the host PDPA notice apply at sign-up.
+- Hosts must respond to requests within a set time window (to be decided in the Booking spec).
+
+Related Documents:
+
+- 02_PRODUCT_CONTRACT.md
+- 07_PROJECT_ROADMAP.md (Phase VI)
+- 08_DECISION_LOG.md (JP-005, JP-020, JP-030)
+
+Superseded By: None
+
+---
+
+## JP-032 — Preference Questionnaire Builds an Editable Draft Journey
+
+Category: Product
+
+Status: Locked
+
+Date: 2026-11-25
+
+Decision:
+
+The Explorer answers a short preference questionnaire for the whole trip (e.g. dates, arrival point, pace, interests, comfort, budget). They can override any answer for an individual Journey Day. From these answers the platform builds a draft Journey made only of verified Experiences. The Explorer reviews and can change anything (add, remove, reorder, swap) before booking. Nothing is booked automatically.
+
+Reason:
+
+This is the core of the founder's product idea: travellers say what they like and get a plan they can shape, instead of building every day from empty.
+
+Impact:
+
+- Supersedes JP-008's exclusion of automatic itinerary generation, and the matching "AI trip generation" line in the Product Contract's Excluded list.
+- Data model: preferences are stored at Journey level, with optional overrides at Journey Day level.
+- The two existing Compass mockups (8-question and 5-question) are input material for the question set, which is decided in the Questionnaire spec.
+- Open, decided in the spec: rule-based vs AI-assisted generation, and how to explain why each Experience was chosen.
+
+Related Documents:
+
+- 02_PRODUCT_CONTRACT.md
+- design-system/ui_kits/explorer/JourneyCompass.jsx
+- design-system/ui_kits/explorer-proposal/Compass.jsx
+- 08_DECISION_LOG.md (JP-007, JP-008)
+
+Superseded By: None
+
+---
+
+## JP-033 — Business Entity: Thai Limited Company Before the First Booking
+
+Category: Business / Legal
+
+Status: Locked
+
+Date: 2026-11-25
+
+Decision:
+
+Journey Planner registers as a Thai limited company before the first real booking is taken.
+
+Reason:
+
+Limits the founder's personal liability for chargebacks and disputes, unblocks accommodation (JP-030), and matches the PDPA notices draft, which is already written for a limited company.
+
+Impact:
+
+- Supersedes JP-016 (Sole Proprietorship).
+- Per-booking financial records required by JP-016 still apply from day one.
+- To confirm with an accountant, not assumed: withholding-tax duties as a juristic person, and VAT registration timing.
+- Fix the PDPA notices draft reference from "pending JP-028" to JP-033.
+
+Related Documents:
+
+- docs/legal/PDPA_CONSENT_NOTICES.md
+- 08_DECISION_LOG.md (JP-016, JP-030)
 
 Superseded By: None
 

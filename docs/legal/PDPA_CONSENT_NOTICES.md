@@ -18,7 +18,7 @@ to work on it seriously, before consulting a lawyer.
 Grounded in the reasoning already locked in `08_DECISION_LOG.md` (JP-019,
 JP-020, JP-021) — that research is real and reusable, even though the
 notice document itself was never actually produced until now. Written
-against the new Limited Company entity type (pending JP-028).
+against the new Limited Company entity type (JP-033).
 
 ---
 
