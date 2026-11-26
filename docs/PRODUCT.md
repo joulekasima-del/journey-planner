@@ -134,5 +134,5 @@ Each of these needs a locked decision before the related build starts.
 | **Conservation-fund percentage** | Marketing claims |
 | **Questionnaire generation:** rule-based or AI-assisted, and how each choice is explained to the Explorer | Questionnaire spec |
 | **Next region after Chiang Mai** (research suggests Bangkok, then Krabi/Phuket) | Expansion |
-| **Re-inspection interval** and the content of the Verification Standard | Verification Standard spec |
+| **Licences required per category** in the Verification Standard (re-inspection is every 12 months, Spec 1) | Legal research, then Spec 1 |
 | **Legal and tax research:** VAT on commission only and withholding tax under the agent model (accountant); whether a booking agent selling day trips needs its own tour-business licence or only the Hosts who run them do, accommodation host registration, Digital Platform Services Royal Decree duties, consumer-protection rules on cancellations (JP-035) | Launch |
