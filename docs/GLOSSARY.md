@@ -44,7 +44,9 @@ These are the official terms. Use them in docs, code and specs. Don't invent new
 
 **Booking agent.** Journey Planner's role: it arranges bookings and takes payment on the Host's behalf for a commission, but never provides or operates an Experience itself (JP-036).
 
-**Payout.** The weekly release of a Host's 85% from their Xendit sub-account to their bank account, after the Experience has happened (JP-036).
+**Payout.** The automatic release of a Host's 85% for one booking from their Xendit sub-account to their bank or PromptPay: when the Host checks the Explorer in, or 2 hours after the start time unless the Explorer reports a problem (JP-036, JP-041).
+
+**Check-in code.** The QR code and 6-digit number in the Explorer's Journey for each booking. The Host scans or enters it on arrival, which releases the payout and unlocks the review (JP-041).
 
 **Cancellation policy.** The refund terms a Host picks for each Experience: Flexible, Moderate or Strict. The policy is saved with each Booking when it's made (JP-035).
 

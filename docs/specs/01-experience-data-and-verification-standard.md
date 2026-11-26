@@ -4,7 +4,7 @@ Purpose: Defines what every place on Journey Planner must contain, what a Host s
 
 Status: Draft
 
-Version: 0.2
+Version: 0.3
 
 Owner: Founder
 
@@ -24,10 +24,13 @@ None. This is the first V1 spec. Spec 2 (Journey & Data Model) and Spec 6 (Host 
 - JP-028: English only at launch; prices are the Host's own price, with no foreigner markup.
 - JP-030: everything bookable in advance is in V1; four availability models.
 - JP-035: cancellation presets.
-- JP-036: booking agent; Host bank details held by Journey Planner, encrypted, Administrator-only.
+- JP-036: booking agent on Xendit xenPlatform.
 - JP-037: Host self-registration, hidden until verified, Verification Standard, Inspector visits, lapse.
 - JP-038: Explorer star ratings; the Verified badge is pass or fail.
 - JP-039: launch region is Chiang Mai province.
+- JP-040: guided tours, day trips and anything where the Host transports or guides Explorers between places are paused in V1.
+- JP-041: payout on check-in (needs the check-in code, Spec 4 and Spec 6).
+- JP-042: no copies of Host ID documents; bank details go straight to Xendit; data hosted in Singapore.
 
 ---
 
@@ -68,7 +71,7 @@ Every field below has one source:
 
 - **Public** means shown to Explorers once verified.
 - **Internal** means only the Inspector and Administrator see it.
-- **Restricted** means only the Administrator sees it, and it is stored encrypted.
+- **Restricted** means only the Administrator sees it, and it is stored encrypted. Under JP-042 the only Restricted fields are the ID check record and the masked payout account.
 
 ## 3. Categories in Version 1
 
@@ -76,7 +79,6 @@ Every field below has one source:
 |---|---|---|---|---|
 | **Stay** | Homestay, guesthouse, small hotel, eco-lodge | Stay | Yes | Host |
 | **Class & Workshop** | Cooking class, weaving, pottery, herbal medicine | Timed Slot | Yes | Host |
-| **Guided Tour & Day Trip** | Guided walk, trek, cycling tour, day trip to Doi Inthanon | Timed Slot | Yes | Host |
 | **Farm Visit** | Coffee farm, organic farm, orchard | Timed Slot or Informational Only | Host chooses | Host |
 | **Restaurant & Café** | Northern Thai restaurant, café, farm-to-table | Optional Reservation or Informational Only | Host chooses | Host |
 | **Cultural Site** | Temple, museum, heritage house | Informational Only | No | Host (if run by an owner) or Inspector |
@@ -85,9 +87,11 @@ Every field below has one source:
 | **Garden & Park** | Botanical garden, flower garden | Informational Only | No | Host or Inspector |
 | **Animal Experience** | Elephant sanctuary, animal rescue centre | Timed Slot or Informational Only | Host chooses | Host |
 
-Animal experiences are allowed only under the strict welfare criteria in §7.2. Farm animals seen as part of a Farm Visit are covered by the Farm Visit category, but the same welfare criteria apply to them.
+**Paused in V1 (JP-040):** guided tours and day trips (guided walks, treks, cycling tours, day trips) and any Experience where the Host transports Explorers or guides them between places. Every bookable Experience happens at the Host's own place, and the Explorer gets there themselves. Pickup, transfers, market tours and off-site stops are not allowed in a listing.
 
-These replace the scouting form's categories: Homestay becomes Stay, Workshop becomes Class & Workshop, Guided Walk becomes Guided Tour & Day Trip, Waterfall / Natural Site becomes Natural Site, Temple / Cultural Site becomes Cultural Site, and Garden becomes Garden & Park.
+Animal experiences are allowed only under the strict welfare criteria in §7.2, and only when the Explorer travels there on their own. Farm animals seen as part of a Farm Visit are covered by the Farm Visit category, but the same welfare criteria apply to them.
+
+These replace the scouting form's categories: Homestay becomes Stay, Workshop becomes Class & Workshop, Guided Walk is paused (JP-040), Waterfall / Natural Site becomes Natural Site, Temple / Cultural Site becomes Cultural Site, and Garden becomes Garden & Park.
 
 ## 4. Fields every Experience has
 
@@ -133,7 +137,7 @@ These replace the scouting form's categories: Homestay becomes Stay, Workshop be
 | Field | Source | Required | Visibility | Notes |
 |---|---|---|---|---|
 | Price | Host | Yes, for bookable Experiences and any place with an entry fee | Public | In THB, the full price the Explorer pays, including VAT and service charge. It's the Host's own price, the same for every Explorer (JP-028). |
-| What's included | Host | Yes, for bookable | Public | For example ingredients, transport, guide, meals. |
+| What's included | Host | Yes, for bookable | Public | For example ingredients, materials, meals. Never transport or guiding (JP-040). |
 | What's not included | Host | No | Public | |
 | Government-set fees | Inspector | Where they apply | Public | For example national park entry, which differs for Thais and foreigners by law. Shown in full and labelled as a government fee, so it's never hidden. |
 | Price range | Host | Yes, for Restaurant & Café | Public | ฿ / ฿฿ / ฿฿฿ per person. |
@@ -154,9 +158,9 @@ These replace the scouting form's categories: Homestay becomes Stay, Workshop be
 | Host name | Host | Yes | Public | Person or business name, as Explorers see it. |
 | Host type | Host | Yes | Internal | Individual or registered business. |
 | Contact person, phone, email, LINE ID | Host | Phone and one of email or LINE | Internal, then shown to the Explorer after booking | Hidden from Explorers before booking; questions before booking go through the platform (how, in Spec 4). Once a booking is confirmed, the Explorer sees the contact person, phone and LINE ID for that booking. Places that need no booking never show Host contact details. |
-| Identity document | Host | Yes | Restricted | Thai ID card or passport for individuals; company certificate for businesses. The Inspector confirms it in person (JP-037). |
-| Licences | Host | Where the law requires it for the category | Internal | See §7.2. The exact licence per category is confirmed by the legal research. |
-| Payout details | Host | Yes, for bookable | Restricted | Bank account name and number, or PromptPay ID. Encrypted, Administrator-only, shared only with Xendit (JP-036). |
+| Identity check record | Inspector | Yes | Restricted | The Inspector sees the Thai ID card, passport or company certificate in person (JP-037). Only the document type, name as shown, last 4 digits, Inspector and date are stored. No copy or photo of the document is kept (JP-042). If Xendit needs the document, the Host gives it directly to Xendit's onboarding. |
+| Licences | Host | Where the law requires it for the category | Internal | See §7.3. The Inspector records which document was seen, its number and expiry date. |
+| Payout account | Host, to Xendit | Yes, for bookable | Restricted (masked) | The Host enters the bank account or PromptPay ID straight into Xendit. Journey Planner keeps only the bank name, account holder's name and last 4 digits, and checks the holder's name matches the Host (JP-042). |
 | Consent records | System | Yes | Internal | PDPA consent captured at registration (JP-020). |
 
 ### 4.7 System and status
@@ -166,7 +170,7 @@ These replace the scouting form's categories: Homestay becomes Stay, Workshop be
 | Status | System, Admin | See §8. |
 | Verified badge | System | Shown when the status is Verified. |
 | Last inspected | System | Date of the latest passed inspection. |
-| Next inspection due | System | From the re-inspection interval (§7.4). |
+| Next inspection due | System | From the re-inspection interval (§7.5). |
 | Star rating and review count | System | From Explorer reviews (JP-038). New places show "Verified · No reviews yet". |
 | Created, updated | System | |
 
@@ -190,26 +194,12 @@ These come from the scouting form and add what booking needs.
 - Minimum and maximum group size.
 - Price per person or per group.
 - Meeting point.
-- Pickup offered.
 - What to bring.
 - Dietary options (cooking classes).
 
-**Guided Tour & Day Trip**
-- Route summary and stops.
-- Difficulty (easy, moderate, challenging).
-- Terrain.
-- What you'll see.
-- Start times.
-- Minimum and maximum group size.
-- Price per person.
-- Meeting point and pickup.
-- Guide's languages.
-- Vehicle used, if any.
-- What to bring.
-
 **Farm Visit**
 - Products (rice, coffee, fruit, vegetables, livestock, fish).
-- Visitor activities (harvest, feeding animals, farm tour, tasting).
+- Visitor activities on the farm (harvest, feeding animals, walk around the farm, tasting).
 - Season for each activity.
 
 **Restaurant & Café**
@@ -238,7 +228,7 @@ These come from the scouting form and add what booking needs.
 
 **Garden & Park**
 - Type (flower, botanical, organic farm, landscaped park).
-- Activities (walking, photography, picnic, guided tour).
+- Activities (walking, photography, picnic).
 - Entry fee.
 
 **Animal Experience**
@@ -267,7 +257,7 @@ An Experience is **verified** only when it meets every universal criterion (§7.
 |---|---|---|
 | U1 | **It exists and matches.** The place is at the map pin, and the description, photos and listed activities match reality. | Visit; compare the listing with what they see; take photos. |
 | U2 | **The Host is who they say.** For owner-run places, the person registering owns or runs it. | ID or company certificate seen in person; matches the registration. |
-| U3 | **It may legally operate.** It holds any licence or registration the law requires for its category. | Document seen. The list per category is confirmed by the legal research (§7.2). |
+| U3 | **It may legally operate.** It holds any licence or registration the law requires for its category. | Document seen. The list per category is in §7.3. |
 | U4 | **Prices are honest.** The listed price is the full price, the same for everyone, and matches what's charged on site. | Compare with on-site menus and boards; ask. |
 | U5 | **It is reasonably safe** for what it offers. | Visual check for obvious hazards; first-aid kit where people do physical activity; an emergency contact. |
 | U6 | **Explorers can actually use it.** Hours, access and practical information are correct; English or another listed language is genuinely available. | Visit; brief conversation in the listed language. |
@@ -277,10 +267,9 @@ An Experience is **verified** only when it meets every universal criterion (§7.
 
 | Category | Additional criteria |
 |---|---|
-| **Stay** | Rooms match the listed types and photos. They're clean and have lockable doors. Bedding is clean. There's a clear route out in an emergency. It holds hotel or homestay registration where the law requires it (**to confirm**: the accommodation rules and the pending Accommodation Act). |
-| **Class & Workshop** | The work area is safe for beginners. For food: a clean preparation area, safe drinking water, and ingredients stored properly. |
-| **Guided Tour & Day Trip** | The guide holds a guide licence and the operator a tour-business licence where the law requires it (**to confirm**). Any vehicle is roadworthy and insured. There's a plan for bad weather and emergencies. |
-| **Farm Visit** | Visitor areas are safe. Chemicals and machinery are away from visitors. |
+| **Stay** | Rooms match the listed types and photos. They're clean and have lockable doors. Bedding is clean. There's a clear route out in an emergency. Fire extinguishers are present. It holds the document in §7.3 for its size. It's not a condominium unit let for under 30 days. |
+| **Class & Workshop** | It happens at the Host's own place, with no pickup, market tour or off-site stop (JP-040). The work area is safe for beginners. For food: a clean preparation area, safe drinking water, and ingredients stored properly. |
+| **Farm Visit** | It happens on the farm, with no transport or excursions (JP-040). Visitor areas are safe. Chemicals and machinery are away from visitors. |
 | **Restaurant & Café** | A clean kitchen as far as it can be seen, safe drinking water, and dietary claims checked by asking. |
 | **Cultural Site** | The etiquette information is correct. Fees match the official ones. |
 | **Market** | Days and hours are confirmed. |
@@ -288,7 +277,25 @@ An Experience is **verified** only when it meets every universal criterion (§7.
 | **Garden & Park** | Hours and fees are confirmed. |
 | **Animal Experience** (and animals on a Farm Visit) | No riding. No performances or shows. No chaining or tethering, except briefly for vet care. No bathing with, or close handling of, wild animals. No breeding for visitor display. Animals have enough space, shade, clean water and food, and access to vet care. Visitor contact is limited to what the listed contact rules allow, and the Inspector sees those rules followed. Any doubt about an animal's welfare means Not verified. |
 
-### 7.3 Outcome
+### 7.3 Required licences per category
+
+From the legal research (`workspace/reports/Thailand legal and tax requirements.md`, 2026-11-26). This is research, not legal advice: **a Thai lawyer confirms this table before the first inspection** (O4). The Inspector sees the original document, checks that the name and address match the registration, and records it. Copies aren't kept beyond what the inspection record needs.
+
+| Category | Required document | Issued by | Inspector also checks | Certainty |
+|---|---|---|---|---|
+| Stay, up to 8 rooms and 30 guests | Non-hotel accommodation notification receipt, Form Mor.2 (หนังสือรับแจ้งสถานที่พักที่ไม่เป็นโรงแรม, แบบ มร.2) | District office (Department of Provincial Administration) | Issued within the last 5 years; room and guest numbers match. The listing's capacity can't be more than the document allows. | High |
+| Stay, more than 8 rooms or 30 guests | Hotel business licence (ใบอนุญาตประกอบธุรกิจโรงแรม) | Provincial hotel registrar | Licence type and capacity match the facilities | High |
+| Stay, optional | Thai Homestay Standard (มาตรฐานโฮมสเตย์ไทย) | Department of Tourism | A quality mark only; never accepted instead of the documents above | High |
+| Restaurant & Café; cooking classes; farm tastings or meals | Up to 200 sq m: food notification certificate (หนังสือรับรองการแจ้งจัดตั้งสถานที่จำหน่ายอาหาร). Over 200 sq m: food licence (ใบอนุญาตจัดตั้งสถานที่จำหน่ายอาหาร). | Local authority (Chiang Mai City Municipality district office, other municipality, or sub-district office) | Food hygiene training certificates for the operator and food handlers | High for restaurants; Low for cooking classes and tastings (no source; required as a precaution) |
+| Any Host selling alcohol | Liquor licence Type 2 (ใบอนุญาตขายสุรา ประเภทที่ 2) | Excise Department area office | Current year (expires 31 December) | Medium |
+| Class & Workshop, Farm Visit (on site, no transport) | No tour licence expected. Host identity only, plus the food documents if food is served. | — | Confirm there's no pickup, transport or off-site stop | Low (no source; lawyer to confirm) |
+| Animal Experience: elephants | Registration papers for each elephant (ตั๋วรูปพรรณช้าง) | District office | Each document matches an elephant on site | Medium |
+| Animal Experience: native wild animals | Zoo licence or possession permit | Department of National Parks, Wildlife and Plant Conservation | Species on site match the permit | Medium |
+| Cultural Site, Market, Natural Site, Garden & Park (public) | None needed for listing. Park fees are set by law and paid at the gate. | — | Fees shown as paid on site, including the foreigner rate where there is one | High |
+
+Every Host also signs the host agreement, promising that their licences are valid and that they will tell Journey Planner if a licence expires, is suspended or changes capacity.
+
+### 7.4 Outcome
 
 - **Verified:** every criterion is met. The Experience is published with the Verified badge.
 - **Not verified:** at least one criterion is not met. The Host is told which ones and why, in writing. They can fix them and ask for a new inspection. The Experience stays hidden.
@@ -296,7 +303,7 @@ An Experience is **verified** only when it meets every universal criterion (§7.
 
 Every inspection keeps a record: date, Inspector, the result for each criterion, notes, and photos. The record is internal and kept for audit.
 
-### 7.4 Re-inspection and lapse
+### 7.5 Re-inspection and lapse
 
 - **Interval:** every Verified Experience is re-inspected within **12 months** of its last inspection.
 - **Triggers for an early re-inspection:**
@@ -335,7 +342,7 @@ The scouting form (`prototypes/`) already records Place, Host, Experience and ca
 - **Field changes:**
   - Categories are renamed as in §3.
   - New fields: price, the booking fields, opening hours, languages spoken and accessibility.
-  - The Host gains identity, licence and payout fields.
+  - The Host gains the identity check record, licence and masked payout fields (JP-042).
 - **Donation fields:** these came from the earlier community-tourism focus. They become the optional, public "On-site donations" note (§4.3).
 - **Schema:** the full table design belongs to Spec 2. This spec only says what must be stored.
 
@@ -344,7 +351,7 @@ The scouting form (`prototypes/`) already records Place, Host, Experience and ca
 Answered by the founder on 2026-11-26:
 
 - **O1 Animal experiences:** allowed, under strict welfare criteria (§3, §5, §7.2).
-- **O2 Re-inspection:** every 12 months, plus early triggers (§7.4).
+- **O2 Re-inspection:** every 12 months, plus early triggers (§7.5).
 - **O3 Explorer–Host contact:** shown only after a booking is confirmed (§4.6).
 - **O5 Donations:** kept as a public practical note; the platform never handles donations (§4.3, §9).
 - **O6 Photos:** at least 3; the Inspector takes them if the Host can't (§4.1).
@@ -353,7 +360,7 @@ Still open:
 
 | # | Question | Needed for |
 |---|---|---|
-| O4 | **Licences per category:** which licences or registrations are legally required for stays, tours and restaurants. Comes from the legal research. | §7.1 U3, §7.2 |
+| O4 | **Licences per category:** drafted from the legal research in §7.3. A Thai lawyer must confirm the table, especially cooking classes, farm visits and the Thai document names, before the first inspection. | §7.1 U3, §7.3 |
 
 ---
 
@@ -362,6 +369,7 @@ Still open:
 | Version | Date | Change | Author |
 |---|---|---|---|
 | 0.1 | 2026-11-25 | First draft for founder review | Claude Code, for the founder |
+| 0.3 | 2026-11-26 | JP-040: Guided Tour & Day Trip category, pickup and transport removed. JP-042: ID check record replaces ID document; payout account masked, held by Xendit. Added §7.3 licence table from the legal research (lawyer to confirm). | Claude Code, for the founder |
 | 0.2 | 2026-11-26 | Founder answered O1, O2, O3, O5, O6: Animal Experience category with welfare criteria; 12-month re-inspection confirmed; Host contact shown after booking; donation note public; Inspector takes photos when needed. O4 waits on legal research. | Claude Code, for the founder |
 
 ---

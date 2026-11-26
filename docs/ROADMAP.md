@@ -14,7 +14,7 @@ Goal: a traveller can plan a complete Journey across Thailand and book every par
 
 | Phase | Purpose | State |
 |---|---|---|
-| **1. Foundations** | Decisions, art direction, design system, PDPA groundwork | Mostly done (JP-001 to JP-039, `design-system/`) |
+| **1. Foundations** | Decisions, art direction, design system, PDPA groundwork | Mostly done (JP-001 to JP-042, `design-system/`) |
 | **2. Supply: Registration & Inspection** | Host self-registration, the Verification Standard, Inspector visits and the Verified badge; Inspectors add public places (JP-037) | Scouting form live; registration and Inspector workspace not built |
 | **3. Specifications** | Write the V1 specs in `docs/specs/`: Experience data, questionnaire, Journey planner, booking, payments, Host Calendar, Admin | Not started |
 | **4. Explorer Planner** | Accounts, questionnaire to draft Journey, day-by-day editing, discovery, maps, weather | Mockups only (`design-system/ui_kits/`) |

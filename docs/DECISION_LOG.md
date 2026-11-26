@@ -950,7 +950,7 @@ Related Documents:
 - 09_BACKLOG.md (Phase IV Booking Domain Candidate Ideas)
 - 08_DECISION_LOG.md (JP-016, JP-017, JP-031, JP-033)
 
-Superseded By: None
+Superseded By: JP-040, partially: guided tours, day trips and any Experience where the Host transports or guides Explorers between places are paused in Version 1. Stays, reservations and on-site classes and workshops stay.
 
 ---
 
@@ -1205,7 +1205,7 @@ Related Documents:
 - docs/legal/PDPA_CONSENT_NOTICES.md
 - docs/DECISION_LOG.md (JP-014, JP-015, JP-018, JP-020, JP-021, JP-029, JP-034, JP-035)
 
-Superseded By: JP-037, rule 4 only: bookable Hosts enter their bank or PromptPay details themselves at registration, and the Inspector confirms identity in person. All other rules remain Locked.
+Superseded By: JP-037, rule 4 only: bookable Hosts enter their bank or PromptPay details themselves at registration, and the Inspector confirms identity in person. JP-041, rule 7 only: payouts are automatic per booking at check-in, not weekly. JP-042: Journey Planner no longer holds Host bank details or ID copies; they go straight to Xendit. All other rules remain Locked.
 
 ---
 
@@ -1295,7 +1295,7 @@ Related Documents:
 - docs/PRODUCT.md §3, §8
 - docs/DECISION_LOG.md (JP-005, JP-007, JP-018, JP-030, JP-031, JP-036)
 
-Superseded By: None
+Superseded By: JP-042, Impact note on rule 1 and JP-036 only: Journey Planner no longer holds Host bank details; they go straight to Xendit. All rules remain Locked.
 
 ---
 
@@ -1375,6 +1375,148 @@ Related Documents:
 
 - workspace/reports/Thailand traveller market potential.md
 - docs/DECISION_LOG.md (JP-023, JP-028, JP-032, JP-037)
+
+Superseded By: None
+
+---
+
+## JP-040 — Guided Tours and Day Trips Paused in Version 1
+
+Category: Product / Legal
+
+Status: Locked
+
+Date: 2026-11-26
+
+Decision:
+
+1. **Not in Version 1:** guided tours and day trips, and any Experience where the Host transports Explorers or guides them from place to place. That includes guided walks, treks, cycling tours, day trips (for example to Doi Inthanon), and pickup or transfer services.
+
+2. **What stays:** classes, workshops, farm visits and animal experiences stay, but only when they happen at the Host's own place, with no pickup, no transport and no stops elsewhere (for example no market tour before a cooking class). The Explorer makes their own way there, and the listing shows directions.
+
+3. **Explorers can still plan a day trip themselves.** Public places such as Doi Inthanon stay as Informational Only. An Explorer can also add a free-text item for a tour they arrange elsewhere. Journey Planner doesn't list, recommend or book tour operators in V1.
+
+4. **Coming back needs a new decision,** once a Thai lawyer has answered the tour-licence questions for the platform and for Hosts.
+
+Reason:
+
+The legal research found that tours and day trips clearly need a Department of Tourism tour licence and licensed Thai guides. Penalties are up to 2 years in prison and/or THB 500,000, with directors personally liable. Whether a platform that sells them needs its own licence is unsettled, and selling one Journey with several Hosts at one price raises that risk. Leaving out everything that moves Explorers removes the clearest licence risk for Hosts and lowers it for Journey Planner, and Inspectors don't have to check tour and guide licences, vehicles or insurance.
+
+Impact:
+
+- Supersedes part of JP-030: day trips and guided activities are no longer bookable in V1. Stays, reservations and timed classes or workshops stay.
+- Spec 1 removes the Guided Tour & Day Trip category, and removes the pickup fields from Class & Workshop and the other categories.
+- Animal experiences: many elephant sanctuaries include transport from the city. Those can only be listed if the Explorer travels on their own.
+- Chiang Mai places within a day trip's reach (JP-039) still appear as places an Explorer can visit independently.
+- Still for the lawyer: whether Journey Planner needs a tour licence even without tours, for example for selling a multi-day Journey with stays and classes. The risk is lower but not zero.
+
+Related Documents:
+
+- workspace/reports/Thailand legal and tax requirements.md
+- docs/specs/01-experience-data-and-verification-standard.md
+- docs/DECISION_LOG.md (JP-030, JP-037, JP-039)
+
+Superseded By: None
+
+---
+
+## JP-041 — Automatic Payout When the Explorer Arrives
+
+Category: Business / Technical
+
+Status: Locked
+
+Date: 2026-11-26
+
+Decision:
+
+1. **Check-in releases the payout.** Each booking has a check-in code, a QR code plus a 6-digit number, shown in the Explorer's Journey. When the Explorer arrives (for stays, at check-in), the Host scans or enters the code in the Host Calendar. The Host's 85% is then paid out to their bank automatically, straight away.
+
+2. **Fallback if nobody checks in.** If there's no check-in, the payout is released automatically **2 hours after the booked start time** (for stays, 2 hours after the check-in time). It isn't released if the Explorer reports a problem in that window, for example "Host not there", "place closed" or "not as described". A report holds the payout for the Administrator to decide.
+
+3. **No-shows.** If the Explorer doesn't come, the Host marks a no-show and the payout is released at once. A no-show gets no refund (JP-035).
+
+4. **Fully automatic.** Nobody approves payouts. The Administrator only handles payouts held by a report or a dispute.
+
+5. **One payout per booking.** Each payout goes from the Host's Xendit sub-account to their bank or PromptPay. The Host gets a statement by LINE or email for each one: the booking, the gross amount, the 15% commission and the net amount paid. Journey Planner pays the payout fees.
+
+6. **Problems found after payout.** If the Administrator upholds a complaint, or a chargeback caused by the Host comes in after the money has been paid, the amount is taken from that Host's next payouts. If the Host has no further bookings, the Administrator asks the Host to repay. If that fails, Journey Planner absorbs it. Other chargebacks are absorbed by Journey Planner, as in JP-036.
+
+Reason:
+
+Getting paid the moment the guest arrives is a strong reason for small Hosts to join, and it takes the manual Monday payout work off the founder. The legal research also suggests that releasing money by a fixed, objective rule, rather than an Administrator's choice, makes Journey Planner look less like a party receiving payments on Hosts' behalf. That matters for the Bank of Thailand licence question. By the start time, every cancellation window under JP-035 has already closed, so very little money is still at risk at that point.
+
+Impact:
+
+- Supersedes JP-036 rule 7 (weekly payouts released by the Administrator on Mondays).
+- The Host Calendar (Spec 6) needs a check-in screen (scan or type the code) and a "no-show" button. The Explorer's Journey needs the code and a "report a problem" button.
+- Check-in also gives the completed-visit state that unlocks reviews for bookable places (JP-038).
+- Less money is held, so more chargebacks and complaints after payout have to be recovered from Hosts. That's a cost risk for the platform, to watch after launch.
+- The host agreement must state: payout on check-in or 2 hours after the start, the hold on a report, and recovery from later payouts.
+- To confirm with Xendit Thailand before building, not assumed:
+  - an automatic payout per booking from a sub-account to a Thai bank or PromptPay, triggered by API;
+  - how fast it arrives (real-time PromptPay or next day);
+  - the fee per payout, and any minimum amount;
+  - whether money can be held for a reported booking.
+- Payout fees are now per booking instead of per week. Check the cost against the 15% commission once Xendit's fees are known.
+
+Related Documents:
+
+- workspace/reports/Thailand legal and tax requirements.md
+- docs/DECISION_LOG.md (JP-031, JP-035, JP-036, JP-038)
+
+Superseded By: None
+
+---
+
+## JP-042 — Personal Data: Keep Sensitive Data Out, Host the Rest in Singapore
+
+Category: Legal / Technical
+
+Status: Locked
+
+Date: 2026-11-26
+
+Decision:
+
+1. **No copies of Host identity documents.** The Inspector checks the ID card, passport or company certificate in person. Journey Planner records only:
+   - the document type;
+   - the name as shown;
+   - the last 4 digits;
+   - which Inspector checked it, and the date.
+
+   If Xendit needs the document to open the Host's sub-account, the Host gives it straight to Xendit's onboarding, and Journey Planner doesn't keep it.
+
+2. **Bank and PromptPay details go straight to Xendit.** Journey Planner keeps only the bank name, the account holder's name and the last 4 digits. This is for display and for checking that the account holder's name matches the Host.
+
+3. **Everything else is hosted in Singapore, with safeguards.** That covers Explorer accounts, Journeys, bookings, reviews, Host contact details and inspection records. It means Supabase in Singapore (ap-southeast-1) and Vercel functions in Singapore (sin1). The transfer out of Thailand is covered by each provider's data processing agreement with standard contractual clauses, and is stated in the privacy notices.
+
+4. **A list of every service that receives personal data.** Any service that will receive personal data (email, maps, AI planning, error tracking) is added to the list, and has a data processing agreement, before any data is sent to it.
+
+Reason:
+
+Neither Supabase nor Vercel offers a Thailand region; the nearest is Singapore. Running our own servers in Bangkok would avoid the transfer, but it's too much work and security risk for a solo founder. Even then, email, maps and AI services would still send data abroad. The most damaging data to lose is Host ID documents and bank details, and the PDPC has fined a reservation-system processor THB 3 million. Not holding that data at all removes most of the risk. Transfers with standard contractual clauses are an accepted route under the PDPC's 2024 rules.
+
+Impact:
+
+- Supersedes JP-036's note that Journey Planner holds Host bank details (encrypted, Administrator-only). Also supersedes the same point in JP-037's Impact.
+- Spec 1 §4.6 changes: "Identity document" becomes "Identity check record". "Payout details" become the bank name, account holder's name and last 4 digits.
+- The Host and Explorer privacy notices (docs/legal/PDPA_CONSENT_NOTICES.md) are rewritten:
+  - Singapore hosting, and the safeguards that cover it.
+  - Host bank and ID details are held by Xendit, not Journey Planner.
+- Spec 2 pins the Supabase project to Singapore and the Vercel function region to sin1. Vercel's default is the US.
+- To confirm with Xendit Thailand before building, not assumed:
+  - Xendit can save a Host's payout account on its side, so payouts don't need us to send the full account number each time. If it can't, this rule needs a new decision.
+  - How a Host gives Xendit their ID document without it passing through our database.
+- To confirm with the Thai lawyer:
+  - whether the Supabase and Vercel data agreements meet the PDPC's standard-clause rules, or need a Thai addendum;
+  - what the privacy notice must say about the transfer.
+
+Related Documents:
+
+- workspace/reports/Thailand legal and tax requirements.md
+- docs/legal/PDPA_CONSENT_NOTICES.md
+- docs/DECISION_LOG.md (JP-019, JP-020, JP-021, JP-036, JP-037)
 
 Superseded By: None
 

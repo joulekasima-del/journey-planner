@@ -15,8 +15,8 @@ to work on it seriously, before consulting a lawyer.
 > outstanding blocker; do not machine-translate this and treat it as
 > equivalent.
 
-Grounded in the reasoning already locked in `08_DECISION_LOG.md` (JP-019,
-JP-020, JP-021) — that research is real and reusable, even though the
+Grounded in the reasoning already locked in `docs/DECISION_LOG.md` (JP-019,
+JP-020, JP-036, JP-037, JP-041, JP-042) — that research is real and reusable, even though the
 notice document itself was never actually produced until now. Written
 against the new Limited Company entity type (JP-033).
 
@@ -26,18 +26,23 @@ against the new Limited Company entity type (JP-033).
 
 1. **Data Protection Officer (Section 41).** Does a juristic-person
    Data Controller of this scale trigger a mandatory DPO appointment?
-   This project has not resolved this — flagging it, not answering it.
+   The legal research (2026-11-26) suggests probably not at launch
+   (the PDPC's 2023 notification gives 100,000 data subjects as an
+   example of large scale), but this needs your answer.
 2. **ETA Section 26.** JP-020 only claims Section 9 (general electronic
    signature) compliance for the in-app consent-capture mechanism, not
    the higher Section 26 "Reliable Electronic Signature" tier — Thai
    legal commentary is reportedly split on whether in-house engineering
    can meet Section 26 without third-party certification. Needs a
    direct answer, not an assumption either way.
-3. **Cross-border transfer.** Data is hosted on Supabase's Singapore
-   region. This draft conservatively treats that as a cross-border
-   transfer requiring disclosure — pending a government contact's
-   answer that hasn't come back yet (per Build Tracker). Confirm or
-   correct this classification.
+3. **Cross-border transfer (JP-042).** Neither Supabase nor Vercel
+   offers a Thailand region, so data is hosted in Singapore (Supabase
+   ap-southeast-1, Vercel sin1) and treated as a cross-border transfer.
+   It relies on each provider's data processing agreement with standard
+   contractual clauses. Confirm whether those meet the PDPC's 2024
+   transfer rules or need a Thai addendum, and what this notice must say.
+   To reduce risk, Journey Planner keeps no copies of Host ID documents
+   and no full bank details; those go straight to Xendit.
 4. **Entity-type-specific obligations.** Anything else that changes
    specifically because the Data Controller is now a juristic person
    rather than a natural person — this draft assumes the underlying
@@ -62,14 +67,18 @@ Contact: [CONTACT EMAIL — pending]
 
 ### What we collect, and when
 
-When a Scout records your Experience or listing during a site visit, we
-collect: your name and contact details, information about the place or
-activity you're offering, and photographs or descriptions you provide.
+When you register your place, we collect: your name and contact
+details, information about the place or activity you're offering, any
+licences required for it, and photographs or descriptions you provide.
 
-If you begin receiving bookings through the platform, the Scout also
-collects the identity details our payment provider requires and your bank
-account or PromptPay ID, so we can pay you. See "Bank and payment
-information" below.
+When our Inspector visits, they look at your ID card, passport or company
+certificate in person. We record only the document type, the name shown,
+the last 4 digits, and who checked it and when. We do not keep a copy or
+photo of the document. We also keep a record of the inspection, including
+photos of the place.
+
+When an Explorer has a confirmed booking with you, we show them your
+contact person, phone and LINE ID, so they can reach you.
 
 ### Why we collect it
 
@@ -83,12 +92,15 @@ platform.
 
 We act as your booking agent. Payments are processed by Xendit, our
 licensed payment provider, and we open and manage a payment account with
-Xendit on your behalf, so you don't have to. To do that and to pay you, we
-collect your bank account or PromptPay ID and the identity details Xendit
-requires. We store them encrypted, only our administrator can read them,
-and we share them only with Xendit to verify you and send your payouts.
+Xendit for you, so you don't have to. You enter your bank account or
+PromptPay ID, and any identity document Xendit requires, directly into
+Xendit. We keep only your bank's name, the account holder's name and the
+last 4 digits of the account, so we can show you where payouts go and
+check the name matches yours. Your payout for each booking is sent
+automatically when you check the Explorer in, or 2 hours after the start
+time if nobody checks in.
 [Lawyer to review: wording, legal basis, and whether Xendit is a processor
-or a separate controller for the identity check — JP-036.]
+or a separate controller for the identity check — JP-036, JP-041, JP-042.]
 
 ### How long we keep your information
 
@@ -99,14 +111,17 @@ will complete it — including from backups, in a way that prevents recovery
 
 ### Where your data is stored
 
-Our systems are hosted on infrastructure located in Singapore. [This is
-currently treated as a cross-border transfer of your data outside Thailand,
-pending final confirmation — see Open Questions above.]
+Our systems are hosted in Singapore, by Supabase and Vercel. This is a
+transfer of your data outside Thailand. It is protected by data processing
+agreements with standard contractual clauses that require these providers
+to protect your data. [Lawyer to confirm wording — see Open Questions.]
 
 ### Who else sees your information
 
 - **Xendit** (payment processing, identity checks and payouts to your bank)
-- **Supabase** (our database and hosting provider)
+- **Supabase** (our database, Singapore)
+- **Vercel** (our website hosting, Singapore)
+- **Explorers with a confirmed booking** (your contact person, phone and LINE ID)
 - **LINE** — not currently used to contact you. If we begin sending
   booking confirmations or reminders via LINE in the future, we will ask
   for your separate, explicit consent before that starts — not fold it
@@ -164,14 +179,17 @@ recovery — within 90 days.
 
 ### Where your data is stored
 
-Our systems are hosted on infrastructure located in Singapore. [Currently
-treated as a cross-border transfer, pending confirmation — see Open
-Questions above.]
+Our systems are hosted in Singapore, by Supabase and Vercel. This is a
+transfer of your data outside Thailand. It is protected by data processing
+agreements with standard contractual clauses that require these providers
+to protect your data. [Lawyer to confirm wording — see Open Questions.]
 
 ### Who else sees your information
 
 - **Xendit** (payment processing, only if you make a booking)
-- **Supabase** (our database and hosting provider)
+- **Supabase** (our database, Singapore)
+- **Vercel** (our website hosting, Singapore)
+- **The Host of each booking** (your name, booking details and check-in code)
 
 ### Your rights
 

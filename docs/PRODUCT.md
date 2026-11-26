@@ -17,7 +17,7 @@ It is a journey-planning platform that runs its own booking marketplace. (JP-029
 1. The Explorer answers a short preference questionnaire for the whole trip, and can change any answer for an individual day. (JP-032)
 2. The platform builds a **draft Journey** from verified Experiences only. (JP-032)
 3. The Explorer edits anything: add, remove, reorder or swap. Nothing is booked automatically. (JP-032)
-4. The Experiences that need booking in advance (stays, reservations, day trips and similar) are booked through the platform. (JP-030)
+4. The Experiences that need booking in advance (stays, reservations, classes and workshops) are booked through the platform. (JP-030) Guided tours and day trips are paused in Version 1. (JP-040)
 5. The platform earns a commission on each booking. (JP-015)
 
 **Planning comes first in the interface; booking is the revenue engine.** (JP-029)
@@ -58,14 +58,16 @@ Journey ── preferences (whole trip)                 JP-032
 
 ## 5. What can be booked in Version 1
 
-Everything bookable in advance (JP-030):
+Everything bookable in advance (JP-030), except guided tours and day trips (JP-040):
 
 | Category | Availability model | Example |
 |---|---|---|
 | Accommodation | Stay (nights, rooms) | Homestay, guesthouse, eco-lodge |
-| Day trips / activities / workshops | Timed Slot (date + time + capacity) | Weaving workshop, guided forest walk |
+| Classes / workshops / farm visits at the Host's place | Timed Slot (date + time + capacity) | Weaving workshop, cooking class |
 | Reservations | Optional Reservation (hold a place) | Restaurant table, temple-stay visit |
 | No booking needed | Informational Only | Waterfall, viewpoint, market |
+
+**Paused in Version 1 (JP-040):** guided tours, treks, day trips, and anything where the Host transports or guides Explorers between places. Explorers can still visit places such as Doi Inthanon on their own, or add a tour they arranged elsewhere as a free-text item.
 
 Hosts keep availability accurate through the Host Calendar (JP-031). The detailed booking rules (holds, lifecycle, request windows) are written in the Booking spec, starting from the candidate ideas in [BACKLOG.md](BACKLOG.md).
 
@@ -75,7 +77,7 @@ Hosts keep availability accurate through the Host Calendar (JP-031). The detaile
 |---|---|
 | **Commission:** 15% flat on platform bookings (Group A). Ticket-agent resale for festivals and large events (Group B) is deferred to Phase 2. | Locked, JP-015 |
 | **Entity:** Thai limited company, registered before the first real booking | Locked, JP-033 |
-| **Payments:** Xendit xenPlatform. The Explorer pays once per Journey; split rules send each Host's 85% to their own sub-account and Journey Planner keeps 15%, paying Xendit's fees from it. Hosts have OWNED sub-accounts that Journey Planner creates and runs, so Hosts never see Xendit. Hosts enter bank or PromptPay details at registration; the Inspector confirms identity (JP-037). Payouts weekly, after the Experience. | Locked, JP-036 (replaces JP-034 and JP-021). Details to confirm with Xendit Thailand (§9). |
+| **Payments:** Xendit xenPlatform. The Explorer pays once per Journey; split rules send each Host's 85% to their own sub-account and Journey Planner keeps 15%, paying Xendit's fees from it. Hosts have OWNED sub-accounts that Journey Planner creates and runs, so Hosts never see Xendit. Hosts enter bank or PromptPay details straight into Xendit; Journey Planner keeps only a masked record and no ID copies (JP-042). The Inspector confirms identity in person (JP-037). **Payouts are automatic per booking:** when the Host checks the Explorer in with their code, or 2 hours after the start time unless the Explorer reports a problem (JP-041). | Locked, JP-036, JP-041, JP-042 (replaces JP-034 and JP-021). Details to confirm with Xendit Thailand (§9). |
 | **Chargebacks:** recovered from the Host when they caused it; everything else, including card fraud, absorbed by Journey Planner. The Administrator handles all disputes. | Locked, JP-036 |
 | **Cancellations and refunds:** each Host picks Flexible, Moderate or Strict per Experience; no refund for no-shows; commission refunded in proportion; Host cancellations are full refunds; on weather or safety call-offs the Explorer chooses refund or reschedule | Locked, JP-035 |
 | **Conservation / community fund:** a share carved out of the 15% | **Open.** No percentage decided. |
@@ -130,9 +132,9 @@ Each of these needs a locked decision before the related build starts.
 
 | Question | Blocks |
 |---|---|
-| **Xendit Thailand confirmations** (JP-036): OWNED sub-accounts in Thailand and the identity checks required per Host; splitting one payment across several sub-accounts, and the maximum per payment; holding funds until the platform releases them; fees per payment method; the chargeback setting at activation; refund timing, including PromptPay. | Payments spec |
+| **Xendit Thailand confirmations** (JP-036, JP-041, JP-042): whether Journey Planner needs its own Bank of Thailand licence under this model (with the lawyer); OWNED sub-accounts in Thailand and identity checks per Host; Hosts giving ID and bank details straight to Xendit; a saved payout account on Xendit's side; splitting one payment across several sub-accounts; automatic per-booking payouts by API, speed and fee per payout; holding a reported payout; fees per payment method; the chargeback setting at activation; refund timing, including PromptPay. | Payments spec |
 | **Conservation-fund percentage** | Marketing claims |
 | **Questionnaire generation:** rule-based or AI-assisted, and how each choice is explained to the Explorer | Questionnaire spec |
 | **Next region after Chiang Mai** (research suggests Bangkok, then Krabi/Phuket) | Expansion |
-| **Licences required per category** in the Verification Standard (re-inspection is every 12 months, Spec 1) | Legal research, then Spec 1 |
-| **Legal and tax research:** VAT on commission only and withholding tax under the agent model (accountant); whether a booking agent selling day trips needs its own tour-business licence or only the Hosts who run them do, accommodation host registration, Digital Platform Services Royal Decree duties, consumer-protection rules on cancellations (JP-035) | Launch |
+| **Lawyer to confirm the licence table** in Spec 1 §7.3, drafted from the legal research | First inspection |
+| **Lawyer and accountant review** of the legal research (`workspace/reports/Thailand legal and tax requirements.md`): Bank of Thailand licence risk; whether Journey Planner needs a tour licence even without tours; ETDA platform notification; direct-marketing registration; cancellation presets; the Singapore data transfer safeguards (JP-042); VAT on commission only and withholding tax | Launch |

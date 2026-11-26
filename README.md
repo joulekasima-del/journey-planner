@@ -7,7 +7,7 @@ A platform that helps travellers create the itinerary for their journey across T
 | # | Document | What it answers |
 |---|---|---|
 | 1 | [docs/PRODUCT.md](docs/PRODUCT.md) | What we're building, for whom, what V1 includes, open questions |
-| 2 | [docs/DECISION_LOG.md](docs/DECISION_LOG.md) | Every locked decision (JP-001 to JP-033). The highest authority. |
+| 2 | [docs/DECISION_LOG.md](docs/DECISION_LOG.md) | Every locked decision (JP-001 to JP-042). The highest authority. |
 | 3 | [BUILD_TRACKER.md](BUILD_TRACKER.md) | What's being worked on now and next |
 | 4 | [docs/HOW_WE_WORK.md](docs/HOW_WE_WORK.md) | How decisions get made and how code gets built |
 | 5 | [docs/AI_WORKING_DISCIPLINE.md](docs/AI_WORKING_DISCIPLINE.md) | Rules every AI session must follow |
